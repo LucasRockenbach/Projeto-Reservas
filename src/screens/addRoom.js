@@ -1,26 +1,33 @@
-import { View,  StyleSheet, TextInput } from "react-native"
+/*import { View,  StyleSheet, TextInput } from "react-native"
 import NavBar from "../components/navBar"
 import Botton from "../components/botton"
 import { useContext } from "react"
 import UserContext from "../context/userContext"
-import { useState } from "react"
+import { useState } from "react" */
+import { View, StatusBar, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button  } from "react-native"
+import NavBar from "../components/navBar"
+import { ListItem } from "@rneui/base"
+import { useEffect, useState, useContext } from "react"
+import Botton from "../components/botton"
 
-export default ({route, navigation}) => {
+/*export default ({route, navigation}) => {
     const {dispatch} = useContext(UserContext)
-    const [userParam, setUserParam] = useState( {})
+    const [roomParam, setUserParam] = useState( {}) */
 
-    const doPost = () => {
-        //validações 
+    export default  ()=> {
+        const [roomParam, setRoomParam] = useState({})
+      const doPost = () => {
+
 
         URL = 'https://localhost:7198/api/sala'
         const dadosParaEnviar = {
-            idSala: userParam.id,
-            nome: userParam.nome,
-            capacidade: userParam.capacidade,
-            descricao: userParam.descricao,
-            bloco: userParam.bloco,
-            andar: userParam.andar,
-            numero: userParam.numero,
+            idSala: roomParam.id,
+            nome: roomParam.nome,
+            capacidade: roomParam.capacidade,
+            descricao: roomParam.descricao,
+            bloco: roomParam.bloco,
+            andar: roomParam.andar,
+            numero: roomParam.numero,
         }
 
         const options = {
@@ -61,23 +68,23 @@ export default ({route, navigation}) => {
             placeholder='nome'
             style = {style.inputLogin}
             keyboardType='name-phone-pad'
-            value={userParam.nome}
-            onChangeText={ nome => setUserParam({...userParam, nome}) }/>
+            value={roomParam.nome}
+            onChangeText={ nome => setroomParam({...roomParam, nome}) }/>
 
             <View style={{flexDirection: "row", justifyContent: "space-around" }}>
                 <TextInput
                 placeholder='capacidade'
                 style = {style.inputs}
                 keyboardType='numeric'
-                value={userParam.capacidade}
-                onChangeText={ capacidade => setUserParam({...userParam, capacidade}) }/>
+                value={roomParam.capacidade}
+                onChangeText={ capacidade => setroomParam({...roomParam, capacidade}) }/>
                 
                 <TextInput 
                     placeholder='bloco'
                     style={style.inputs}
                     keyboardType={'email-address'}
-                    value={userParam.bloco}
-                    onChangeText={ bloco => setUserParam({...userParam, bloco}) }
+                    value={roomParam.bloco}
+                    onChangeText={ bloco => setroomParam({...roomParam, bloco}) }
                 />
             </View>
             <View style={{flexDirection: "row", justifyContent: "space-around"}}>
@@ -85,15 +92,15 @@ export default ({route, navigation}) => {
                     placeholder='andar'
                     style={style.inputs}
                     keyboardType={'numeric'}
-                    value={userParam.andar}
-            onChangeText={ andar => setUserParam({...userParam, andar}) }
+                    value={roomParam.andar}
+            onChangeText={ andar => setroomParam({...roomParam, andar}) }
                 /> 
                 <TextInput 
                     placeholder='N°'
                     style={style.inputs}
                     keyboardType={'numeric'}
-                    value={userParam.numero}
-            onChangeText={ numero => setUserParam({...userParam, numero}) }
+                    value={roomParam.numero}
+            onChangeText={ numero => setRoomParam({...roomParam, numero}) }
                 /> 
             </View>
                 
@@ -103,8 +110,8 @@ export default ({route, navigation}) => {
                 placeholder='Descrição'
                 style = {style.inputLogin}
                 keyboardType='name-phone-pad'
-                value={userParam.descricao}
-                onChangeText={ descricao => setUserParam({...userParam, descricao}) }/>
+                value={roomParam.descricao}
+                onChangeText={ descricao => setRoomParam({...roomParam, descricao}) }/>
             </View>
             
             

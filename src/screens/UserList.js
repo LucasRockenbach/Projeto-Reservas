@@ -12,7 +12,7 @@ export default props => {
     const URL = "https://localhost:7198/api/usuario";
 
 
-    const getMovies = async () => {
+    const getUsers = async () => {
         try{
             const response = await fetch(URL);
             const json = await response.json();
@@ -26,7 +26,7 @@ export default props => {
     }
 
     useEffect(()=>{
-        getMovies();
+        getUsers();
     }, [])
 
     return(
@@ -48,7 +48,7 @@ export default props => {
                     />
                 )
                 }
-                <Button title="Atualizar" onPress={ () => getMovies()} />
+                <Button title="Atualizar" onPress={ () => getUsers()} />
             </View>
             <View>
             <Botton textoBotao={"Cadastrar"} funcao={

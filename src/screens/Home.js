@@ -11,7 +11,7 @@ export default props => {
     const URL = "https://localhost:7198/api/reserva";
 
 
-    const getMovies = async () => {
+    const getReservas = async () => {
         try{
             const response = await fetch(URL);
             const json = await response.json();
@@ -25,7 +25,7 @@ export default props => {
     }
 
     useEffect(()=>{
-        getMovies();
+        getReservas();
     }, [])
 
     return(
@@ -48,7 +48,7 @@ export default props => {
                     />
                 )
                 }
-                <Button title="Atualizar" onPress={ () => getMovies()} />
+                <Button title="Atualizar" onPress={ () => getReservas()} />
             </View>
         </>
     )

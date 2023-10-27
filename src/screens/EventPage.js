@@ -1,4 +1,4 @@
-import { View,  StyleSheet, TextInput, ActivityIndicator } from "react-native"
+/*import { View,  StyleSheet, TextInput, ActivityIndicator } from "react-native"
 import NavBar from "../components/navBar"
 import Botton from "../components/botton"
   
@@ -30,11 +30,10 @@ export default props =>(
             />
             <Botton textoBotao={"cadastrar"} />
 
-            {/*<ActivityIndicator size={"large"}/>*/}
-        </View>
-     </View>  )
-    
+            {/*<ActivityIndicator size={"large"}/>*/
 
+    
+/*
 const style = StyleSheet.create({
     container: {
         alignItems: 'center',
@@ -57,5 +56,4 @@ const style = StyleSheet.create({
 
 
 
-})
-    
+}) */

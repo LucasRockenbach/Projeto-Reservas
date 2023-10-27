@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+/*import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState } from 'react';
 import Botton from '../components/botton';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 20
   }
-});
+}); */

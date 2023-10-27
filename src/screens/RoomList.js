@@ -16,7 +16,7 @@ export default props => {
     const URL = "https://localhost:7198/api/sala";
 
 
-    const getMovies = async () => {
+    const getRoom = async () => {
         try{
             const response = await fetch(URL);
             const json = await response.json();
@@ -30,7 +30,7 @@ export default props => {
     }
 
     useEffect(()=>{
-        getMovies();
+        getRoom();
     }, [])
 
     return(
