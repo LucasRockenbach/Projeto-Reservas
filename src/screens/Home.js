@@ -1,8 +1,9 @@
 import { View, StatusBar, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button  } from "react-native"
 import NavBar from "../components/navBar"
-import { ListItem } from "@rneui/base"
+import { BackgroundImage, ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
 import UserContext from "../context/userContext"
+import estilo from "../components/estilo"
 
 export default props => {
     const [isLoading, setIsLoading] = useState(true);
@@ -29,46 +30,27 @@ export default props => {
     }, [])
 
     return(
-        <>
-            <View>
-                <NavBar></NavBar>
-
-                {isLoading ? (
-                    <ActivityIndicator size={80}></ActivityIndicator>
-                ) : (
-                    <FlatList 
-                        data={data}
-                        keyExtractor={({id})=>id}
-                        renderItem={ ({item})=>(
-                            <Text>
-                                - nome: {item.nome} - capacidade: {item.capacidade} - descricao: {item.descricao} 
-                            </Text>
-                        )
-                        }
-                    />
-                )
-                }
-                <Button title="Atualizar" onPress={ () => getReservas()} />
+        <View style={estilo.homeContainer}>
+            <Image source={require('../assets/Embrapa.png')}/>
+            <View  style={estilo.navBarHome} >
+                <NavBar/>
             </View>
-        </>
+            <View style={estilo.homeCard}>
+            <TouchableOpacity onPress={() => toggleCard(index)}>
+              <Text>AHHHHHHHHHHHHHHHHHHHH</Text>
+            </TouchableOpacity>
+
+            <FlatList
+                    data={data}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                    <Text>{item.text}</Text>
+                    )}
+            />
+            </View>
+            <Button style={estilo.buttonHome} title="Atualizar" onPress={() => getReservas()} />
+        </View>
     )
-}
-const style = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-        marginTop: 30
 
-    },
-    grid: {
-        justifyContent: 'center',
-        flexDirection: 'row'
-    },
+ }
 
-
-
-
-})

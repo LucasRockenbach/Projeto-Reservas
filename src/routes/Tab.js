@@ -5,8 +5,6 @@ import Home from "../screens/Home"
 import StackRoom from "./Stack/StackRoom"
 import StackUser from "./Stack/StackUser"
 
-
-
 const Tab = createBottomTabNavigator()
 
 export default props => (

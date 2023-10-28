@@ -1,4 +1,4 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+/*import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import RegisterPage from "../screens/RegisterPage"
 import LoginPage from "../screens/loginPage"
 import Home from "../screens/Home"
@@ -53,4 +53,4 @@ export default props =>(
         </Stack.Screen>
     </Stack.Navigator>
     
-)
+)*/
