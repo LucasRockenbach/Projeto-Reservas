@@ -1,34 +1,16 @@
 import React, { createContext, useReducer } from 'react';
-import users from '../data/users';
 
-const initialState = {users}
+const initialState = {}
 const UserContext = createContext({})
 
 const actions = {
-    createUser(state, action){
-        const newUser = action.payload
-        newUser.id = Math.random()
+    selectUser(state, action){
+        const userReceveid = action.payload
         return{
             ...state,
-            users: [...state.users, newUser]
+            users: userReceveid
         }
     },
-
-    updateUser(state, action){
-        const userUpdated = action.payload
-        return{
-            ...state,
-            users: state.users.map(u => u.id === userUpdated.id ? userUpdated: u )
-        }
-    },
-    
-    deleteUser(state, action){
-        const  userReceive = action.payload
-        return {
-            ...state,
-            users: state.users.filter(u => u.id !== userReceive.id)
-        }
-    }
 }
 
 export const UserProvider = props => {

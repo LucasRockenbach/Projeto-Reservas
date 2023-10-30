@@ -4,61 +4,49 @@ import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
 import UserContext from "../context/userContext"
 import Botton from "../components/botton"
+import { RefreshControl } from "react-native-gesture-handler"
 
 export default props => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState([]);
+    const {state, dispatch} = useContext(UserContext)
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
-    const URL = "https://localhost:7198/api/usuario";
-
-
-    const getMovies = async () => {
-        try{
-            const response = await fetch(URL);
-            const json = await response.json();
-            console.log(json);
-            setData(json);
-        } catch(error) {
-            console.error(error);
-        }finally{
-            setIsLoading(false);
-        }
+    function getUserItem({item: user}){
+        return(
+            <ListItem
+            >
+                <ListItem.Content>
+                    <ListItem.Title>{user.nome}</ListItem.Title>
+                    <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Chevron 
+                    name="edit"
+                    color="orange"
+                    size={25}
+                    onPress={()=>props.navigation.navigate("UserForm", user)}
+                />
+            </ListItem>
+        )
     }
 
-    useEffect(()=>{
-        getMovies();
-    }, [])
+    const atualiza = ()=>{
+        setIsRefreshing(true)
+        props.navigation.push("GetUsersAPI")
+        setIsRefreshing(false)
+    }
 
     return(
-        <>
-            <View>
-
-                {isLoading ? (
-                    <ActivityIndicator size={80}></ActivityIndicator>
-                ) : (
-                    <FlatList 
-                        data={data}
-                        keyExtractor={({id})=>id}
-                        renderItem={ ({item})=>(
-                            <Text>
-                                - nome: {item.nome} - email: {item.email} - Telefone: {item.telefone} 
-                            </Text>
-                        )
-                        }
+        <View>
+            <FlatList 
+                keyExtractor={ user => user.id}
+                renderItem={getUserItem}
+                refreshControl={
+                    <RefreshControl
+                        onRefresh={atualiza}
+                        refreshing={isRefreshing}
                     />
-                )
                 }
-                <Button title="Atualizar" onPress={ () => getMovies()} />
-            </View>
-            <View>
-            <Botton textoBotao={"Cadastrar"} funcao={
-                ()=>{ props.navigation.navigate("RegisterPage")
-
-                }
-
-            }/>
-            </View>
-        </>
+            />
+        </View>
     )
 }
 const style = StyleSheet.create({
