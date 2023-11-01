@@ -48,6 +48,9 @@ export default  ()=> {
 
   return(
   <View style={styles.container}>
+      <View style={styles.backImage}>
+          <Image style={styles.logo} source={require('../assets/Embrapa.png')} />
+      </View>
         <TextInput
       placeholder='nome'
       style = {styles.inputLogin}
@@ -68,7 +71,7 @@ export default  ()=> {
         style={styles.inputLogin}
         keyboardType={'email-address'}
         value={userParam.email}
-            onChangeText={ email => setUserParam({...userParam, email}) }
+        onChangeText={ email => setUserParam({...userParam, email}) }
       />
 
       <Botton textoBotao={'Login'} funcao ={
@@ -76,7 +79,6 @@ export default  ()=> {
       
       }/>
 
-      <StatusBar style="auto"/>
     </View>
 
 
@@ -91,30 +93,9 @@ export default  ()=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#28364C',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  secundario:{
-    color: 'green',
-    fontSize: 21,
-  },
-  botaoPrincipal:{
-    backgroundColor: 'blue',
-    height: 40,
-    width: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textoBotao:{
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  logo:{
-    width: 200,
-    height: 200,
-    borderRadius: 50,
-    margin: 20
   },
   inputLogin:{
     height: 60,
@@ -123,6 +104,11 @@ const styles = StyleSheet.create({
     margin: 20,
     textAlign: 'center',
     borderWidth: 0.5,
-    borderRadius: 20
+    borderRadius: 20,
+    backgroundColor: "white"
+  },
+  bottonLogin: {
+    backgroundColor: "#078F2D",
   }
+
 });
