@@ -1,9 +1,10 @@
-import { View,  StyleSheet, TextInput } from "react-native"
+import { View,  StyleSheet, TextInput, Text } from "react-native"
 import NavBar from "../components/navBar"
 import Botton from "../components/botton"
 import { useContext } from "react"
 import UserContext from "../context/userContext"
 import { useState } from "react"
+import { useNavigation } from "@react-navigation/native";
 
 export default ({route, navigation}) => {
     const {dispatch} = useContext(UserContext)
@@ -53,13 +54,15 @@ export default ({route, navigation}) => {
 
         return(
 <View>
-        <View > 
-            <NavBar/>
+<View style={style.cont}>
+<NavBar/>
+        <Text style={style.texto}>Cadastre um Sala</Text>
         </View>
         <View style={style.container} >
+        <Text>Nome da sala</Text>
             <TextInput
-            placeholder='nome'
-            style = {style.inputLogin}
+            placeholder='Digite o nome para sala'
+            style = {style.butao}
             keyboardType='name-phone-pad'
             value={userParam.nome}
             onChangeText={ nome => setUserParam({...userParam, nome}) }/>
@@ -108,14 +111,8 @@ export default ({route, navigation}) => {
             </View>
             
             
-            <Botton textoBotao={"Cadastrar"} funcao={
-                ()=>{ doPost(), props.navigation.navigate("RoomList")
+            <Botton textoBotao={"Cadastrar"} funcao={() => { doPost(); navigation.navigate("RoomList"); }} />
 
-                }
-
-            }>
-
-            </Botton>
         </View>
      </View>  
         )
@@ -152,10 +149,43 @@ const style = StyleSheet.create({
         textAlign: 'center',
         borderWidth: 0.5,
         borderRadius: 20
-      }
-    
+      },
+      cont: {
+        width: 395,
+        height: 143,
+        backgroundColor: "#28364D",
+        borderRadius: 30,
+    },
+    texto: {
+        width: 266,
+        height: 39,
+        color: '#FAFAFA',
+        fontStyle: 'normal',
+        fontSize: 30,
+        alignItems: 'center',
+        fontFamily: 'Inter',
+        marginLeft: 70,
+        marginTop: 20,
+        fontWeight: '700',
+      },
+      butao: {
+        width: 315,
+        height: 49,
+        backgroundColor: "#E9EBED",
+        borderRadius: 5,
+        alignItems: 'center'
+      },
+      textocima: {
+        width: 208,
+        height: 27,
+        backgroundColor: "#383838",
+        fontFamily: "Poppins",
+        fontSize: 18,
+        fontStyle: "normal",
+        fontWeight: 500,
+        
 
-
+      },
 
 })
     
