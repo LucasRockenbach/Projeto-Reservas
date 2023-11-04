@@ -4,18 +4,10 @@ import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
 import Botton from "../components/botton"
 import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useFonts } from 'expo-font';
+
 
 
 export default props => {
-  const [loaded] = useFonts({
-    Inter: require('../path/to/inter-font.ttf'), // Substitua pelo caminho correto para o arquivo de fonte Inter
-  });
-
-  if (!loaded) {
-    return null; // Aguarde até que a fonte esteja carregada antes de renderizar o componente
-  }
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [expandedCardIndex, setExpandedCardIndex] = useState(null);
@@ -75,9 +67,9 @@ export default props => {
           </View>
         ))
       )}
-       <TouchableOpacity style={styles.roundButton} onPress={() => props.navigation.navigate("addRoom")}>
-        <FontAwesome name="plus" size={24} color="white" />
-      </TouchableOpacity>
+         <TouchableOpacity style={styles.roundButton} onPress={() => props.navigation.navigate("addRoom")}>
+  <FontAwesome name="plus" size={24} color="white" />
+</TouchableOpacity>
     </View>
         </>
     );
