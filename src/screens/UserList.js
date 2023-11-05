@@ -4,6 +4,7 @@ import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
 import UserContext from "../context/userContext"
 import Botton from "../components/botton"
+import Logo from '../components/logo';
 
 export default props => {
     const [isLoading, setIsLoading] = useState(true);
@@ -30,53 +31,43 @@ export default props => {
     }, [])
 
     return(
-        <>
+
+        <View style={style.container}>
+            <Logo />
+            {isLoading ? (
+                <ActivityIndicator size={80}></ActivityIndicator>
+            ) : (
+                <FlatList 
+                    data={data}
+                    keyExtractor={({id})=>id}
+                    renderItem={ ({item})=>(
+                        <Text>
+                            - nome: {item.nome} - email: {item.email} - Telefone: {item.telefone} 
+                        </Text>
+                    )
+                    }
+                />
+            )
+            }
+            <Button title="Atualizar" onPress={ () => getUsers()} />
             <View>
+                <Botton textoBotao={"Cadastrar"} funcao={
+                    () => {
+                        props.navigation.navigate("RegisterPage")
 
-                {isLoading ? (
-                    <ActivityIndicator size={80}></ActivityIndicator>
-                ) : (
-                    <FlatList 
-                        data={data}
-                        keyExtractor={({id})=>id}
-                        renderItem={ ({item})=>(
-                            <Text>
-                                - nome: {item.nome} - email: {item.email} - Telefone: {item.telefone} 
-                            </Text>
-                        )
-                        }
-                    />
-                )
-                }
-                <Button title="Atualizar" onPress={ () => getUsers()} />
+                    }
+
+                } />
             </View>
-            <View>
-            <Botton textoBotao={"Cadastrar"} funcao={
-                ()=>{ props.navigation.navigate("RegisterPage")
-
-                }
-
-            }/>
-            </View>
-        </>
+        </View>
     )
 }
 const style = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-        marginTop: 30
-
-    },
-    grid: {
-        justifyContent: 'center',
-        flexDirection: 'row'
-    },
-
-
-
+        container: {
+            flex: 1,
+            backgroundColor: '#28364C',
+            alignItems: 'center',
+            justifyContent: 'center'
+          },
 
 })

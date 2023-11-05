@@ -3,6 +3,7 @@ import React, { useState} from 'react';
 import botton from '../components/botton';
 import { Image, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Linking, } from 'react-native';
 import Botton from '../components/botton';
+import Logo from '../components/logo';
 
 export default  ()=> {
     const [userParam, setUserParam] = useState({})
@@ -47,13 +48,11 @@ export default  ()=> {
     )}
 
   return(
-  <View style={styles.container}>
-      <View style={styles.backImage}>
-          <Image style={styles.logo} source={require('../assets/Embrapa.png')} />
-      </View>
-        <TextInput
+  <View style={style.container}>
+      <Logo/>
+      <TextInput
       placeholder='nome'
-      style = {styles.inputLogin}
+      style = {style.inputLogin}
       keyboardType='name-phone-pad'
       value={userParam.nome}
       onChangeText={ nome => setUserParam({...userParam, nome}) }
@@ -61,14 +60,14 @@ export default  ()=> {
       />
       <TextInput
       placeholder='telefone'
-      style = {styles.inputLogin}
+      style = {style.inputLogin}
       keyboardType='numeric'
       value={userParam.telefone}
             onChangeText={ telefone => setUserParam({...userParam, telefone}) }/>
       
       <TextInput 
         placeholder='E-mail'
-        style={styles.inputLogin}
+        style={style.inputLogin}
         keyboardType={'email-address'}
         value={userParam.email}
         onChangeText={ email => setUserParam({...userParam, email}) }
@@ -90,7 +89,7 @@ export default  ()=> {
     
 
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#28364C',
@@ -107,8 +106,4 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "white"
   },
-  bottonLogin: {
-    backgroundColor: "#078F2D",
-  }
-
 });
