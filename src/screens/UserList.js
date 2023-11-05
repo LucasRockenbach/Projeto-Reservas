@@ -33,24 +33,46 @@ export default props => {
     return(
 
         <View style={style.container}>
-            <Logo />
+            <View style={style.viewLogo}>
+                <Logo />
+            </View>
+
             {isLoading ? (
                 <ActivityIndicator size={80}></ActivityIndicator>
             ) : (
-                <FlatList 
+                <FlatList style={style.list}
                     data={data}
                     keyExtractor={({id})=>id}
                     renderItem={ ({item})=>(
-                        <Text>
-                            - nome: {item.nome} - email: {item.email} - Telefone: {item.telefone} 
-                        </Text>
-                    )
-                    }
+                        <Text style={style.item}>
+
+                            <Text style={style.label}>
+                                nome:
+                            </Text>
+                            <Text style={style.value}>
+                                {item.nome}
+                            </Text>
+                            {'\n'}
+                            <Text style={style.label}>
+                                Email:
+                            </Text>
+                            <Text style={style.value}>
+                                {item.email}
+                            </Text>
+                            {'\n'}
+                            <Text style={style.label}>
+                                Telefone:
+                            </Text>
+                            <Text style={style.value}>
+                                {item.telefone}
+                            </Text>
+                        </Text>                       
+                    )}
                 />
             )
             }
-            <Button title="Atualizar" onPress={ () => getUsers()} />
             <View>
+                <Button title="Atualizar" onPress={ () => getUsers()} />
                 <Botton textoBotao={"Cadastrar"} funcao={
                     () => {
                         props.navigation.navigate("RegisterPage")
@@ -60,14 +82,42 @@ export default props => {
                 } />
             </View>
         </View>
+        
     )
 }
 const style = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: '#28364C',
-            alignItems: 'center',
-            justifyContent: 'center'
-          },
+    container: {
+        flex: 1,
+        backgroundColor: '#28364C',
+        alignItems: 'center',
+        justifyContent: 'center',
 
+    },
+    viewLogo:{
+        bottom: 20,
+        top: 20,
+    },
+    item: {
+        fontSize: 20,
+        padding: 10,
+        backgroundColor: 'lightgray',
+        marginBottom: 10,
+    },
+    list: {
+        flexDirection: 'row',
+        padding: 10,
+      },
+      labelContainer: {
+        flexDirection: 'row',
+        marginBottom: 10,
+      },
+      label: {
+        fontWeight: 'bold',
+        marginRight: 5,
+        color: '#28364C',
+        
+      },
+      value: {
+        fontSize: 16,
+      },
 })

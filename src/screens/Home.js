@@ -36,19 +36,12 @@ export default props => {
                 <NavBar/>
             </View>
             <View style={estilo.homeCard}>
-            <TouchableOpacity onPress={() => toggleCard(index)}>
               <Text>AHHHHHHHHHHHHHHHHHHHH</Text>
-            </TouchableOpacity>
-
-            <FlatList
-                    data={data}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                    <Text>{item.text}</Text>
-                    )}
-            />
             </View>
+            <View>
             <Button style={estilo.buttonHome} title="Atualizar" onPress={() => getReservas()} />
+            </View>
+
         </View>
     )
 

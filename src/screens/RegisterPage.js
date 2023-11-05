@@ -7,7 +7,7 @@ import Logo from '../components/logo';
 
 export default  ()=> {
     const [userParam, setUserParam] = useState({})
-  const doPost = () => {
+  const doPost = async () => {
     //validações 
     
 
@@ -28,24 +28,21 @@ export default  ()=> {
         body: JSON.stringify(dadosParaEnviar)
     };
 
-    fetch(URL, options)
-    .then(
-        (response)=>{
-            if(!response.ok){
-                throw new Error('A solicitação via POST falhou!')
-            }
-            return response.json();
-        }
-    ).then(
-        (dadosRecebidos) => {
-            console.log('Resposta do servidor: ', dadosRecebidos)
-            
-        }
-    ).catch(
-        (error) => {
-            console.error(error)
-        }
-    )}
+    try {
+      const response = await fetch(URL, options);
+
+      if (response.ok) {
+        const dadosRecebidos = await response.json();
+        console.log('Resposta do servidor: ', dadosRecebidos);
+        // Navegue para a tela desejada após a conclusão bem-sucedida do POST
+        navigation.navigate('UserList'); 
+      } else {
+        throw new Error('A solicitação via POST falhou!');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return(
   <View style={style.container}>
@@ -75,7 +72,7 @@ export default  ()=> {
 
       <Botton textoBotao={'Login'} funcao ={
        ()=>{doPost()}
-      
+          
       }/>
 
     </View>
@@ -84,10 +81,6 @@ export default  ()=> {
 )
 
 }
-
-
-    
-
 
 const style = StyleSheet.create({
   container: {

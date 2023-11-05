@@ -8,8 +8,9 @@ export default props => (
 const style = StyleSheet.create ({
 
     Logo:{
+        flex: 1,
         height: 200,
-        width: 350,
+        width: 300,
     },
     ImageComponent:{
         backgroundColor: 'white',
