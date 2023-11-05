@@ -213,12 +213,13 @@ const style = StyleSheet.create({
         fontWeight: '700',
         color: 'white'
       },
-      butao: {
-        width: 315,
-        height: 49,
-        backgroundColor: "#E9EBED",
-        borderRadius: 5,
-        alignItems: 'center'
+     textocima: {
+        marginRight: 105,
+        width: 208,
+        height: 27,
+        fontSize: 18,
+        fontStyle: "normal",
+        color: '#383838',
       },
       butao2: {
         width: 315,

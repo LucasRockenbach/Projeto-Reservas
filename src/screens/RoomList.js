@@ -67,7 +67,7 @@ export default props => {
           </View>
         ))
       )}
-         <TouchableOpacity style={styles.roundButton} onPress={() => props.navigation.navigate("addRoom")}>
+          <TouchableOpacity style={styles.roundButton} onPress={() =>navigation.navigate("addRoom")}>
   <FontAwesome name="plus" size={24} color="white" />
 </TouchableOpacity>
     </View>
@@ -121,3 +121,7 @@ const styles = StyleSheet.create({
     right: 20,
   },
   });
+
+ /* <TouchableOpacity style={styles.roundButton} onPress={() =>navigation.navigate("addRoom")}>
+  <FontAwesome name="plus" size={24} color="white" />
+</TouchableOpacity> */

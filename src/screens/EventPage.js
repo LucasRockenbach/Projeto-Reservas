@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import { View, Button, Text, StyleSheet, Alert, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
@@ -92,7 +92,7 @@ export default props = () => {
         />
         
 
-        {/*<ActivityIndicator size={"large"}/>*/}
+       
       </View>
 
       <View style={styles.row}>
@@ -175,3 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
+*/
