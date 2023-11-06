@@ -79,24 +79,15 @@ export default props = () => {
       <View style={styles.container} >
         <TextInput
           placeholder='Reservista'
-          style={styles.inputLogin}
-          keyboardType='name-phone-pad' />
+          style={styles.inputLogin} />
         <TextInput
           placeholder='Descrição'
-          style={styles.inputLogin}
-          keyboardType='numeric' />
+          style={styles.inputLogin} />
         <TextInput
           placeholder='Sala'
           style={styles.inputLogin}
-          keyboardType={'email-address'}
         />
-        
 
-       
-      </View>
-
-      <View style={styles.row}>
-        <Button title="Selecionar Dia" onPress={() => setShowDatePicker(true)} />
         {showDatePicker && (
           <DateTimePicker
             testID="datePicker"
@@ -108,10 +99,10 @@ export default props = () => {
             onChange={handleDateChange}
           />
         )}
-      </View>
-
-      <View style={styles.row}>
-        <Button title="Selecionar Início" onPress={() => setShowStartTimePicker(true)} />
+        <TextInput onPressIn={() => setShowStartTimePicker(true)}
+          placeholder= "horario inicio"
+          style={styles.inputLogin}
+        />
         {showStartTimePicker && (
           <DateTimePicker
             testID="startTimePicker"
@@ -122,10 +113,10 @@ export default props = () => {
             onChange={handleStartTimeChange}
           />
         )}
-      </View>
-
-      <View style={styles.row}>
-        <Button title="Selecionar Fim" onPress={() => setShowEndTimePicker(true)} />
+        <TextInput onPressIn={() => setShowEndTimePicker(true)}
+          placeholder='Hora Fim'
+          style={styles.inputLogin}
+        />
         {showEndTimePicker && (
           <DateTimePicker
             testID="endTimePicker"
@@ -136,15 +127,13 @@ export default props = () => {
             onChange={handleEndTimeChange}
           />
         )}
+        <Botton textoBotao={"Cadastrar"} funcao={
+                ()=>{ showConfirmationAlert()
+                }
+            } />
       </View>
-      <Button title="Enviar" onPress={showConfirmationAlert} />
-      <Botton textoBotao={"cadastrar"} 
-      funcao={
-        ()=>{ doPost(), props.navigation.navigate("RoomList")
 
-        }
 
-    }/>
     </View>
   );
 };
