@@ -3,10 +3,11 @@ import React, { useState} from 'react';
 import botton from '../components/botton';
 import { Image, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Linking, } from 'react-native';
 import Botton from '../components/botton';
+import Logo from '../components/logo';
 
 export default  ()=> {
     const [userParam, setUserParam] = useState({})
-  const doPost = () => {
+  const doPost = async () => {
     //validações 
     
 
@@ -27,30 +28,28 @@ export default  ()=> {
         body: JSON.stringify(dadosParaEnviar)
     };
 
-    fetch(URL, options)
-    .then(
-        (response)=>{
-            if(!response.ok){
-                throw new Error('A solicitação via POST falhou!')
-            }
-            return response.json();
-        }
-    ).then(
-        (dadosRecebidos) => {
-            console.log('Resposta do servidor: ', dadosRecebidos)
-            
-        }
-    ).catch(
-        (error) => {
-            console.error(error)
-        }
-    )}
+    try {
+      const response = await fetch(URL, options);
+
+      if (response.ok) {
+        const dadosRecebidos = await response.json();
+        console.log('Resposta do servidor: ', dadosRecebidos);
+        // Navegue para a tela desejada após a conclusão bem-sucedida do POST
+        navigation.navigate('UserList'); 
+      } else {
+        throw new Error('A solicitação via POST falhou!');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return(
-  <View style={styles.container}>
-        <TextInput
+  <View style={style.container}>
+      <Logo/>
+      <TextInput
       placeholder='nome'
-      style = {styles.inputLogin}
+      style = {style.inputLogin}
       keyboardType='name-phone-pad'
       value={userParam.nome}
       onChangeText={ nome => setUserParam({...userParam, nome}) }
@@ -58,25 +57,24 @@ export default  ()=> {
       />
       <TextInput
       placeholder='telefone'
-      style = {styles.inputLogin}
+      style = {style.inputLogin}
       keyboardType='numeric'
       value={userParam.telefone}
             onChangeText={ telefone => setUserParam({...userParam, telefone}) }/>
       
       <TextInput 
         placeholder='E-mail'
-        style={styles.inputLogin}
+        style={style.inputLogin}
         keyboardType={'email-address'}
         value={userParam.email}
-            onChangeText={ email => setUserParam({...userParam, email}) }
+        onChangeText={ email => setUserParam({...userParam, email}) }
       />
 
       <Botton textoBotao={'Login'} funcao ={
        ()=>{doPost()}
-      
+          
       }/>
 
-      <StatusBar style="auto"/>
     </View>
 
 
@@ -84,37 +82,12 @@ export default  ()=> {
 
 }
 
-
-    
-
-
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#28364C',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  secundario:{
-    color: 'green',
-    fontSize: 21,
-  },
-  botaoPrincipal:{
-    backgroundColor: 'blue',
-    height: 40,
-    width: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textoBotao:{
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  logo:{
-    width: 200,
-    height: 200,
-    borderRadius: 50,
-    margin: 20
   },
   inputLogin:{
     height: 60,
@@ -123,6 +96,7 @@ const styles = StyleSheet.create({
     margin: 20,
     textAlign: 'center',
     borderWidth: 0.5,
-    borderRadius: 20
-  }
+    borderRadius: 20,
+    backgroundColor: "white"
+  },
 });

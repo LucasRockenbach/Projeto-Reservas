@@ -5,15 +5,13 @@ import Home from "../screens/Home"
 import StackRoom from "./Stack/StackRoom"
 import StackUser from "./Stack/StackUser"
 
-
-
 const Tab = createBottomTabNavigator()
 
 export default props => (
     <Tab.Navigator screenOptions={{
         tabBarLabelStyle: {fontSize: 50},
         tabBarActiveTintColor: 'gray',
-        tabBarInactiveTintColor: 'blue',
+        tabBarInactiveTintColor: '#28364D',
         headerShown: false,
         tabBarShowLabel: false
 

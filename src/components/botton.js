@@ -25,7 +25,7 @@ export default props=>(
 const formatacao = StyleSheet.create({
     botaoSecundario:{
         margin: 20,
-        backgroundColor: '#13549b',
+        backgroundColor: '#078F2D',
         height: 60,
         width: 240,
         borderRadius: 10,

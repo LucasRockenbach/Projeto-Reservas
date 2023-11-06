@@ -4,12 +4,86 @@ import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
 import UserContext from "../context/userContext"
 import Botton from "../components/botton"
+import Logo from '../components/logo';
 import { RefreshControl } from "react-native-gesture-handler"
 
 export default props => {
     const {state, dispatch} = useContext(UserContext)
     const [isRefreshing, setIsRefreshing] = useState(false);
 
+    const URL = "https://localhost:7198/api/usuario";
+
+
+    const getUsers = async () => {
+        try{
+            const response = await fetch(URL);
+            const json = await response.json();
+            console.log(json);
+            setData(json);
+        } catch(error) {
+            console.error(error);
+        }finally{
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(()=>{
+        getUsers();
+    }, [])
+
+    return(
+
+        <View style={style.container}>
+            <View style={style.viewLogo}>
+                <Logo />
+            </View>
+
+            {isLoading ? (
+                <ActivityIndicator size={80}></ActivityIndicator>
+            ) : (
+                <FlatList style={style.list}
+                    data={data}
+                    keyExtractor={({id})=>id}
+                    renderItem={ ({item})=>(
+                        <Text style={style.item}>
+
+                            <Text style={style.label}>
+                                nome:
+                            </Text>
+                            <Text style={style.value}>
+                                {item.nome}
+                            </Text>
+                            {'\n'}
+                            <Text style={style.label}>
+                                Email:
+                            </Text>
+                            <Text style={style.value}>
+                                {item.email}
+                            </Text>
+                            {'\n'}
+                            <Text style={style.label}>
+                                Telefone:
+                            </Text>
+                            <Text style={style.value}>
+                                {item.telefone}
+                            </Text>
+                        </Text>                       
+                    )}
+                />
+            )
+            }
+            <View>
+                <Button title="Atualizar" onPress={ () => getUsers()} />
+                <Botton textoBotao={"Cadastrar"} funcao={
+                    () => {
+                        props.navigation.navigate("RegisterPage")
+
+                    }
+
+                } />
+            </View>
+        </View>
+        
     function getUserItem({item: user}){
         return(
             <ListItem
@@ -51,20 +125,37 @@ export default props => {
 }
 const style = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#28364C',
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-        marginTop: 30
 
     },
-    grid: {
-        justifyContent: 'center',
-        flexDirection: 'row'
+    viewLogo:{
+        bottom: 20,
+        top: 20,
     },
-
-
-
-
+    item: {
+        fontSize: 20,
+        padding: 10,
+        backgroundColor: 'lightgray',
+        marginBottom: 10,
+    },
+    list: {
+        flexDirection: 'row',
+        padding: 10,
+      },
+      labelContainer: {
+        flexDirection: 'row',
+        marginBottom: 10,
+      },
+      label: {
+        fontWeight: 'bold',
+        marginRight: 5,
+        color: '#28364C',
+        
+      },
+      value: {
+        fontSize: 16,
+      },
 })
