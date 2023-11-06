@@ -6,7 +6,7 @@ export default props =>(
    
         <View style={style.navBar}>
             <TouchableOpacity onPress={props.funcao}>
-                <Image style={style.barsSolid} source={require('../assets/icon.png')}></Image>
+                <Image style={style.barsSolid} source={require('../assets/seta.png')}></Image>
             </TouchableOpacity>
         </View>
 )

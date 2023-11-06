@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import { View, Button, Text, StyleSheet, Alert, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
@@ -87,10 +87,7 @@ export default props = () => {
           placeholder='Sala'
           style={styles.inputLogin}
         />
-        <TextInput onPressIn={() => setShowDatePicker(true)}
-          placeholder='Dia'
-          style={styles.inputLogin}
-        />
+
         {showDatePicker && (
           <DateTimePicker
             testID="datePicker"
@@ -135,6 +132,8 @@ export default props = () => {
                 }
             } />
       </View>
+
+
     </View>
   );
 };
@@ -165,3 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
+*/
