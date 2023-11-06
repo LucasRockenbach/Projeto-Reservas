@@ -18,6 +18,16 @@ export default props => (
         
     }}>
         <Tab.Screen 
+            name="Salas" 
+            component={StackRoom} 
+            options={{
+                tabBarLabel: 'User',
+                tabBarIcon: ({color, size})=>(
+                    <FontAwesome name="home" color={color} size={size} />
+                )
+            }}      
+        />
+        <Tab.Screen 
             name="Reserva" 
             component={Home}
             options={{
@@ -37,15 +47,6 @@ export default props => (
                 )
             }}      
         />
-        <Tab.Screen 
-            name="Salas" 
-            component={StackRoom} 
-            options={{
-                tabBarLabel: 'User',
-                tabBarIcon: ({color, size})=>(
-                    <FontAwesome name="home" color={color} size={size} />
-                )
-            }}      
-        />
+        
     </Tab.Navigator>
 )

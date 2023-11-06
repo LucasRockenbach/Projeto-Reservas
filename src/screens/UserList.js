@@ -5,10 +5,11 @@ import { useEffect, useState, useContext } from "react"
 import UserContext from "../context/userContext"
 import Botton from "../components/botton"
 import Logo from '../components/logo';
+import { RefreshControl } from "react-native-gesture-handler"
 
 export default props => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState([]);
+    const {state, dispatch} = useContext(UserContext)
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const URL = "https://localhost:7198/api/usuario";
 
@@ -83,6 +84,43 @@ export default props => {
             </View>
         </View>
         
+    function getUserItem({item: user}){
+        return(
+            <ListItem
+            >
+                <ListItem.Content>
+                    <ListItem.Title>{user.nome}</ListItem.Title>
+                    <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Chevron 
+                    name="edit"
+                    color="orange"
+                    size={25}
+                    onPress={()=>props.navigation.navigate("UserForm", user)}
+                />
+            </ListItem>
+        )
+    }
+
+    const atualiza = ()=>{
+        setIsRefreshing(true)
+        props.navigation.push("GetUsersAPI")
+        setIsRefreshing(false)
+    }
+
+    return(
+        <View>
+            <FlatList 
+                keyExtractor={ user => user.id}
+                renderItem={getUserItem}
+                refreshControl={
+                    <RefreshControl
+                        onRefresh={atualiza}
+                        refreshing={isRefreshing}
+                    />
+                }
+            />
+        </View>
     )
 }
 const style = StyleSheet.create({
