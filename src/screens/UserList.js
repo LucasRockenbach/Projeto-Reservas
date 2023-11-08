@@ -1,4 +1,4 @@
-import { View, StatusBar, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button  } from "react-native"
+import { View, StatusBar, Text, StyleSheet, Alert,Image, TouchableOpacity, FlatList, ActivityIndicator, Button  } from "react-native"
 import NavBar from "../components/navBar"
 import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
@@ -33,62 +33,62 @@ export default props => {
         getUsers();
     }, [])
 
-    return(
+    const deleteUser = async (user) =>{
+        const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/' + user.id 
 
-        <View style={style.container}>
-            <View style={style.viewLogo}>
-                <Logo />
-            </View>
+        const options = {
+            method: 'DELETE'
+        }
 
-            {isLoading ? (
-                <ActivityIndicator size={80}></ActivityIndicator>
-            ) : (
-                <FlatList style={style.list}
-                    data={data}
-                    keyExtractor={({id})=>id}
-                    renderItem={ ({item})=>(
-                        <Text style={style.item}>
+        fetch(URL, options)
+            .then(response => {
+                if(!response.ok){
+                    throw new Error('Erro na solicitação HTTP')
+                }
+                return response.json();
+            })
+            .then(responseData => {
+                console.log("Resposta da requisição: ", responseData)
+                Alert.alert(
+                    'Exclusão!',
+                    'Usuário excluído com sucesso!',
+                    [
+                        {
+                            text: 'Ok',
+                            onPress: () => props.navigation.push('UserList')
+                        }
+                    ]
+                )
+            })
+            .catch(error => {
+                console.error('Erro: ', error)
+            })
+    }
 
-                            <Text style={style.label}>
-                                nome:
-                            </Text>
-                            <Text style={style.value}>
-                                {item.nome}
-                            </Text>
-                            {'\n'}
-                            <Text style={style.label}>
-                                Email:
-                            </Text>
-                            <Text style={style.value}>
-                                {item.email}
-                            </Text>
-                            {'\n'}
-                            <Text style={style.label}>
-                                Telefone:
-                            </Text>
-                            <Text style={style.value}>
-                                {item.telefone}
-                            </Text>
-                        </Text>                       
-                    )}
-                />
-            )
+    function deleteConfirm(user){
+        Alert.alert('Excluir usuário!', 'Tem certeza que deseja excluir o usuário?',
+        [
+            {
+                text: "Sim",
+                onPress(){
+                    //console.warn("Excluido o id: " + user.id)
+                    deleteUser(user)
+                }
+            },
+            {
+                text: "Não"
             }
-            <View>
-                <Button title="Atualizar" onPress={ () => getUsers()} />
-                <Botton textoBotao={"Cadastrar"} funcao={
-                    () => {
-                        props.navigation.navigate("RegisterPage")
+        ]
+        )
+    }
 
-                    }
 
-                } />
-            </View>
-        </View>
-    )
+
+
     function getUserItem({item: user}){
         return(
             <ListItem
+
             >
                 <ListItem.Content>
                     <ListItem.Title>{user.nome}</ListItem.Title>
@@ -100,27 +100,28 @@ export default props => {
                     size={25}
                     onPress={()=>props.navigation.navigate("UserForm", user)}
                 />
+                <ListItem.Chevron 
+                    name="delete"
+                    color="red"
+                    size={25}
+                    onPress={()=> {deleteConfirm(user)}}
+                />
             </ListItem>
         )
     }
 
     const atualiza = ()=>{
         setIsRefreshing(true)
-        props.navigation.push("GetUsersAPI")
+        getUsers()
         setIsRefreshing(false)
     }
 
     return(
         <View>
             <FlatList 
-                keyExtractor={ user => user.id}
+                data={data}
                 renderItem={getUserItem}
-                refreshControl={
-                    <RefreshControl
-                        onRefresh={atualiza}
-                        refreshing={isRefreshing}
-                    />
-                }
+            
             />
         </View>
     )
@@ -162,3 +163,60 @@ const style = StyleSheet.create({
         fontSize: 16,
       },
 })
+
+
+/*
+return(
+
+    <View style={style.container}>
+        <View style={style.viewLogo}>
+            <Logo />
+        </View>
+
+        {isLoading ? (
+            <ActivityIndicator size={80}></ActivityIndicator>
+        ) : (
+            <FlatList style={style.list}
+                data={data}
+                keyExtractor={({id})=>id}
+                renderItem={ ({item})=>(
+                    <Text style={style.item}>
+
+                        <Text style={style.label}>
+                            nome:
+                        </Text>
+                        <Text style={style.value}>
+                            {item.nome}
+                        </Text>
+                        {'\n'}
+                        <Text style={style.label}>
+                            Email:
+                        </Text>
+                        <Text style={style.value}>
+                            {item.email}
+                        </Text>
+                        {'\n'}
+                        <Text style={style.label}>
+                            Telefone:
+                        </Text>
+                        <Text style={style.value}>
+                            {item.telefone}
+                        </Text>   
+                    </Text> 
+                                      
+                )}
+            />
+        )
+        }
+        <View>
+            <Button title="Atualizar" onPress={ () => getUsers()} />
+            <Botton textoBotao={"Cadastrar"} funcao={
+                () => {
+                    props.navigation.navigate("RegisterPage")
+
+                }
+
+            } />
+        </View>
+    </View>
+)*/

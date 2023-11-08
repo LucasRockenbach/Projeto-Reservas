@@ -6,6 +6,59 @@ import { FontAwesome } from "@expo/vector-icons";
 import UserContext from "../context/userContext"
 
 export default props => {
+
+  const {state, dispatch} = useContext(UserContext)
+    //console.warn(Object.keys(cont.state))
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const deleteUser = async (user) =>{
+        const URL = 'http://10.133.32.170:3000/api/usuario/' + user.id
+
+        const options = {
+            method: 'DELETE'
+        }
+
+        fetch(URL, options)
+            .then(response => {
+                if(!response.ok){
+                    throw new Error('Erro na solicitação HTTP')
+                }
+                return response.json();
+            })
+            .then(responseData => {
+                console.log("Resposta da requisição: ", responseData)
+                Alert.alert(
+                    'Exclusão!',
+                    'Usuário excluído com sucesso!',
+                    [
+                        {
+                            text: 'Ok',
+                            onPress: () => props.navigation.push('UserList')
+                        }
+                    ]
+                )
+            })
+            .catch(error => {
+                console.error('Erro: ', error)
+            })
+    }
+
+    function deleteConfirm(user){
+        Alert.alert('Excluir usuário!', 'Tem certeza que deseja excluir o usuário?',
+        [
+            {
+                text: "Sim",
+                onPress(){
+                    //console.warn("Excluido o id: " + user.id)
+                    deleteUser(user)
+                }
+            },
+            {
+                text: "Não"
+            }
+        ]
+        )
+    }
  
 
 
@@ -69,7 +122,7 @@ export default props => {
         </View>
       ))
     )}
-        <TouchableOpacity style={styles.roundButton} onPress={() =>navigation.navigate("addRoom")}>
+        <TouchableOpacity style={styles.roundButton} onPress={() => props.props.navigation.navigate("addRoom")}>
 <FontAwesome name="plus" size={24} color="white" />
 </TouchableOpacity>
   </View>

@@ -71,7 +71,7 @@ export default  ()=> {
       />
 
       <Botton textoBotao={'cadastrar'} funcao ={
-       ()=>{doPost()}
+       ()=>{doPost(), props.navigation.navigate("UserList")}
           
       }/>
 
