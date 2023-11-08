@@ -11,7 +11,7 @@ export default  ()=> {
     //validações 
     
 
-    URL = 'https://localhost:7198/api/usuario'
+    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario'
     const dadosParaEnviar = {
         idUsuario: userParam.idUsuario,
         nome: userParam.nome,
@@ -70,7 +70,7 @@ export default  ()=> {
         onChangeText={ email => setUserParam({...userParam, email}) }
       />
 
-      <Botton textoBotao={'Login'} funcao ={
+      <Botton textoBotao={'cadastrar'} funcao ={
        ()=>{doPost()}
           
       }/>

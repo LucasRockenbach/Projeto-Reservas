@@ -56,8 +56,7 @@ export default props => {
           placeholder="Digite o nome para sala..."
           style={[styles.butao, { paddingLeft: 10, marginTop: 10 }]} // Ajuste de marginTop
           keyboardType="name-phone-pad"
-          value={userParam.nome}
-          onChangeText={(nome) => setUserParam({ ...userParam, nome })}
+          
         />
         </View>
         </View>

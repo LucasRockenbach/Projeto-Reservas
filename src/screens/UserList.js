@@ -10,8 +10,10 @@ import { RefreshControl } from "react-native-gesture-handler"
 export default props => {
     const {state, dispatch} = useContext(UserContext)
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState([]);
 
-    const URL = "https://localhost:7198/api/usuario";
+    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario";
 
 
     const getUsers = async () => {
@@ -83,7 +85,7 @@ export default props => {
                 } />
             </View>
         </View>
-        
+    )
     function getUserItem({item: user}){
         return(
             <ListItem
@@ -122,6 +124,7 @@ export default props => {
             />
         </View>
     )
+    
 }
 const style = StyleSheet.create({
     container: {

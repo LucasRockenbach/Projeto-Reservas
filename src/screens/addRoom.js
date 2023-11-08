@@ -1,81 +1,3 @@
-/*import { View,  StyleSheet, TextInput } from "react-native"
-import NavBar from "../components/navBar"
-import Botton from "../components/botton"
-import { useContext } from "react"
-import UserContext from "../context/userContext"
-import { useState } from "react" */
-import { View, StatusBar, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button  } from "react-native"
-import NavBar from "../components/navBar"
-import { ListItem } from "@rneui/base"
-import { useEffect, useState, useContext } from "react"
-import Botton from "../components/botton"
-
-/*export default ({route, navigation}) => {
-    const {dispatch} = useContext(UserContext)
-    const [roomParam, setUserParam] = useState( {}) */
-
-    export default  ()=> {
-        const [roomParam, setRoomParam] = useState({})
-      const doPost = () => {
-
-
-        URL = 'https://localhost:7198/api/sala'
-        const dadosParaEnviar = {
-            idSala: roomParam.id,
-            nome: roomParam.nome,
-            capacidade: roomParam.capacidade,
-            descricao: roomParam.descricao,
-            bloco: roomParam.bloco,
-            andar: roomParam.andar,
-            numero: roomParam.numero,
-        }
-
-        const options = {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dadosParaEnviar)
-        };
-
-        fetch(URL, options)
-        .then(
-            (response)=>{
-                if(!response.ok){
-                    throw new Error('A solicitação via POST falhou!')
-                }
-                return response.json();
-            }
-        ).then(
-            (dadosRecebidos) => {
-                console.log('Resposta do servidor: ', dadosRecebidos)
-                
-            }
-        ).catch(
-            (error) => {
-                console.error(error)
-            }
-        )}
-
-        return(
-<View>
-        <View > 
-            <NavBar/>
-        </View>
-        <View style={style.container} >
-            <TextInput
-            placeholder='nome'
-            style = {style.inputLogin}
-            keyboardType='name-phone-pad'
-            value={roomParam.nome}
-            onChangeText={ nome => setroomParam({...roomParam, nome}) }/>
-
-            <View style={{flexDirection: "row", justifyContent: "space-around" }}>
-                <TextInput
-                placeholder='capacidade'
-                style = {style.inputs}
-
 import React, { useContext, useState } from "react";
 import { View, StyleSheet, TextInput, Text, Modal } from "react-native";
 import NavBar from "../components/navBar";
@@ -103,7 +25,7 @@ if (userParam.numero > 50) {
     return; // Não prossegue com o cadastro se o número da sala for maior do que 50
   }
   
-    const URL = 'https://localhost:7198/api/sala';
+    const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala';
     const dadosParaEnviar = {
       idSala: userParam.id,
       nome: userParam.nome,
@@ -169,16 +91,16 @@ if (userParam.numero > 50) {
                 placeholderTextColor="#FFFFFF"
                 style = {[style.inputs,{color: "#FFFFFF", }]}
                 keyboardType='numeric'
-                value={roomParam.capacidade}
-                onChangeText={ capacidade => setroomParam({...roomParam, capacidade}) }/>
+                value={userParam.capacidade}
+                onChangeText={ capacidade => setUserParam({...userParam, capacidade}) }/>
                 
                 <TextInput 
                     placeholder='Bloco'
                     placeholderTextColor="#FFFFFF"
                     style={[style.inputs,{color: "#FFFFFF", }]}
                     keyboardType={'email-address'}
-                    value={roomParam.bloco}
-                    onChangeText={ bloco => setroomParam({...roomParam, bloco}) }
+                    value={userParam.bloco}
+                    onChangeText={ bloco => setUserParam({...userParam, bloco}) }
                 />
         </View>
         <View style={{flexDirection: "row", justifyContent: "space-around"}}>
@@ -187,37 +109,18 @@ if (userParam.numero > 50) {
                     placeholderTextColor="#FFFFFF"
                     style={[style.inputs,{color: "#FFFFFF", }]}
                     keyboardType={'numeric'}
-                    value={roomParam.andar}
-            onChangeText={ andar => setroomParam({...roomParam, andar}) }
+                    value={userParam.andar}
+            onChangeText={ andar => setUserParam({...userParam, andar}) }
                 /> 
                 <TextInput 
                     placeholder='N°'
                     placeholderTextColor="#FFFFFF"
                     style={[style.inputs,{color: "#FFFFFF", }]}
                     keyboardType={'numeric'}
-                    value={roomParam.numero}
-            onChangeText={ numero => setRoomParam({...roomParam, numero}) }
+                    value={userParam.numero}
+            onChangeText={ numero => setUserParam({...userParam, numero}) }
                 /> 
             </View>
-                
-           
-            <View>
-                <TextInput
-                placeholder='Descrição'
-                style = {style.inputLogin}
-                keyboardType='name-phone-pad'
-                value={roomParam.descricao}
-                onChangeText={ descricao => setRoomParam({...roomParam, descricao}) }/>
-            </View>
-            
-            
-            <Botton textoBotao={"Cadastrar"} funcao={
-                ()=>{ doPost(), props.navigation.navigate("RoomList")
-
-                }
-
-            }>
-
 
             <View style={style.buttonsContainer}>
           <Botton 
@@ -230,7 +133,6 @@ if (userParam.numero > 50) {
           <Botton 
             textoBotao={"Cadastrar"}
             funcao={() => {
-              doPost();
               navigation.navigate("RoomList");
             }}
             style={style.button} // Estilo para o botão de cadastrar
@@ -335,4 +237,3 @@ const style = StyleSheet.create({
       },
 
 })
-    
