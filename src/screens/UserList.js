@@ -34,7 +34,7 @@ export default props => {
     }, [])
 
     const deleteUser = async (user) =>{
-        const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/' + user.id 
+        const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/' + user.idUsuario 
 
         const options = {
             method: 'DELETE'
@@ -98,7 +98,7 @@ export default props => {
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={()=>props.navigation.navigate("UserForm", user)}
+                    onPress={()=>props.navigation.navigate("RegisterPage", user)}
                 />
                 <ListItem.Chevron 
                     name="delete"
