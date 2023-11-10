@@ -1,64 +1,4 @@
-/*import { View,  StyleSheet, TextInput, ActivityIndicator } from "react-native"
-import NavBar from "../components/navBar"
-import Botton from "../components/botton"
-  
-
-export default props =>(
-
-    <View style={{justifyContent: "space-around"}}>
-        <View > 
-        
-            <NavBar funcao={
-                ()=>props.navigation.openDrawer() 
-            }/>
-        </View>
-        <View style={style.container} >
-            <TextInput
-            placeholder='Reservista'
-            style = {style.inputLogin}
-            keyboardType='name-phone-pad'/>
-            <TextInput
-            placeholder='Descrição'
-            style = {style.inputLogin}
-            keyboardType='numeric'/>
-
-            
-            <TextInput 
-                placeholder='Sala'
-                style={style.inputLogin}
-                keyboardType={'email-address'}
-            />
-            <Botton textoBotao={"cadastrar"} />
-
-            {/*<ActivityIndicator size={"large"}/>*/
-
-    
-/*
-const style = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        marginTop: 140
-
-    },
-    inputLogin:{
-        height: 60,
-        width: 250,
-        fontSize: 20,
-        margin: 20,
-        textAlign: 'center',
-        borderWidth: 0.5,
-        borderRadius: 20
-      },
-      datePickerStyle: {
-        width: 230,
-      },
-    
-
-
-
-}) */
-
-/*import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Button, Text, StyleSheet, Alert, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
@@ -69,12 +9,15 @@ import Botton from '../components/botton';
 
 
 export default props = () => {
+  
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+  const [userParam, setUserParam] = useState({});
+
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || selectedDate;
@@ -118,6 +61,7 @@ export default props = () => {
     const formattedEndTime = format(endTime, 'HH:mm');
 
     const data = {
+
       date: formattedDate,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
@@ -188,7 +132,7 @@ export default props = () => {
           />
         )}
         <Botton textoBotao={"Cadastrar"} funcao={
-                ()=>{ showConfirmationAlert()
+                ()=>{ navigation.navigate("Home");
                 }
             } />
       </View>
@@ -224,4 +168,3 @@ const styles = StyleSheet.create({
   },
 });
 
-*/

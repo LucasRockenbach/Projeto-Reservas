@@ -190,6 +190,7 @@ import UserContext from "../context/userContext"
 import Botton from "../components/botton"
 import Logo from '../components/logo';
 import { RefreshControl } from "react-native-gesture-handler"
+import { FontAwesome } from "@expo/vector-icons";
 
 export default props => {
     const {state, dispatch} = useContext(UserContext)
@@ -272,7 +273,6 @@ export default props => {
     function getUserItem({item: user}){
         return(
             <ListItem
-
             >
                 <ListItem.Content>
                     <ListItem.Title>{user.nome}</ListItem.Title>
@@ -290,8 +290,9 @@ export default props => {
                     onPress={()=> {deleteConfirm(user)}}
                 />
             </ListItem>
-        )
-    }
+           
+        );
+    };
 
     const atualiza = ()=>{
         setIsRefreshing(true)
@@ -300,13 +301,20 @@ export default props => {
     }
 
     return(
+        <>
+         <View style={style.cont}>
+      <Text style={style.texto}>Salas Criadas</Text>
+      </View>
         <View>
             <FlatList 
                 data={data}
                 renderItem={getUserItem}
-            
             />
         </View>
+        <TouchableOpacity style={style.roundButton} onPress={() => props.navigation.navigate("addRoom")}>
+<FontAwesome name="plus" size={24} color="white" />
+</TouchableOpacity>
+       </> 
     )
     
 }
@@ -344,6 +352,34 @@ const style = StyleSheet.create({
       },
       value: {
         fontSize: 16,
+      },
+      cont: {
+        width: 395,
+        height: 143,
+        backgroundColor: "#28364D",
+        borderRadius: 30,
+    },
+    texto: {
+      width: 266,
+      height: 39,
+      color: '#FAFAFA',
+      fontStyle: 'normal',
+      fontSize: 30,
+      alignItems: 'center',
+      marginLeft: 99,
+      marginTop: 80,
+      fontWeight: '700',
+    },
+    roundButton: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: "#28364D",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        bottom: 20,
+        right: 20,
       },
 })
 

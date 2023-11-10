@@ -25,7 +25,7 @@ if (userParam.numero > 50) {
     return; // Não prossegue com o cadastro se o número da sala for maior do que 50
   }
   
-    const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala';
+    const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/';
     const dadosParaEnviar = {
       idSala: userParam.id,
       nome: userParam.nome,
@@ -133,6 +133,7 @@ if (userParam.numero > 50) {
           <Botton 
             textoBotao={"Cadastrar"}
             funcao={() => {
+              doPost();
               navigation.navigate("RoomList");
             }}
             style={style.button} // Estilo para o botão de cadastrar
@@ -155,7 +156,7 @@ const style = StyleSheet.create({
     width: 1, // Largura do botão de cadastrar
   },
   cancelButton: {
-    backgroundColor: "#FF0000", // Cor de fundo vermelha para o botão de cancelar
+    backgroundColor: "red", // Cor de fundo vermelha para o botão de cancelar
   },
   button: {
     width: 80, // Largura dos botões
@@ -235,5 +236,12 @@ const style = StyleSheet.create({
         fontStyle: "normal",
         color: '#383838',
       },
-
+      butao: {
+        width: 315,
+        height: 50,
+        backgroundColor: "#E9EBED",
+        borderRadius: 5,
+        alignItems: 'center'
+      },
 })
+    

@@ -4,6 +4,7 @@ import UserList from "../screens/UserList"
 import Home from "../screens/Home"
 import StackRoom from "./Stack/StackRoom"
 import StackUser from "./Stack/StackUser"
+import StackReserva from "./Stack/StackReserva"
 
 const Tab = createBottomTabNavigator()
 
@@ -29,7 +30,7 @@ export default props => (
         />
         <Tab.Screen 
             name="Reserva" 
-            component={Home}
+            component={StackReserva}
             options={{
                 tabBarLabel: 'Home',
                 tabBarIcon: ({color, size}) =>(

@@ -7,20 +7,20 @@ const Stack = createNativeStackNavigator()
 export default props =>(
 
     <Stack.Navigator  screenOptions={{headerShown: false}}>
-    <Stack.Screen name="RoomList">
-        {
-            props => (
-                
-                    <Home {...props}/>
-                
-            )
-        }
-    </Stack.Screen>
-    <Stack.Screen name="addRoom">
+    <Stack.Screen name="EventPage">
         {
             props => (
                 
                     <EventPage {...props}/>
+                
+            )
+        }
+    </Stack.Screen>
+    <Stack.Screen name="Home">
+        {
+            props => (
+                
+                    <Home {...props}/>
                 
             )
         }
