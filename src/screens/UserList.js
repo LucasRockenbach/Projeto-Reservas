@@ -117,13 +117,19 @@ export default props => {
     }
 
     return(
-        <View>
-            <FlatList 
-                data={data}
-                renderItem={getUserItem}
-            
-            />
-        </View>
+        <>
+        <View style={style.cont}>
+      <Text style={style.texto}>Usuarios Cadastrados</Text>
+      </View>
+            <View>
+                <FlatList
+                    data={data}
+                    renderItem={getUserItem}
+
+                />
+            </View>
+        </>
+
     )
     
 }
@@ -162,6 +168,23 @@ const style = StyleSheet.create({
       value: {
         fontSize: 16,
       },
+      cont: {
+        width: 395,
+        height: 143,
+        backgroundColor: "#28364D",
+        borderRadius: 30,
+    },
+    texto: {
+      width: 266,
+      height: 39,
+      color: '#FAFAFA',
+      fontStyle: 'normal',
+      fontSize: 30,
+      alignItems: 'center',
+      marginLeft: 135,
+      marginTop: 80,
+      fontWeight: '700',
+    },
 })
 
 

@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import RoomList from "../../screens/RoomList"
 import AddRoom from "../../screens/addRoom"
+import Room from "../../screens/Room"
 
 const Stack = createNativeStackNavigator()
 
@@ -21,6 +22,15 @@ export default props =>(
             props => (
                 
                     <AddRoom {...props}/>
+                
+            )
+        }
+    </Stack.Screen>
+    <Stack.Screen name="Room">
+        {
+            props => (
+                
+                    <Room {...props}/>
                 
             )
         }

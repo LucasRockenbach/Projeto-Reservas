@@ -281,7 +281,7 @@ export default props => {
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={()=>props.navigation.navigate("addRoom", user)}
+                    onPress={()=>props.navigation.navigate("Room", user)}
                 />
                 <ListItem.Chevron 
                     name="delete"
