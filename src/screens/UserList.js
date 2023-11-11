@@ -1,11 +1,11 @@
-import { View, StatusBar, Text, StyleSheet, Alert,Image, TouchableOpacity, FlatList, ActivityIndicator, Button  } from "react-native"
+import { View, StatusBar, Text, StyleSheet, Alert,Image, TouchableOpacity, FlatList, ActivityIndicator, Button, RefreshControl  } from "react-native"
 import NavBar from "../components/navBar"
 import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
 import UserContext from "../context/userContext"
 import Botton from "../components/botton"
 import Logo from '../components/logo';
-import { RefreshControl } from "react-native-gesture-handler"
+
 
 export default props => {
     const {state, dispatch} = useContext(UserContext)
@@ -82,7 +82,11 @@ export default props => {
         )
     }
 
-
+    const onRefresh = () => {
+        setIsRefreshing(true);
+        getUsers();
+        setIsRefreshing(false);
+    }
 
 
     function getUserItem({item: user}){
@@ -98,7 +102,7 @@ export default props => {
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={()=>props.navigation.navigate("RegisterPage", user)}
+                    onPress={()=>props.navigation.navigate("RegisterPage", {user})}
                 />
                 <ListItem.Chevron 
                     name="delete"
@@ -124,9 +128,16 @@ export default props => {
             <View>
                 <FlatList
                     data={data}
+                    keyExtractor={ user => user.idUsuario}
                     renderItem={getUserItem}
-
-                />
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                
+                />  
             </View>
         </>
 
