@@ -1,77 +1,182 @@
-import { View, StatusBar, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button  } from "react-native"
-import NavBar from "../components/navBar"
-import { ListItem } from "@rneui/base"
-import { FontAwesome } from "@expo/vector-icons"
-import { useEffect, useState, useContext } from "react"
-import UserContext from "../context/userContext"
 
-export default props => {
+import React, { useEffect, useState, useContext } from "react";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl } from "react-native";
+import { ListItem } from "@rneui/base";
+import { FontAwesome } from "@expo/vector-icons";
+import UserContext from "../context/userContext";
+
+export default function RoomList(props) {
+    const { state, dispatch } = useContext(UserContext);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
 
-    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/";
+    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva";
 
-
-    const getMovies = async () => {
-        try{
+    const getUsers = async () => {
+        try {
             const response = await fetch(URL);
             const json = await response.json();
             console.log(json);
             setData(json);
-        } catch(error) {
+        } catch (error) {
             console.error(error);
-        }finally{
+        } finally {
             setIsLoading(false);
         }
+    };
+
+    useEffect(() => {
+        getUsers();
+    }, []);
+
+    const deleteUser = async (user) => {
+        const deleteURL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/' + user.idReseva;
+
+        try {
+            const response = await fetch(deleteURL, { method: 'DELETE' });
+
+            if (!response.ok) {
+                throw new Error('Erro na solicitação HTTP');
+            }
+
+            const responseData = await response.json();
+            console.log("Resposta da requisição: ", responseData);
+
+            Alert.alert(
+                'Exclusão!',
+                'Usuário excluído com sucesso!',
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => props.navigation.push('RoomList')
+                    }
+                ]
+            );
+        } catch (error) {
+            console.error('Erro: ', error);
+        }
+    };
+
+    function deleteConfirm(user) {
+        Alert.alert('Excluir reserva!', 'Tem certeza que deseja excluir o Reserva?',
+            [
+                {
+                    text: "Sim",
+                    onPress() {
+                        deleteUser(user);
+                    }
+                },
+                {
+                    text: "Não"
+                }
+            ]
+        );
     }
 
-    useEffect(()=>{
-        getMovies();
-    }, [])
+    function getRservas({ item: reserva }) {
+        return (
+            <ListItem>
+                <ListItem.Content>
+                    <ListItem.Title>{reserva.descricao}</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron
+                    name="edit"
+                    color="orange"
+                    size={25}
+                    onPress={() => props.navigation.navigate("Room", { reserva })}
+                />
+                <ListItem.Chevron
+                    name="delete"
+                    color="red"
+                    size={25}
+                    onPress={() => { deleteConfirm(reserva) }}
+                />
+            </ListItem>
+        );
+    };
+    
+    const onRefresh = () => {
+        setIsRefreshing(true);
+        getUsers();
+        setIsRefreshing(false);
+    }
 
-    return(
+    return (
         <>
+            <View style={style.cont}>
+                <Text style={style.texto}>Reservas</Text>
+            </View>
             <View>
-                <NavBar></NavBar>
-
-                {isLoading ? (
-                    <ActivityIndicator size={80}></ActivityIndicator>
-                ) : (
-                    <FlatList 
-                        data={data}
-                        keyExtractor={({id})=>id}
-                        renderItem={ ({item})=>(
-                            <Text>
-                                - nome: {item.nome} - capacidade: {item.capacidade} - descricao: {item.descricao} 
-                            </Text>
-                        )
-                        }
-                    />
-                )
-                }
-                <Button title="Atualizar" onPress={ () => getMovies()} />
+                <FlatList
+                    data={data}
+                    renderItem={getRservas}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                />
             </View>
             <TouchableOpacity style={style.roundButton} onPress={() => props.navigation.navigate("EventPage")}>
-<FontAwesome name="plus" size={24} color="white" />
-</TouchableOpacity>
+                <FontAwesome name="plus" size={24} color="white" />
+            </TouchableOpacity>
         </>
-    )
+    );
 }
 const style = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#28364C',
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-        marginTop: 30
 
     },
-    grid: {
-        justifyContent: 'center',
-        flexDirection: 'row'
+    viewLogo:{
+        bottom: 20,
+        top: 20,
     },
-
+    item: {
+        fontSize: 20,
+        padding: 10,
+        backgroundColor: 'lightgray',
+        marginBottom: 10,
+    },
+    list: {
+        flexDirection: 'row',
+        padding: 10,
+      },
+      labelContainer: {
+        flexDirection: 'row',
+        marginBottom: 10,
+      },
+      label: {
+        fontWeight: 'bold',
+        marginRight: 5,
+        color: '#28364C',
+        
+      },
+      value: {
+        fontSize: 16,
+      },
+      cont: {
+        width: 395,
+        height: 143,
+        backgroundColor: "#28364D",
+        borderRadius: 30,
+    },
+    texto: {
+      width: 266,
+      height: 39,
+      color: '#FAFAFA',
+      fontStyle: 'normal',
+      fontSize: 30,
+      alignItems: 'center',
+      marginLeft: 99,
+      marginTop: 80,
+      fontWeight: '700',
+    },
     roundButton: {
         width: 60,
         height: 60,
@@ -83,6 +188,6 @@ const style = StyleSheet.create({
         bottom: 20,
         right: 20,
       },
-
-
 })
+
+
