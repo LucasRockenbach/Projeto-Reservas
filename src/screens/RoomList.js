@@ -84,7 +84,7 @@ export default function RoomList(props) {
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={() => props.navigation.navigate("Room", user)}
+                    onPress={() => props.navigation.navigate("Room", { user })}
                 />
                 <ListItem.Chevron
                     name="delete"
@@ -95,7 +95,7 @@ export default function RoomList(props) {
             </ListItem>
         );
     };
-
+    
     const onRefresh = () => {
         setIsRefreshing(true);
         getUsers();

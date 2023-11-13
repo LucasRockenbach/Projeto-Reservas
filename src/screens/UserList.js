@@ -1,10 +1,11 @@
-import { View, StatusBar, Text, StyleSheet, Alert,Image, TouchableOpacity, FlatList, ActivityIndicator, Button, RefreshControl  } from "react-native"
+import { View, StatusBar, Text, StyleSheet, Alert,Image, FlatList, ActivityIndicator, Button, RefreshControl, TouchableOpacity  } from "react-native"
 import NavBar from "../components/navBar"
 import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
 import UserContext from "../context/userContext"
 import Botton from "../components/botton"
 import Logo from '../components/logo';
+import { FontAwesome } from "@expo/vector-icons";
 
 
 export default props => {
@@ -102,7 +103,7 @@ export default props => {
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={()=>props.navigation.navigate("RegisterPage", {user})}
+                    onPress={()=>props.navigation.navigate("EditUser", {user})}
                 />
                 <ListItem.Chevron 
                     name="delete"
@@ -120,30 +121,32 @@ export default props => {
         setIsRefreshing(false)
     }
 
-    return(
+    return (
         <>
-        <View style={style.cont}>
-      <Text style={style.texto}>Usuarios Cadastrados</Text>
-      </View>
+            <View style={style.cont}>
+                <Text style={style.texto}>Usuarios Cadastrados</Text>
+            </View>
             <View>
                 <FlatList
                     data={data}
-                    keyExtractor={ user => user.idUsuario}
+                    keyExtractor={(user) => user.idUsuario}
                     renderItem={getUserItem}
                     refreshControl={
-                        <RefreshControl
-                            refreshing={isRefreshing}
-                            onRefresh={onRefresh}
-                        />
+                        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
                     }
-                
-                />  
+                />
             </View>
-        </>
-
-    )
     
-}
+            {/* Botão de adicionar sala */}
+            <TouchableOpacity
+                style={style.roundButton}
+                onPress={() => props.navigation.navigate("RegisterPage")}
+            >
+                <FontAwesome name="plus" size={24} color="white" />
+            </TouchableOpacity>
+        </>
+    );
+};
 const style = StyleSheet.create({
     container: {
         flex: 1,
@@ -152,6 +155,7 @@ const style = StyleSheet.create({
         justifyContent: 'center',
 
     },
+
     viewLogo:{
         bottom: 20,
         top: 20,
@@ -196,6 +200,17 @@ const style = StyleSheet.create({
       marginTop: 80,
       fontWeight: '700',
     },
+    roundButton: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: "#28364D",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        bottom: 20,
+        right: 20,
+      },
 })
 
 

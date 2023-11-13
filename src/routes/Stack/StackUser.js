@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import UserList from "../../screens/UserList"
 import RegisterPage from "../../screens/RegisterPage"
-
+import EditUser from "../../screens/EditUser"
 const Stack = createNativeStackNavigator()
 
 export default props =>(
@@ -21,6 +21,15 @@ export default props =>(
             props => (
                 
                     <RegisterPage {...props}/>
+                
+            )
+        }
+    </Stack.Screen>
+    <Stack.Screen name="EditUser">
+        {
+            props => (
+                
+                    <EditUser {...props}/>
                 
             )
         }

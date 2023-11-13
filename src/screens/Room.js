@@ -1,118 +1,211 @@
-import { View, StatusBar, Text, StyleSheet, Image,TextInput, TouchableOpacity, FlatList, ActivityIndicator, Button,  RefreshControl, ScrollView} from "react-native"
-import NavBar from "../components/navBar"
-import { ListItem } from "@rneui/base"
-import { useEffect, useState, useContext } from "react"
-import Botton from "../components/botton"
-import { FontAwesome } from "@expo/vector-icons";
-import NavBar2 from "../components/navBar2"
+import React, { useState } from "react";
+import { View, Text, StyleSheet,TextInput, TouchableOpacity } from "react-native";
 
 
 
-export default props => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState([]);
-    const [expandedCardIndex, setExpandedCardIndex] = useState(null);
-    const [refreshing, setRefreshing] = useState(false);
-
-    const toggleCard = index => {
-      setExpandedCardIndex(index === expandedCardIndex ? null : index);
-    };
-
-    const URL = "https://localhost:7198/api/sala";
 
 
-    const getMovies = async () => {
-        try{
-            const response = await fetch(URL);
-            const json = await response.json();
-            console.log(json);
-            setData(json);
-        } catch(error) {
-            console.error(error);
-        }finally{
-            setIsLoading(false);
-        }
-    }
-    const onRefresh = () => {
-      setRefreshing(true);
-      getMovies().then(() => setRefreshing(false));
+export default function Room({ route }) {
+    const [userParam, setUserParam] = useState(route.params.user);
+
+
+    const saveRoom = async () => {
+      const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/${userParam.idSala}`;
+
+      try {
+          const response = await fetch(putURL, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(userParam),
+          });
+
+          if (!response.ok) {
+              throw new Error('Erro na solicitação HTTP');
+          }
+
+          const responseData = await response.json();
+          console.log("Resposta da requisição PUT: ", responseData);
+
+          // Adicione aqui qualquer lógica adicional após o sucesso da atualização
+
+          // Navegue de volta para a tela RoomList após a atualização
+          navigation.navigate("RoomList");
+      } catch (error) {
+          console.error('Erro: ', error);
+      }
   };
 
-    useEffect(()=>{
-        getMovies();
-    }, [])
+    return (
+        <View style={style.container}>
+            <Text style={[style.textocima, { marginTop: 20 }]}>Nome da sala</Text>
+            <TextInput
+                placeholder="Digite o nome para sala..."
+                style={[style.butao, { paddingLeft: 10, marginTop: 10 }]}
+                keyboardType="name-phone-pad"
+                value={userParam.nome}
+                onChangeText={(nome) => setUserParam({ ...userParam, nome })}
+            />
 
-    return(
-        <>
-        <View style={styles.cont2}>
-        <View style={styles.cont}>
-        <Text style={styles.texto}>Sala 1</Text> 
-        <Text  style={styles.descricao}>Ar condicionado, 30 lugares, refletor, lousa</Text>
-        </View>
+            <Text style={[style.textocima, { marginTop: 20 }]}>Descrição</Text>
+            <TextInput
+                placeholder="Digite a descrição..."
+                style={[style.butao2, { paddingLeft: 10 }]}
+                keyboardType="name-phone-pad"
+                value={userParam.descricao}
+                onChangeText={(descricao) => setUserParam({ ...userParam, descricao })}
+            />
 
-        <View style={styles.container}>
-        <Text style={[styles.textocima, {marginTop: 20, }]}>Nome da sala</Text>
-        <TextInput
-          placeholder="Digite o nome para sala..."
-          style={[styles.butao, { paddingLeft: 10, marginTop: 10 }]} // Ajuste de marginTop
-          keyboardType="name-phone-pad"
-          
-        />
+            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                <TextInput
+                    placeholder="Capacidade"
+                    placeholderTextColor="#FFFFFF"
+                    style={[style.inputs, { color: "#FFFFFF" }]}
+                    keyboardType="numeric"
+                    value={userParam.capacidade.toString()}
+                    onChangeText={(capacidade) => setUserParam({ ...userParam, capacidade })}
+                />
+
+                <TextInput
+                    placeholder="Bloco"
+                    placeholderTextColor="#FFFFFF"
+                    style={[style.inputs, { color: "#FFFFFF" }]}
+                    keyboardType={'email-address'}
+                    value={userParam.bloco.toString()}
+                    onChangeText={(bloco) => setUserParam({ ...userParam, bloco })}
+                />
+            </View>
+
+            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                <TextInput
+                    placeholder="Andar"
+                    placeholderTextColor="#FFFFFF"
+                    style={[style.inputs, { color: "#FFFFFF" }]}
+                    keyboardType="numeric"
+                    value={userParam.andar.toString()}
+                    onChangeText={(andar) => setUserParam({ ...userParam, andar })}
+                />
+                <TextInput
+                    placeholder="N°"
+                    placeholderTextColor="#FFFFFF"
+                    style={[style.inputs, { color: "#FFFFFF" }]}
+                    keyboardType="numeric"
+                    value={userParam.numero.toString()}
+                    onChangeText={(numero) => setUserParam({ ...userParam, numero })}
+                />
+            </View>
+
+            <TouchableOpacity
+                style={[style.roundButton, { bottom: 20, right: 20 }]}
+                onPress={() => { saveRoom()
+                    // Adicione aqui a lógica para salvar as alterações ou enviar os dados para o servidor
+                    // Por exemplo, você pode chamar uma função de atualização aqui
+                    // Exemplo fictício: saveRoom(userParam)
+                    // Lembre-se de implementar a lógica de navegação ou feedback de sucesso
+                }}
+            >
+                <Text>Salvar</Text>
+            </TouchableOpacity>
         </View>
-        </View>
-        </>
-        
     );
-};
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-    },
-    cont: {
-      width: 395,
-      height: 200,
-      backgroundColor: "#FAFAFA",
-      borderRadius: 30,
+}
+const style = StyleSheet.create({
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+    paddingHorizontal: 20, // Espaçamento horizontal para os botões
   },
-  cont2: {
-    backgroundColor: "#28364C",
-    height: 1000,
-},
-  texto: {
-    width: 266,
-    height: 39,
-    color: '#383838',
-    fontStyle: 'normal',
-    fontSize: 30,
-    marginLeft: 30,
-    alignItems: 'center',
-    marginTop: 80,
-    fontWeight: '700',
+  submitButton: {
+    width: 1, // Largura do botão de cadastrar
   },
-  descricao: {
-    width: 266,
-    height: 39,
-    color: '#383838',
-    fontStyle: 'normal',
-    fontSize: 16,
-    marginLeft: 30,
+  cancelButton: {
+    backgroundColor: "red", // Cor de fundo vermelha para o botão de cancelar
+  },
+  button: {
+    width: 80, // Largura dos botões
+    height: 40, // Altura dos botões
+    borderRadius: 5, // Borda arredondada
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
-    fontWeight: '300',
   },
   container: {
     alignItems: "center",
     marginBottom: 150, // Ajuste de marginTop para mover os inputs para cima
   },
-  textocima: {
-    marginRight: 105,
+  label: {
+    marginRight: 200,
     width: 208,
     height: 27,
+    backgroundColor: "#383838",
     fontSize: 18,
     fontStyle: "normal",
-    color: '#383838',
   },
-  });
+  inputLogin: {
+    height: 60,
+    width: 250,
+    fontSize: 20,
+    margin: 20,
+    textAlign: "center",
+    borderWidth: 0.5,
+    borderRadius: 20,
+  },
+      inputs:{
+        height: 60,
+        width: 105,
+        fontSize: 20,
+        margin: 20,
+        textAlign: 'center',
+        borderWidth: 0.5,
+        backgroundColor: "#28364D",
+        borderRadius: 5,
+      },
+      cont: {
+        width: 395,
+        height: 143,
+        backgroundColor: "#28364D",
+        borderRadius: 30,
+    },
+    texto: {
+        width: 266,
+        height: 39,
+        fontStyle: 'normal',
+        fontSize: 30,
+        alignItems: 'center',
+        marginLeft: 70,
+        marginTop: 20,
+        fontWeight: '700',
+        color: 'white'
+      },
+     textocima: {
+        marginRight: 105,
+        width: 208,
+        height: 27,
+        fontSize: 18,
+        fontStyle: "normal",
+        color: '#383838',
+      },
+      butao2: {
+        width: 315,
+        height: 80,
+        backgroundColor: "#E9EBED",
+        borderRadius: 5,
+        alignItems: 'center'
+      },
+      textocima: {
+        marginRight: 105,
+        width: 208,
+        height: 27,
+        fontSize: 18,
+        fontStyle: "normal",
+        color: '#383838',
+      },
+      butao: {
+        width: 315,
+        height: 50,
+        backgroundColor: "#E9EBED",
+        borderRadius: 5,
+        alignItems: 'center'
+      },
+})
