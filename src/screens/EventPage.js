@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default props = () => {
-  
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
@@ -17,6 +16,47 @@ export default props = () => {
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
   const [userParam, setUserParam] = useState({});
+  const [reservaParam, setReservaParam] = useState({});
+
+
+  const doPost = async () => {
+    //validações 
+    
+
+    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva'
+    const dadosParaEnviar = {
+        idReserva: reservaParam.idReserva,
+        nomeUsuario: reservaParam.nomeUsuario,
+        nomeSala: reservaParam.nomeSala,
+        Descricao: reservaParam.Descricao,
+        DataInicio: reservaParam.DataInicio,
+        DataFim: reservaParam.DataFim,
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosParaEnviar)
+    };
+
+    try {
+      const response = await fetch(URL, options);
+
+      if (response.ok) {
+        const dadosRecebidos = await response.json();
+        console.log('Resposta do servidor: ', dadosRecebidos);
+        // Navegue para a tela desejada após a conclusão bem-sucedida do POST
+        navigation.navigate('UserList'); 
+      } else {
+        throw new Error('A solicitação via POST falhou!');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const navigation = useNavigation();
 
@@ -88,13 +128,22 @@ export default props = () => {
       <View style={styles.container} >
         <TextInput
           placeholder='Reservista'
-          style={styles.inputLogin} />
+          style={styles.inputLogin}
+          value={reservaParam.nomeUsuario}
+          onChangeText={(nomeUsuario) => setReservaParam({ ...reservaParam, nomeUsuario })}
+          />
         <TextInput
           placeholder='Descrição'
-          style={styles.inputLogin} />
+          style={styles.inputLogin}
+          value={reservaParam.descricao}
+          onChangeText={(Descricao) => setReservaParam({ ...reservaParam, Descricao })}
+          />
         <TextInput
           placeholder='Sala'
           style={styles.inputLogin}
+          value={reservaParam.nomeSala}
+          onChangeText={(nomeSala) => setReservaParam({ ...reservaParam, nomeSala })}
+          
         />
 
         {showDatePicker && (
@@ -106,11 +155,14 @@ export default props = () => {
             display="default"
             minimumDate={new Date()}
             onChange={handleDateChange}
+            
           />
         )}
         <TextInput onPressIn={() => setShowStartTimePicker(true)}
           placeholder= "horario inicio"
           style={styles.inputLogin}
+          value={reservaParam.DataInicio}
+          onChangeText={(DataInicio) => setReservaParam({ ...reservaParam, DataInicio })}
         />
         {showStartTimePicker && (
           <DateTimePicker
@@ -125,6 +177,8 @@ export default props = () => {
         <TextInput onPressIn={() => setShowEndTimePicker(true)}
           placeholder='Hora Fim'
           style={styles.inputLogin}
+          value={reservaParam.DataFim}
+          onChangeText={(DataFim) => setReservaParam({ ...reservaParam, DataFim })}
         />
         {showEndTimePicker && (
           <DateTimePicker
@@ -139,7 +193,7 @@ export default props = () => {
         <Botton
         textoBotao={"Cadastrar"}
         funcao={() => {
-          showConfirmationAlert();
+          showConfirmationAlert()
         }} />
       </View>
 
