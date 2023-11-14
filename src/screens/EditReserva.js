@@ -8,54 +8,44 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-export default props = () => {
+export default props = ({ route, navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-  const [reservaParam, setReservaParam] = useState({});
+  const [userParam, setUserParam] = useState({});
+  const [reservaParam, setReservaParam] = useState(route.params.user);
 
 
-  const doPost = async () => {
-    //validações 
-    
-
-    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva'
-    const dadosParaEnviar = {
-        idReseva: reservaParam.idReseva,
-        nomeUsuario: reservaParam.nomeUsuario,
-        nomeSala: reservaParam.nomeSala,
-        Descricao: reservaParam.Descricao,
-        DataInicio: reservaParam.DataInicio,
-        DataFim: reservaParam.DataFim,
-    }
-
-    const options = {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosParaEnviar)
-    };
+  const saveRoom = async () => {
+    const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/${reservaParam.idReseva}`;
 
     try {
-      const response = await fetch(URL, options);
+        const response = await fetch(putURL, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userParam),
+        });
 
-      if (response.ok) {
-        const dadosRecebidos = await response.json();
-        console.log('Resposta do servidor: ', dadosRecebidos);
-        // Navegue para a tela desejada após a conclusão bem-sucedida do POST
-        navigation.navigate('UserList'); 
-      } else {
-        throw new Error('A solicitação via POST falhou!');
-      }
+        if (!response.ok) {
+            throw new Error('Erro na solicitação HTTP');
+        }
+
+        const responseData = await response.json();
+        console.log("Resposta da requisição PUT: ", responseData);
+
+        // Adicione aqui qualquer lógica adicional após o sucesso da atualização
+
+        // Navegue de volta para a tela UserList após a atualização
+        navigation.navigate('UserList');
     } catch (error) {
-      console.error(error);
+        console.error('Erro: ', error);
     }
-  };
+};
 
   const navigation = useNavigation();
 
