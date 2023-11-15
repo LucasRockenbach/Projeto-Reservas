@@ -7,9 +7,21 @@ import Logo from '../components/logo';
 import { useNavigation } from '@react-navigation/native';
 
 const logoImage = require('../assets/Embrapa.png'); 
-
+const MAX_PHONE_LENGTH = 11;
 export default({ route, navigation })=> {
     const [userParam, setUserParam] = useState({})
+
+    const formatPhoneNumber = (phoneNumber) => {
+  if (!phoneNumber) {
+    return ''; // Retorna uma string vazia se phoneNumber for undefined ou null
+  }
+
+  // Adiciona parênteses nos dois primeiros dígitos do número
+  if (phoneNumber.length >= 2) {
+    return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(2)}`;
+  }
+  return phoneNumber;
+};
   const doPost = async () => {
     //validações 
     
@@ -49,47 +61,43 @@ export default({ route, navigation })=> {
 
   return(
     <View style={style.container}>
-        <Image
-          source={logoImage}
-          style={style.logo}
-          resizeMode="contain"
-        />
-        <TextInput
-        placeholder='nome'
-        style = {style.inputLogin}
-        keyboardType='name-phone-pad'
+      <Image source={logoImage} style={style.logo} resizeMode="contain" />
+      <TextInput
+        placeholder="nome"
+        style={style.inputLogin}
+        keyboardType="name-phone-pad"
         value={userParam.nome}
-        onChangeText={ nome => setUserParam({...userParam, nome}) }
-        
-        />
-        <TextInput
-        placeholder='telefone'
-        style = {style.inputLogin}
-        keyboardType='numeric'
-        value={userParam.telefone}
-              onChangeText={ telefone => setUserParam({...userParam, telefone}) }/>
-        
-        <TextInput 
-          placeholder='E-mail'
-          style={style.inputLogin}
-          keyboardType={'email-address'}
-          value={userParam.email}
-          onChangeText={ email => setUserParam({...userParam, email}) }
-        />
-  
-        <Botton textoBotao={'cadastrar'} funcao ={
-         ()=>{doPost(); navigation.navigate("UserList");
-        
-        }
-            
-        }/>
-  
-      </View>
-  
-  
-  )
-  
-  }
+        onChangeText={(nome) => setUserParam({ ...userParam, nome })}
+      />
+      <TextInput
+        placeholder="telefone"
+        style={style.inputLogin}
+        keyboardType="numeric"
+        value={formatPhoneNumber(userParam.telefone)}
+        onChangeText={(telefone) => {
+          // Remove caracteres não numéricos e limita o comprimento para no máximo MAX_PHONE_LENGTH
+          const numericPhoneNumber = telefone.replace(/\D/g, '').substring(0, MAX_PHONE_LENGTH);
+          setUserParam({ ...userParam, telefone: numericPhoneNumber });
+        }}
+      />
+      <TextInput
+        placeholder="E-mail"
+        style={style.inputLogin}
+        keyboardType={'email-address'}
+        value={userParam.email}
+        onChangeText={(email) => setUserParam({ ...userParam, email })}
+      />
+
+      <Botton
+        textoBotao={'cadastrar'}
+        funcao={() => {
+          doPost();
+          navigation.navigate('UserList');
+        }}
+      />
+    </View>
+  );
+};
   
   const style = StyleSheet.create({
     container: {

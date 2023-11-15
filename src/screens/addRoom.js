@@ -82,6 +82,10 @@ export default ({ route, navigation }) => {
       userParam.numero
     );
   };
+  const cancelarCadastro = () => {
+    // Navegar de volta para a tela "RoomList"
+    navigation.navigate("RoomList");
+  };
   return (
     <View>
       <View style={style.cont}>
@@ -147,12 +151,10 @@ export default ({ route, navigation }) => {
         </View>
 
         <View style={style.buttonsContainer}>
-          <Botton 
+        <Botton 
             textoBotao={"Cancelar"}
-            funcao={() => {
-              // Função para cancelar, se necessário
-            }}
-            style={[style.button, style.cancelButton]}
+            funcao={cancelarCadastro}
+            style={[style.cancelButton]}
           />
           <Botton 
             textoBotao={"Cadastrar"}
