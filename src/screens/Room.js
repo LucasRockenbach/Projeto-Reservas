@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Botton, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Room({ route }) {
@@ -7,8 +7,23 @@ export default function Room({ route }) {
   const [userParam, setUserParam] = useState(route.params.user);
 
   const saveRoom = async () => {
+    if (userParam.capacidade > 100) {
+      Alert.alert('A capacidade da sala não pode ser maior do que 100.');
+      return;
+    }
+  
+    if (userParam.andar > 3) {
+      Alert.alert('O número do andar não pode ser maior do que 3.');
+      return;
+    }
+  
+    if (userParam.numero > 50) {
+      Alert.alert('O número da sala não pode ser maior do que 50.');
+      return;
+    }
+  
     const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/${userParam.idSala}`;
-
+  
     try {
       const response = await fetch(putURL, {
         method: 'PUT',
@@ -17,19 +32,20 @@ export default function Room({ route }) {
         },
         body: JSON.stringify(userParam),
       });
-
+  
       if (!response.ok) {
         throw new Error('Erro na solicitação HTTP');
       }
-
+  
       const responseData = await response.json();
       console.log("Resposta da requisição PUT: ", responseData);
-
+  
       // Adicione aqui qualquer lógica adicional após o sucesso da atualização
     } catch (error) {
       console.error('Erro: ', error);
+      // Mostrar um alerta em caso de erro na solicitação HTTP
     }
-
+  
     // Navegue de volta para a tela RoomList após a atualização
     navigation.navigate("RoomList");
   };
@@ -97,6 +113,7 @@ export default function Room({ route }) {
                     onChangeText={(numero) => setUserParam({ ...userParam, numero })}
                 />
             </View>
+            
 
             <TouchableOpacity
                 style={[style.greenButton, { bottom: 20, right: 20 }]}
@@ -111,6 +128,7 @@ export default function Room({ route }) {
             </TouchableOpacity>
         </View>
         </>
+        
     );
 }
 const style = StyleSheet.create({
