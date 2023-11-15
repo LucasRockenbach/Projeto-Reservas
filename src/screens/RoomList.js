@@ -39,10 +39,6 @@ export default function RoomList(props) {
             if (!response.ok) {
                 throw new Error('Erro na solicitação HTTP');
             }
-
-            const responseData = await response.json();
-            console.log("Resposta da requisição: ", responseData);
-
             Alert.alert(
                 'Exclusão!',
                 'Usuário excluído com sucesso!',

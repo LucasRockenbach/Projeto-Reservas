@@ -40,9 +40,6 @@ export default function RoomList(props) {
                 throw new Error('Erro na solicitação HTTP');
             }
 
-            const responseData = await response.json();
-            console.log("Resposta da requisição: ", responseData);
-
             Alert.alert(
                 'Exclusão!',
                 'Usuário excluído com sucesso!',
@@ -84,7 +81,7 @@ export default function RoomList(props) {
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={() => props.navigation.navigate("Room", { reserva })}
+                    onPress={() => props.navigation.navigate("EditReserva", { reserva })}
                 />
                 <ListItem.Chevron
                     name="delete"

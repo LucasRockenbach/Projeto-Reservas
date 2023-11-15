@@ -8,14 +8,13 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-export default props = ({ route, navigation }) => {
+export default props = ({ route }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-  const [userParam, setUserParam] = useState({});
   const [reservaParam, setReservaParam] = useState(route.params.user);
 
 
@@ -28,7 +27,7 @@ export default props = ({ route, navigation }) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userParam),
+            body: JSON.stringify(reservaParam),
         });
 
         if (!response.ok) {

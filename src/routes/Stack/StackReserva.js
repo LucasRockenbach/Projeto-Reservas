@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Home from "../../screens/Home"
 import EventPage from "../../screens/EventPage"
-import Reserva from "../../screens/Reserva"
+import EditReserva from "../../screens/EditReserva"
 
 const Stack = createNativeStackNavigator()
 
@@ -26,15 +26,16 @@ export default props =>(
             )
         }
     </Stack.Screen>
-    <Stack.Screen name="Reserva">
+    <Stack.Screen name="EditReserva">
         {
             props => (
                 
-                    <Reserva {...props}/>
+                    <EditReserva {...props}/>
                 
             )
         }
     </Stack.Screen>
+    
 </Stack.Navigator>
     
 )

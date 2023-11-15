@@ -49,7 +49,6 @@ export default props => {
                 return response.json();
             })
             .then(responseData => {
-                console.log("Resposta da requisição: ", responseData)
                 Alert.alert(
                     'Exclusão!',
                     'Usuário excluído com sucesso!',
@@ -82,14 +81,6 @@ export default props => {
         ]
         )
     }
-
-    const onRefresh = () => {
-        setIsRefreshing(true);
-        getUsers();
-        setIsRefreshing(false);
-    }
-
-
     function getUserItem({item: user}){
         return(
             <ListItem
@@ -115,10 +106,10 @@ export default props => {
         )
     }
 
-    const atualiza = ()=>{
-        setIsRefreshing(true)
-        getUsers()
-        setIsRefreshing(false)
+    const onRefresh = () => {
+        setIsRefreshing(true);
+        getUsers();
+        setIsRefreshing(false);
     }
 
     return (

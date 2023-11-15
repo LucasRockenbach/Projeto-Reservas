@@ -1,41 +1,39 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet,TextInput, TouchableOpacity } from "react-native";
-
-
-
-
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Room({ route }) {
-    const [userParam, setUserParam] = useState(route.params.user);
+  const navigation = useNavigation();
+  const [userParam, setUserParam] = useState(route.params.user);
 
+  const saveRoom = async () => {
+    const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/${userParam.idSala}`;
 
-    const saveRoom = async () => {
-      const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/${userParam.idSala}`;
+    try {
+      const response = await fetch(putURL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userParam),
+      });
 
-      try {
-          const response = await fetch(putURL, {
-              method: 'PUT',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(userParam),
-          });
-
-          if (!response.ok) {
-              throw new Error('Erro na solicitação HTTP');
-          }
-
-          const responseData = await response.json();
-          console.log("Resposta da requisição PUT: ", responseData);
-
-          // Adicione aqui qualquer lógica adicional após o sucesso da atualização
-
-          // Navegue de volta para a tela RoomList após a atualização
-          navigation.navigate("RoomList");
-      } catch (error) {
-          console.error('Erro: ', error);
+      if (!response.ok) {
+        throw new Error('Erro na solicitação HTTP');
       }
+
+      const responseData = await response.json();
+      console.log("Resposta da requisição PUT: ", responseData);
+
+      // Adicione aqui qualquer lógica adicional após o sucesso da atualização
+    } catch (error) {
+      console.error('Erro: ', error);
+    }
+
+    // Navegue de volta para a tela RoomList após a atualização
+    navigation.navigate("RoomList");
   };
+
 
     return (
         <View style={style.container}>

@@ -47,8 +47,7 @@ export default props = () => {
       if (response.ok) {
         const dadosRecebidos = await response.json();
         console.log('Resposta do servidor: ', dadosRecebidos);
-        // Navegue para a tela desejada após a conclusão bem-sucedida do POST
-        navigation.navigate('UserList'); 
+        // Navegue para a tela desejada após a conclusão bem-sucedida do POST 
       } else {
         throw new Error('A solicitação via POST falhou!');
       }
@@ -134,7 +133,7 @@ export default props = () => {
         <TextInput
           placeholder='Descrição'
           style={styles.inputLogin}
-          value={reservaParam.descricao}
+          value={reservaParam.Descricao}
           onChangeText={(Descricao) => setReservaParam({ ...reservaParam, Descricao })}
           />
         <TextInput
@@ -192,7 +191,7 @@ export default props = () => {
         <Botton
         textoBotao={"Cadastrar"}
         funcao={() => {
-          showConfirmationAlert()
+          showConfirmationAlert(), doPost()
         }} />
       </View>
 
