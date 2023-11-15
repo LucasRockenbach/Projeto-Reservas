@@ -1,29 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState} from 'react';
 import botton from '../components/botton';
-import { Image, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Linking, } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Linking, Modal } from 'react-native';
 import Botton from '../components/botton';
 import Logo from '../components/logo';
 import { useNavigation } from '@react-navigation/native';
 
 const logoImage = require('../assets/Embrapa.png'); 
-const MAX_PHONE_LENGTH = 11;
+
+
 export default({ route, navigation })=> {
-    const [userParam, setUserParam] = useState({})
+  const [userParam, setUserParam] = useState({});
+  const [isEmailIncorrectModalVisible, setIsEmailIncorrectModalVisible] = useState(false);
 
-    const formatPhoneNumber = (phoneNumber) => {
-  if (!phoneNumber) {
-    return ''; // Retorna uma string vazia se phoneNumber for undefined ou null
-  }
+  const toggleEmailIncorrectModal = () => {
+    setIsEmailIncorrectModalVisible(!isEmailIncorrectModalVisible);
+  };
 
-  // Adiciona parênteses nos dois primeiros dígitos do número
-  if (phoneNumber.length >= 2) {
-    return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(2)}`;
-  }
-  return phoneNumber;
-};
+  const MAX_PHONE_LENGTH = 11;
+
+  const formatPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) {
+      return '';
+    }
+    if (phoneNumber.length >= 2) {
+      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(2)}`;
+    }
+    return phoneNumber;
+  };
+
   const doPost = async () => {
-    //validações 
+    const emailPattern = /^(.+)@(gmail|hotmail)\.com$/;
+
+    if (!emailPattern.test(userParam.email)) {
+      toggleEmailIncorrectModal();
+      return;
+    }
     
 
     URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario'
@@ -59,7 +71,7 @@ export default({ route, navigation })=> {
     }
   };
 
-  return(
+  return (
     <View style={style.container}>
       <Image source={logoImage} style={style.logo} resizeMode="contain" />
       <TextInput
@@ -74,11 +86,9 @@ export default({ route, navigation })=> {
         style={style.inputLogin}
         keyboardType="numeric"
         value={formatPhoneNumber(userParam.telefone)}
-        onChangeText={(telefone) => {
-          // Remove caracteres não numéricos e limita o comprimento para no máximo MAX_PHONE_LENGTH
-          const numericPhoneNumber = telefone.replace(/\D/g, '').substring(0, MAX_PHONE_LENGTH);
-          setUserParam({ ...userParam, telefone: numericPhoneNumber });
-        }}
+        onChangeText={(telefone) =>
+          setUserParam({ ...userParam, telefone: telefone.replace(/\D/g, '').substring(0, MAX_PHONE_LENGTH) })
+        }
       />
       <TextInput
         placeholder="E-mail"
@@ -88,16 +98,30 @@ export default({ route, navigation })=> {
         onChangeText={(email) => setUserParam({ ...userParam, email })}
       />
 
-      <Botton
-        textoBotao={'cadastrar'}
-        funcao={() => {
-          doPost();
-          navigation.navigate('UserList');
-        }}
-      />
+      {/* Modal para exibir mensagem de e-mail incorreto */}
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={isEmailIncorrectModalVisible}
+        onRequestClose={toggleEmailIncorrectModal}
+      >
+        <View style={style.modalContainer}>
+          <View style={style.modalContent}>
+            <Text style={style.modalText}>
+              Formato de e-mail incorreto. O e-mail deve ser do tipo @gmail.com ou @hotmail.com.
+            </Text>
+            <TouchableOpacity onPress={toggleEmailIncorrectModal}>
+              <Text style={style.modalButton}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Botton textoBotao={'Cadastrar'} funcao={doPost} />
     </View>
   );
 };
+
   
   const style = StyleSheet.create({
     container: {
@@ -120,5 +144,25 @@ export default({ route, navigation })=> {
     width: 300, 
     height: 200, 
     marginBottom: 20, 
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  modalButton: {
+    fontSize: 16,
+    color: 'blue',
   },
   });
