@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl, Modal,Pressable } from "react-native";
 import { ListItem } from "@rneui/base";
 import { FontAwesome } from "@expo/vector-icons";
 import UserContext from "../context/userContext";
@@ -10,6 +10,8 @@ export default function RoomList(props) {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
+    const [selectedReserva, setSelectedReserva] = useState({});
+    const [modalVisible, setModalVisible] = useState(false);
 
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva";
 
@@ -56,7 +58,7 @@ export default function RoomList(props) {
     };
 
     function deleteConfirm(user) {
-        Alert.alert('Excluir reserva!', 'Tem certeza que deseja excluir o Reserva?',
+        Alert.alert('Excluir reserva!', 'Tem certeza que deseja excluir a Reserva?',
             [
                 {
                     text: "Sim",
@@ -73,7 +75,10 @@ export default function RoomList(props) {
 
     function getRservas({ item: reserva }) {
         return (
-            <ListItem>
+            <ListItem onPress={() => {
+                setSelectedReserva(reserva);
+                setModalVisible(true);
+            }}>
                 <ListItem.Content>
                     <ListItem.Title>{reserva.descricao}</ListItem.Title>
                 </ListItem.Content>
@@ -115,6 +120,29 @@ export default function RoomList(props) {
                         />
                     }
                 />
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={style.modalView}>
+                        <Text>ID da Reserva: {selectedReserva?.idReserva}</Text>
+                        <Text>Nome do Usuário: {selectedReserva?.nomeUsuario}</Text>
+                        <Text>Nome da Sala: {selectedReserva?.nomeSala}</Text>
+                        <Text>Descrição: {selectedReserva?.Descricao}</Text>
+                        <Text>Data de Início: {selectedReserva?.DataInicio}</Text>
+                        <Text>Data de Fim: {selectedReserva?.DataFim}</Text>
+                        <Pressable
+                            style={[style.button, style.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={style.textStyle}>Fechar</Text>
+                        </Pressable>
+                    </View>
+                </Modal>
             </View>
             <TouchableOpacity style={style.roundButton} onPress={() => props.navigation.navigate("EventPage")}>
                 <FontAwesome name="plus" size={24} color="white" />
@@ -185,6 +213,36 @@ const style = StyleSheet.create({
         bottom: 20,
         right: 20,
       },
+      modalView: {
+        marginTop: 260,
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        marginTop: 10,
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
 })
 
 
