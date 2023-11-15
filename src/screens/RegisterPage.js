@@ -4,11 +4,11 @@ import botton from '../components/botton';
 import { Image, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Linking, } from 'react-native';
 import Botton from '../components/botton';
 import Logo from '../components/logo';
-
+import { useNavigation } from '@react-navigation/native';
 
 const logoImage = require('../assets/Embrapa.png'); 
 
-export default  ()=> {
+export default({ route, navigation })=> {
     const [userParam, setUserParam] = useState({})
   const doPost = async () => {
     //validações 
@@ -78,7 +78,9 @@ export default  ()=> {
         />
   
         <Botton textoBotao={'cadastrar'} funcao ={
-         ()=>{doPost(), props.navigation.navigate("UserList")}
+         ()=>{doPost(); navigation.navigate("UserList");
+        
+        }
             
         }/>
   

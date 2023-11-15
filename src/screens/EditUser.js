@@ -35,17 +35,12 @@ export default function Room({ route, navigation }) {
       }
 
       // Navegue de volta para a tela UserList após a atualização
-      console.log('Antes da navegação');
-      navigation.navigate('UserList');
     } catch (error) {
-      console.error('Erro:', error.message);
-
-      // Adicione tratamento de erro específico para o erro de parsing JSON
-      if (error instanceof SyntaxError && error.message.includes('Unexpected end of input')) {
-        console.error('Erro de parsing JSON: Resposta vazia ou inválida.');
-        // Adicione lógica adicional conforme necessário
-      }
+      console.error('Erro: ', error);
     }
+
+    // Navegue de volta para a tela RoomList após a atualização
+    navigation.navigate("UserList");
   };
 
   return (
