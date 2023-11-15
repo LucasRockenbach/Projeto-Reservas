@@ -36,6 +36,10 @@ export default function Room({ route }) {
 
 
     return (
+      <>
+      <View style={style.cont}>
+                <Text style={style.texto}>Editar sala</Text>
+            </View>
         <View style={style.container}>
             <Text style={[style.textocima, { marginTop: 20 }]}>Nome da sala</Text>
             <TextInput
@@ -95,7 +99,7 @@ export default function Room({ route }) {
             </View>
 
             <TouchableOpacity
-                style={[style.roundButton, { bottom: 20, right: 20 }]}
+                style={[style.greenButton, { bottom: 20, right: 20 }]}
                 onPress={() => { saveRoom()
                     // Adicione aqui a lógica para salvar as alterações ou enviar os dados para o servidor
                     // Por exemplo, você pode chamar uma função de atualização aqui
@@ -103,12 +107,27 @@ export default function Room({ route }) {
                     // Lembre-se de implementar a lógica de navegação ou feedback de sucesso
                 }}
             >
-                <Text>Salvar</Text>
+                <Text style={style.buttonText}>Salvar</Text>
             </TouchableOpacity>
         </View>
+        </>
     );
 }
 const style = StyleSheet.create({
+  greenButton: {
+    marginTop: 40,
+    marginLeft: 40,
+    backgroundColor: 'green',
+    borderRadius: 20,
+    width: 200, // Ajuste a largura conforme necessário
+    height: 60, // Ajuste a altura conforme necessário
+    justifyContent: 'center',
+    alignItems: 'center',
+},
+buttonText: {
+    color: 'white',
+    fontSize: 18, // Ajuste o tamanho da fonte conforme necessário
+},
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -171,8 +190,8 @@ const style = StyleSheet.create({
         fontStyle: 'normal',
         fontSize: 30,
         alignItems: 'center',
-        marginLeft: 70,
-        marginTop: 20,
+        marginLeft: 118,
+        marginTop: 80,
         fontWeight: '700',
         color: 'white'
       },

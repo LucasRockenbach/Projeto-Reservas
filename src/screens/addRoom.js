@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, TextInput, Text, Modal } from "react-native";
+import { View, StyleSheet, TextInput, Text, Modal, Alert } from "react-native";
 import NavBar from "../components/navBar";
 import Botton from "../components/botton";
 import UserContext from "../context/userContext";
@@ -8,23 +8,32 @@ import { useNavigation } from "@react-navigation/native";
 export default ({ route, navigation }) => {
   const { dispatch } = useContext(UserContext);
   const [userParam, setUserParam] = useState({});
+  const [exibirAlerta, setExibirAlerta] = useState(false);
+  const [botaoCadastrarHabilitado, setBotaoCadastrarHabilitado] = useState(false);
 
   const doPost = () => {
-    //validações
+    // Verificar campos obrigatórios
+    if (!userParam.nome || !userParam.descricao || !userParam.capacidade || !userParam.bloco || !userParam.andar || !userParam.numero) {
+      setExibirAlerta(true);
+      return;
+    }
+
+    // Validarções
     if (userParam.capacidade > 100) {
-      alert('A capacidade da sala não pode ser maior do que 100.');
-      return; // Não prossegue com o cadastro se a capacidade for maior do que 100
+      Alert.alert('A capacidade da sala não pode ser maior do que 100.');
+      return;
     }
 
     if (userParam.andar > 3) {
-      alert('O número do andar não pode ser maior do que 3.');
-      return; // Não prossegue com o cadastro se o andar for maior do que 3
+      Alert.alert('O número do andar não pode ser maior do que 3.');
+      return;
     }
-if (userParam.numero > 50) {
-    alert('O número da sala não pode ser maior do que 50.');
-    return; // Não prossegue com o cadastro se o número da sala for maior do que 50
-  }
-  
+
+    if (userParam.numero > 50) {
+      Alert.alert('O número da sala não pode ser maior do que 50.');
+      return;
+    }
+
     const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/';
     const dadosParaEnviar = {
       idSala: userParam.id,
@@ -54,96 +63,132 @@ if (userParam.numero > 50) {
       })
       .then((dadosRecebidos) => {
         console.log('Resposta do servidor: ', dadosRecebidos);
+        // Se o cadastro for bem-sucedido, navegue para a próxima tela
+        navigation.navigate("RoomList");
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
+  // Atualizar o estado do botão de cadastro ao modificar os campos
+  const atualizarBotaoCadastrar = () => {
+    setBotaoCadastrarHabilitado(
+      userParam.nome &&
+      userParam.descricao &&
+      userParam.capacidade &&
+      userParam.bloco &&
+      userParam.andar &&
+      userParam.numero
+    );
+  };
   return (
     <View>
       <View style={style.cont}>
         <NavBar />
-        <Text style={style.texto}>Cadastre um Sala</Text>
+        <Text style={style.texto}>Cadastre uma Sala</Text>
       </View>
       <View style={style.container}>
-        <Text style={[style.textocima, {marginTop: 20, }]}>Nome da sala</Text>
+        <Text style={[style.textocima, {marginTop: 20}]}>Nome da sala</Text>
         <TextInput
-          placeholder="Digite o nome para sala..."
-          style={[style.butao, { paddingLeft: 10, marginTop: 10 }]} // Ajuste de marginTop
+          placeholder="Digite o nome para a sala..."
+          style={[style.butao, { paddingLeft: 10, marginTop: 10 }]}
           keyboardType="name-phone-pad"
           value={userParam.nome}
           onChangeText={(nome) => setUserParam({ ...userParam, nome })}
         />
 
-        <Text style={[style.textocima, {marginTop: 20, }]}>Descrição</Text>
+        <Text style={[style.textocima, {marginTop: 20}]}>Descrição</Text>
         <TextInput
           placeholder="Digite a descrição..."
-          style={[style.butao2, { paddingLeft: 10,}]} // Ajuste de marginTop
+          style={[style.butao2, { paddingLeft: 10 }]}
           keyboardType="name-phone-pad"
           value={userParam.descricao}
           onChangeText={(descricao) => setUserParam({ ...userParam, descricao })}
         />
 
         <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-        <TextInput
-                placeholder='Capacidade'
-                placeholderTextColor="#FFFFFF"
-                style = {[style.inputs,{color: "#FFFFFF", }]}
-                keyboardType='numeric'
-                value={userParam.capacidade}
-                onChangeText={ capacidade => setUserParam({...userParam, capacidade}) }/>
-                
-                <TextInput 
-                    placeholder='Bloco'
-                    placeholderTextColor="#FFFFFF"
-                    style={[style.inputs,{color: "#FFFFFF", }]}
-                    keyboardType={'email-address'}
-                    value={userParam.bloco}
-                    onChangeText={ bloco => setUserParam({...userParam, bloco}) }
-                />
+          <TextInput
+            placeholder='Capacidade'
+            placeholderTextColor="#FFFFFF"
+            style={[style.inputs,{color: "#FFFFFF"}]}
+            keyboardType='numeric'
+            value={userParam.capacidade}
+            onChangeText={ capacidade => setUserParam({...userParam, capacidade}) }
+          />
+          
+          <TextInput 
+            placeholder='Bloco'
+            placeholderTextColor="#FFFFFF"
+            style={[style.inputs,{color: "#FFFFFF"}]}
+            keyboardType={'email-address'}
+            value={userParam.bloco}
+            onChangeText={ bloco => setUserParam({...userParam, bloco}) }
+          />
         </View>
-        <View style={{flexDirection: "row", justifyContent: "space-around"}}>
-                <TextInput 
-                    placeholder='Andar'
-                    placeholderTextColor="#FFFFFF"
-                    style={[style.inputs,{color: "#FFFFFF", }]}
-                    keyboardType={'numeric'}
-                    value={userParam.andar}
-            onChangeText={ andar => setUserParam({...userParam, andar}) }
-                /> 
-                <TextInput 
-                    placeholder='N°'
-                    placeholderTextColor="#FFFFFF"
-                    style={[style.inputs,{color: "#FFFFFF", }]}
-                    keyboardType={'numeric'}
-                    value={userParam.numero}
-            onChangeText={ numero => setUserParam({...userParam, numero}) }
-                /> 
-            </View>
 
-            <View style={style.buttonsContainer}>
+        <View style={{flexDirection: "row", justifyContent: "space-around"}}>
+          <TextInput 
+            placeholder='Andar'
+            placeholderTextColor="#FFFFFF"
+            style={[style.inputs,{color: "#FFFFFF"}]}
+            keyboardType={'numeric'}
+            value={userParam.andar}
+            onChangeText={ andar => setUserParam({...userParam, andar}) }
+          /> 
+          <TextInput 
+            placeholder='N°'
+            placeholderTextColor="#FFFFFF"
+            style={[style.inputs,{color: "#FFFFFF"}]}
+            keyboardType={'numeric'}
+            value={userParam.numero}
+            onChangeText={ numero => setUserParam({...userParam, numero}) }
+          /> 
+        </View>
+
+        <View style={style.buttonsContainer}>
           <Botton 
             textoBotao={"Cancelar"}
             funcao={() => {
               // Função para cancelar, se necessário
             }}
-            style={[style.button, style.cancelButton]} // Estilo para o botão de cancelar
+            style={[style.button, style.cancelButton]}
           />
           <Botton 
             textoBotao={"Cadastrar"}
             funcao={() => {
               doPost();
-              navigation.navigate("RoomList");
             }}
-            style={style.button} // Estilo para o botão de cadastrar
+            style={[style.button, { opacity: botaoCadastrarHabilitado ? 1 : 0.5 }]}
+            disabled={!botaoCadastrarHabilitado}
           />
         </View>
       </View>
+
+      <Modal
+        transparent={true}
+        visible={exibirAlerta}
+        animationType="slide"
+        onRequestClose={() => {
+          setExibirAlerta(false);
+        }}
+      >
+        <View style={style.modalContainer}>
+          <View style={style.modalContent}>
+            <Text>Por favor, preencha todos os campos obrigatórios.</Text>
+            <Botton
+              textoBotao={"OK"}
+              funcao={() => {
+                setExibirAlerta(false);
+              }}
+              style={style.button}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
-
 
 const style = StyleSheet.create({
   buttonsContainer: {
@@ -243,5 +288,16 @@ const style = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center'
       },
+      modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
+      },
+      modalContent: {
+        backgroundColor: "white",
+        padding: 20,
+        borderRadius: 10,
+        alignItems: "center",
+      },
 })
-    
