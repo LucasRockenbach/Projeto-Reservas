@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl, Modal, Pressable } from "react-native";
 import { ListItem } from "@rneui/base";
 import { FontAwesome } from "@expo/vector-icons";
 import UserContext from "../context/userContext";
@@ -10,6 +10,8 @@ export default function RoomList(props) {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
+    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala";
 
@@ -72,7 +74,10 @@ export default function RoomList(props) {
 
     function getUserItem({ item: user }) {
         return (
-            <ListItem>
+            <ListItem onPress={() => {
+                setSelectedRoom(user);
+                setModalVisible(true);
+            }}>
                 <ListItem.Content>
                     <ListItem.Title>{user.nome}</ListItem.Title>
                 </ListItem.Content>
@@ -91,7 +96,7 @@ export default function RoomList(props) {
             </ListItem>
         );
     };
-    
+
     const onRefresh = () => {
         setIsRefreshing(true);
         getUsers();
@@ -114,6 +119,29 @@ export default function RoomList(props) {
                         />
                     }
                 />
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={style.modalView}>
+                        <Text>Nome: {selectedRoom?.nome}</Text>
+                        <Text>Descrição: {selectedRoom?.descricao}</Text>
+                        <Text>Capacidade: {selectedRoom?.capacidade}</Text>
+                        <Text>Bloco: {selectedRoom?.bloco}</Text>
+                        <Text>Andar: {selectedRoom?.andar}</Text>
+                        <Text>Número: {selectedRoom?.numero}</Text>
+                        <Pressable
+                            style={[style.button, style.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={style.textStyle}>Fechar</Text>
+                        </Pressable>
+                    </View>
+                </Modal>
             </View>
             <TouchableOpacity style={style.roundButton} onPress={() => props.navigation.navigate("addRoom")}>
                 <FontAwesome name="plus" size={24} color="white" />
@@ -184,6 +212,36 @@ const style = StyleSheet.create({
         bottom: 20,
         right: 20,
       },
+      modalView: {
+        marginTop: 260,
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        marginTop: 10,
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
 })
 
 
