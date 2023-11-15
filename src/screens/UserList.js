@@ -1,4 +1,4 @@
-import { View, StatusBar, Text, StyleSheet, Alert,Image, FlatList, ActivityIndicator, Button, RefreshControl, TouchableOpacity  } from "react-native"
+import { View, StatusBar, Text, StyleSheet, Alert,Image, FlatList, ActivityIndicator, Button, RefreshControl, TouchableOpacity, Modal, Pressable } from "react-native"
 import NavBar from "../components/navBar"
 import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
@@ -13,6 +13,8 @@ export default props => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario";
 
@@ -76,9 +78,10 @@ export default props => {
     }
     function getUserItem({item: user}){
         return(
-            <ListItem
-
-            >
+            <ListItem onPress={() => {
+                setSelectedUser(user);
+                setModalVisible(true);
+            }}>
                 <ListItem.Content>
                     <ListItem.Title>{user.nome}</ListItem.Title>
                     <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
@@ -118,9 +121,31 @@ export default props => {
                     refreshControl={
                         <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
                     }
+                    
                 />
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={style.modalView}>
+                    <Text>ID do Usuário: {selectedUser?.idUsuario}</Text>
+                    <Text>Nome: {selectedUser?.nome}</Text>
+                    <Text>Email: {selectedUser?.email}</Text>
+                    <Text>Telefone: {selectedUser?.telefone}</Text>
+                        <Pressable
+                            style={[style.button, style.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={style.textStyle}>Fechar</Text>
+                        </Pressable>
+                    </View>
+                </Modal>
             </View>
-    
+
             {/* Botão de adicionar sala */}
             <TouchableOpacity
                 style={style.roundButton}
@@ -195,6 +220,36 @@ const style = StyleSheet.create({
         bottom: 20,
         right: 20,
       },
+      modalView: {
+        marginTop: 260,
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        marginTop: 10,
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
 })
 
 

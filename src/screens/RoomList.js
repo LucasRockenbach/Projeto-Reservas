@@ -138,6 +138,7 @@ export default function RoomList(props) {
                             style={[style.button, style.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
                         >
+                            
                             <Text style={style.textStyle}>Fechar</Text>
                         </Pressable>
                     </View>
