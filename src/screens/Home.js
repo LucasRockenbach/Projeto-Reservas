@@ -46,7 +46,7 @@ export default function RoomList(props) {
                 [
                     {
                         text: 'Ok',
-                        onPress: () => props.navigation.push('RoomList')
+                        onPress: () => props.navigation.push('Home')
                     }
                 ]
             );

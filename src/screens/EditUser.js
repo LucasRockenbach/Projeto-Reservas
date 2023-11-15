@@ -49,25 +49,34 @@ export default function Room({ route, navigation }) {
   };
 
   return (
+    <>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Editar Usuarios</Text>
+      </View>
     <View style={style.container}>
-      <Logo />
+      <View>
+        
+      </View>
+      <Text style={[style.TextInput, { marginTop: 20 }]}>Nome</Text>
       <TextInput
         placeholder='nome'
-        style={style.inputLogin}
+        style={[style.inputLogin, { paddingLeft: 10, marginTop: 10 }]}
         keyboardType='name-phone-pad'
         value={userParam.nome}
         onChangeText={nome => setUserParam({ ...userParam, nome })}
       />
+      <Text style={[style.TextInput, { marginTop: 20 }]}>Telefone</Text>
       <TextInput
         placeholder='telefone'
-        style={style.inputLogin}
+        style={[style.inputLogin, { paddingLeft: 10, marginTop: 10 }]}
         keyboardType='numeric'
         value={userParam.telefone}
         onChangeText={telefone => setUserParam({ ...userParam, telefone })}
       />
+      <Text style={[style.TextInput, { marginTop: 20 }]}>E-mail</Text>
       <TextInput
         placeholder='E-mail'
-        style={style.inputLogin}
+        style={[style.inputLogin, { paddingLeft: 10, marginTop: 10 }]}
         keyboardType={'email-address'}
         value={userParam.email}
         onChangeText={email => setUserParam({ ...userParam, email })}
@@ -77,38 +86,62 @@ export default function Room({ route, navigation }) {
         style={[style.roundButton, { bottom: 20, right: 20 }]}
         onPress={saveRoom}
       >
-        <Text>Salvar</Text>
+        <Text style={[style.buttonText]}>Salvar</Text>
       </TouchableOpacity>
     </View>
+    </>
   );
 }
 
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#28364C',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 50,
+  },
+  HeaderContainer: {
+    width: 395,
+    height: 143,
+    backgroundColor: "#28364D",
+    borderRadius: 10,
+  },
+  HeaderText: {
+    width: 266,
+    height: 39,
+    color: '#FAFAFA',
+    fontStyle: 'normal',
+    fontSize: 30,
+    fontWeight: '700',
+    marginTop: 65,
+    marginLeft: 65,
   },
   inputLogin: {
-    height: 60,
-    width: 250,
-    fontSize: 20,
-    margin: 20,
-    textAlign: 'center',
-    borderWidth: 0.5,
-    borderRadius: 20,
-    backgroundColor: 'white',
+    width: 315,
+    height: 50,
+    backgroundColor: "#E9EBED",
+    borderRadius: 5,
+    alignItems: 'center'
   },
   roundButton: {
     width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#28364D',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+    height: 40,
+    borderRadius: 10,
+    backgroundColor: "#28364D",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 25,
+  },
+  buttonText: {
+    color: 'white', // Cor padrão do texto dentro do botão
+    fontSize: 15,
+  },
+  TextInput: {
+    marginRight: 105,
+    width: 208,
+    height: 27,
+    fontSize: 18,
+    fontStyle: "normal",
+    color: '#383838',
   },
 });

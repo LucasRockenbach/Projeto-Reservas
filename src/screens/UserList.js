@@ -37,33 +37,26 @@ export default props => {
     const deleteUser = async (user) =>{
         const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/' + user.idUsuario 
 
-        const options = {
-            method: 'DELETE'
-        }
+        try {
+            const response = await fetch(URL, { method: 'DELETE' });
 
-        fetch(URL, options)
-            .then(response => {
-                if(!response.ok){
-                    throw new Error('Erro na solicitação HTTP')
-                }
-                return response.json();
-            })
-            .then(responseData => {
-                Alert.alert(
-                    'Exclusão!',
-                    'Usuário excluído com sucesso!',
-                    [
-                        {
-                            text: 'Ok',
-                            onPress: () => props.navigation.push('UserList')
-                        }
-                    ]
-                )
-            })
-            .catch(error => {
-                console.error('Erro: ', error)
-            })
-    }
+            if (!response.ok) {
+                throw new Error('Erro na solicitação HTTP');
+            }
+            Alert.alert(
+                'Exclusão!',
+                'Usuário excluído com sucesso!',
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => props.navigation.push('UserList')
+                    }
+                ]
+            );
+        } catch (error) {
+            console.error('Erro: ', error);
+        }
+    };
 
     function deleteConfirm(user){
         Alert.alert('Excluir usuário!', 'Tem certeza que deseja excluir o usuário?',
