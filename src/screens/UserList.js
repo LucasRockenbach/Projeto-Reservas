@@ -1,40 +1,44 @@
-import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl } from "react-native";
-import { ListItem } from "@rneui/base";
+import { View, StatusBar, Text, StyleSheet, Alert,Image, FlatList, ActivityIndicator, Button, RefreshControl, TouchableOpacity  } from "react-native"
+import NavBar from "../components/navBar"
+import { ListItem } from "@rneui/base"
+import { useEffect, useState, useContext } from "react"
+import UserContext from "../context/userContext"
+import Botton from "../components/botton"
+import Logo from '../components/logo';
 import { FontAwesome } from "@expo/vector-icons";
-import UserContext from "../context/userContext";
 
-export default function RoomList(props) {
-    const { state, dispatch } = useContext(UserContext);
+
+export default props => {
+    const {state, dispatch} = useContext(UserContext)
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
-    const [selectedRoom, setSelectedRoom] = useState(null);
 
-    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala";
+    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario";
+
 
     const getUsers = async () => {
-        try {
+        try{
             const response = await fetch(URL);
             const json = await response.json();
             console.log(json);
             setData(json);
-        } catch (error) {
+        } catch(error) {
             console.error(error);
-        } finally {
+        }finally{
             setIsLoading(false);
         }
-    };
+    }
 
-    useEffect(() => {
+    useEffect(()=>{
         getUsers();
-    }, []);
+    }, [])
 
-    const deleteUser = async (user) => {
-        const deleteURL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/' + user.idSala;
+    const deleteUser = async (user) =>{
+        const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/' + user.idUsuario 
 
         try {
-            const response = await fetch(deleteURL, { method: 'DELETE' });
+            const response = await fetch(URL, { method: 'DELETE' });
 
             if (!response.ok) {
                 throw new Error('Erro na solicitação HTTP');
@@ -45,7 +49,7 @@ export default function RoomList(props) {
                 [
                     {
                         text: 'Ok',
-                        onPress: () => props.navigation.push('RoomList')
+                        onPress: () => props.navigation.push('UserList')
                     }
                 ]
             );
@@ -54,43 +58,46 @@ export default function RoomList(props) {
         }
     };
 
-    function deleteConfirm(user) {
+    function deleteConfirm(user){
         Alert.alert('Excluir usuário!', 'Tem certeza que deseja excluir o usuário?',
-            [
-                {
-                    text: "Sim",
-                    onPress() {
-                        deleteUser(user);
-                    }
-                },
-                {
-                    text: "Não"
+        [
+            {
+                text: "Sim",
+                onPress(){
+                    //console.warn("Excluido o id: " + user.id)
+                    deleteUser(user)
                 }
-            ]
-        );
+            },
+            {
+                text: "Não"
+            }
+        ]
+        )
     }
+    function getUserItem({item: user}){
+        return(
+            <ListItem
 
-    function getUserItem({ item: user }) {
-        return (
-            <ListItem onPress={() => setSelectedRoom(user)}>
+            >
                 <ListItem.Content>
                     <ListItem.Title>{user.nome}</ListItem.Title>
+                    <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
                 </ListItem.Content>
-                <ListItem.Chevron
+                <ListItem.Chevron 
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={() => props.navigation.navigate("Room", { user })}
+                    onPress={()=>props.navigation.navigate("EditUser", {user})}
                 />
-                <ListItem.Chevron
+                <ListItem.Chevron 
                     name="delete"
                     color="red"
                     size={25}
-                    onPress={() => { deleteConfirm(user) }}
+                    onPress={()=> {deleteConfirm(user)}}
                 />
             </ListItem>
-        );
-    };
+        )
+    }
 
     const onRefresh = () => {
         setIsRefreshing(true);
@@ -101,33 +108,29 @@ export default function RoomList(props) {
     return (
         <>
             <View style={style.cont}>
-                <Text style={style.texto}>Salas Criadas</Text>
+                <Text style={style.texto}>Usuarios Cadastrados</Text>
             </View>
             <View>
                 <FlatList
                     data={data}
+                    keyExtractor={(user) => user.idUsuario}
                     renderItem={getUserItem}
                     refreshControl={
-                        <RefreshControl
-                            refreshing={isRefreshing}
-                            onRefresh={onRefresh}
-                        />
+                        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
                     }
                 />
-                {selectedRoom && (
-                    <View>
-                        {/* Renderizar informações adicionais para a sala selecionada */}
-                        <Text>{selectedRoom.nome}</Text>
-                        {/* Adicionar mais detalhes com base na sua estrutura de dados */}
-                    </View>
-                )}
             </View>
-            <TouchableOpacity style={style.roundButton} onPress={() => props.navigation.navigate("addRoom")}>
+    
+            {/* Botão de adicionar sala */}
+            <TouchableOpacity
+                style={style.roundButton}
+                onPress={() => props.navigation.navigate("RegisterPage")}
+            >
                 <FontAwesome name="plus" size={24} color="white" />
             </TouchableOpacity>
         </>
     );
-}
+};
 const style = StyleSheet.create({
     container: {
         flex: 1,
