@@ -105,7 +105,6 @@ const style = StyleSheet.create({
     marginBottom: 5,
     alignSelf: 'flex-start',
     marginLeft: 25,
-
   },
   inputLogin: {
     height: 55,
