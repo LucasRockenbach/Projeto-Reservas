@@ -88,24 +88,23 @@ export default ({ route, navigation }) => {
   };
   return (
     <View>
-      <View style={style.cont}>
-        <NavBar />
-        <Text style={style.texto}>Cadastre uma Sala</Text>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Cadastrar Salas</Text>
       </View>
       <View style={style.container}>
-        <Text style={[style.textocima, {marginTop: 20}]}>Nome da sala</Text>
+        <Text style={[style.TextInput, {marginTop: 20}]}>Nome da sala</Text>
         <TextInput
           placeholder="Digite o nome para a sala..."
-          style={[style.butao, { paddingLeft: 10, marginTop: 10 }]}
+          style={[style.inputLogin, { paddingLeft: 10, marginTop: 10 }]}
           keyboardType="name-phone-pad"
           value={userParam.nome}
           onChangeText={(nome) => setUserParam({ ...userParam, nome })}
         />
 
-        <Text style={[style.textocima, {marginTop: 20}]}>Descrição</Text>
+        <Text style={[style.TextInput, {marginTop: 20}]}>Descrição</Text>
         <TextInput
           placeholder="Digite a descrição..."
-          style={[style.butao2, { paddingLeft: 10 }]}
+          style={[style.inputLogin, { paddingLeft: 10 }]}
           keyboardType="name-phone-pad"
           value={userParam.descricao}
           onChangeText={(descricao) => setUserParam({ ...userParam, descricao })}
@@ -150,18 +149,18 @@ export default ({ route, navigation }) => {
           /> 
         </View>
 
-        <View style={style.buttonsContainer}>
+        <View>
         <Botton 
             textoBotao={"Cancelar"}
             funcao={cancelarCadastro}
-            style={[style.cancelButton]}
+            style={[style.button]}
           />
           <Botton 
             textoBotao={"Cadastrar"}
             funcao={() => {
               doPost();
             }}
-            style={[style.button, { opacity: botaoCadastrarHabilitado ? 1 : 0.5 }]}
+            style={[style.button, { opacity: botaoCadastrarHabilitado ? 1 : 0.1}]}
             disabled={!botaoCadastrarHabilitado}
           />
         </View>
@@ -193,25 +192,7 @@ export default ({ route, navigation }) => {
 };
 
 const style = StyleSheet.create({
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-    paddingHorizontal: 20, // Espaçamento horizontal para os botões
-  },
-  submitButton: {
-    width: 1, // Largura do botão de cadastrar
-  },
-  cancelButton: {
-    backgroundColor: "red", // Cor de fundo vermelha para o botão de cancelar
-  },
-  button: {
-    width: 80, // Largura dos botões
-    height: 40, // Altura dos botões
-    borderRadius: 5, // Borda arredondada
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   container: {
     alignItems: "center",
     marginBottom: 150, // Ajuste de marginTop para mover os inputs para cima
@@ -225,17 +206,26 @@ const style = StyleSheet.create({
     fontStyle: "normal",
   },
   inputLogin: {
-    height: 60,
-    width: 250,
-    fontSize: 20,
-    margin: 20,
-    textAlign: "center",
-    borderWidth: 0.5,
-    borderRadius: 20,
+    height: 55,
+    width: 300,
+    fontSize: 16,
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    marginBottom: 15,
+    // Estilos adicionais para relevo e sombra
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
   },
+  shadowOpacity: 5,
+  shadowRadius: 5,
+  elevation: 5, // Adiciona a elevação para a sombra no Android
+},
       inputs:{
         height: 60,
-        width: 105,
+        width: 150,
         fontSize: 20,
         margin: 20,
         textAlign: 'center',
@@ -243,53 +233,32 @@ const style = StyleSheet.create({
         backgroundColor: "#28364D",
         borderRadius: 5,
       },
-      cont: {
+      HeaderContainer: {
         width: 395,
         height: 143,
         backgroundColor: "#28364D",
-        borderRadius: 30,
-    },
-    texto: {
+        borderRadius: 10,
+      },
+      HeaderText: {
         width: 266,
         height: 39,
+        color: '#FAFAFA',
         fontStyle: 'normal',
         fontSize: 30,
-        alignItems: 'center',
-        marginLeft: 70,
-        marginTop: 20,
         fontWeight: '700',
-        color: 'white'
+        marginTop: 65,
+        marginLeft: 65,
       },
-     textocima: {
-        marginRight: 105,
-        width: 208,
-        height: 27,
-        fontSize: 18,
-        fontStyle: "normal",
-        color: '#383838',
+     TextInput: {
+      marginRight: 105,
+      marginBottom: 10,
+      width: 208,
+      height: 27,
+      fontSize: 18,
+      fontStyle: "normal",
+      color: '#383838',
       },
-      butao2: {
-        width: 315,
-        height: 80,
-        backgroundColor: "#E9EBED",
-        borderRadius: 5,
-        alignItems: 'center'
-      },
-      textocima: {
-        marginRight: 105,
-        width: 208,
-        height: 27,
-        fontSize: 18,
-        fontStyle: "normal",
-        color: '#383838',
-      },
-      butao: {
-        width: 315,
-        height: 50,
-        backgroundColor: "#E9EBED",
-        borderRadius: 5,
-        alignItems: 'center'
-      },
+
       modalContainer: {
         flex: 1,
         justifyContent: "center",

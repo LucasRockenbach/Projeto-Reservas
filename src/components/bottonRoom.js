@@ -13,9 +13,9 @@ export default props => (
 const formatacao = StyleSheet.create({
     botton:{
         margin: 30,
-        height: 150,
+        height: 100,
         borderWidth: 0.5,
-        width: 150,
+        width: 50,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',

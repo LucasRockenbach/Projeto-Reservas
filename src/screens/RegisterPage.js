@@ -72,17 +72,23 @@ export default({ route, navigation })=> {
   };
 
   return (
+    <>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Cadastrar Usuarios</Text>
+      </View>
     <View style={style.container}>
-      <Image source={logoImage} style={style.logo} resizeMode="contain" />
+      <View>
+      <Text style={style.label}>Nome</Text>
       <TextInput
-        placeholder="nome"
+        placeholder="Insira o nome"
         style={style.inputLogin}
         keyboardType="name-phone-pad"
         value={userParam.nome}
         onChangeText={(nome) => setUserParam({ ...userParam, nome })}
       />
+      <Text style={style.label}>Telefone</Text>
       <TextInput
-        placeholder="telefone"
+        placeholder="Insira o telefone"
         style={style.inputLogin}
         keyboardType="numeric"
         value={formatPhoneNumber(userParam.telefone)}
@@ -90,13 +96,15 @@ export default({ route, navigation })=> {
           setUserParam({ ...userParam, telefone: telefone.replace(/\D/g, '').substring(0, MAX_PHONE_LENGTH) })
         }
       />
+      <Text style={style.label}>E-mail</Text>
       <TextInput
-        placeholder="E-mail"
+        placeholder="Insira o e-mail"
         style={style.inputLogin}
         keyboardType={'email-address'}
         value={userParam.email}
         onChangeText={(email) => setUserParam({ ...userParam, email })}
       />
+      </View>
 
       {/* Modal para exibir mensagem de e-mail incorreto */}
       <Modal
@@ -119,6 +127,7 @@ export default({ route, navigation })=> {
 
       <Botton textoBotao={'Cadastrar'} funcao={doPost} />
     </View>
+    </>
   );
 };
 
@@ -126,25 +135,54 @@ export default({ route, navigation })=> {
   const style = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#28364C',
       alignItems: 'center',
       justifyContent: 'center',
     },
-    inputLogin:{
-      height: 60,
-      width: 250,
-      fontSize: 20,
-      margin: 20,
-      textAlign: 'center',
-      borderWidth: 0.5,
-      borderRadius: 20,
-      backgroundColor: "white"
+    HeaderContainer: {
+      width: 395,
+      height: 143,
+      backgroundColor: "#28364D",
+      borderRadius: 15,
+    },
+    HeaderText: {
+      width: 266,
+      height: 39,
+      color: '#FAFAFA',
+      fontStyle: 'normal',
+      fontSize: 25,
+      fontWeight: '700',
+      marginTop: 65,
+      marginLeft: 65,
+    },
+    inputContainer: {
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    inputLogin: {
+      height: 55,
+      width: 300,
+      fontSize: 16,
+      backgroundColor: 'white',
+      paddingHorizontal: 15,
+      borderRadius: 10,
+      marginBottom: 15,
+      // Estilos adicionais para relevo e sombra
+      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowOffset: {
+        width: 0,
+        height: 4,
+    },
+    shadowOpacity: 5,
+    shadowRadius: 5,
+    elevation: 5, // Adiciona a elevação para a sombra no Android
   },
-  logo: {
-    width: 300, 
-    height: 200, 
-    marginBottom: 20, 
-  },
+    label: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 5,
+      alignSelf: 'flex-start',
+      marginLeft: 25,
+    },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',

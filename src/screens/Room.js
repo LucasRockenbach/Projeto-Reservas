@@ -53,14 +53,14 @@ export default function Room({ route }) {
 
     return (
       <>
-      <View style={style.cont}>
-                <Text style={style.texto}>Editar sala</Text>
-            </View>
+        <View style={style.HeaderContainer}>
+          <Text style={style.HeaderText}>Editar Salas</Text>
+        </View>
         <View style={style.container}>
             <Text style={[style.textocima, { marginTop: 20 }]}>Nome da sala</Text>
             <TextInput
                 placeholder="Digite o nome para sala..."
-                style={[style.butao, { paddingLeft: 10, marginTop: 10 }]}
+                style={[style.inputLogin, { paddingLeft: 10, marginTop: 10 }]}
                 keyboardType="name-phone-pad"
                 value={userParam.nome}
                 onChangeText={(nome) => setUserParam({ ...userParam, nome })}
@@ -69,7 +69,7 @@ export default function Room({ route }) {
             <Text style={[style.textocima, { marginTop: 20 }]}>Descrição</Text>
             <TextInput
                 placeholder="Digite a descrição..."
-                style={[style.butao2, { paddingLeft: 10 }]}
+                style={[style.inputLogin, { paddingLeft: 10 }]}
                 keyboardType="name-phone-pad"
                 value={userParam.descricao}
                 onChangeText={(descricao) => setUserParam({ ...userParam, descricao })}
@@ -133,14 +133,15 @@ export default function Room({ route }) {
 }
 const style = StyleSheet.create({
   greenButton: {
-    marginTop: 40,
-    marginLeft: 40,
     backgroundColor: 'green',
-    borderRadius: 20,
-    width: 200, // Ajuste a largura conforme necessário
-    height: 60, // Ajuste a altura conforme necessário
-    justifyContent: 'center',
+    height: 50,
+    width: 300,
+    top: 30,
     alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginBottom: 10,
+    marginLeft: 32,
 },
 buttonText: {
     color: 'white',
@@ -178,13 +179,22 @@ buttonText: {
     fontStyle: "normal",
   },
   inputLogin: {
-    height: 60,
-    width: 250,
-    fontSize: 20,
-    margin: 20,
-    textAlign: "center",
-    borderWidth: 0.5,
-    borderRadius: 20,
+    height: 55,
+    width: 300,
+    fontSize: 16,
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    marginBottom: 15,
+    // Estilos adicionais para relevo e sombra
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+  },
+  shadowOpacity: 5,
+  shadowRadius: 5,
+  elevation: 5, // Adiciona a elevação para a sombra no Android
   },
       inputs:{
         height: 60,
@@ -196,22 +206,21 @@ buttonText: {
         backgroundColor: "#28364D",
         borderRadius: 5,
       },
-      cont: {
+      HeaderContainer: {
         width: 395,
         height: 143,
         backgroundColor: "#28364D",
-        borderRadius: 30,
-    },
-    texto: {
+        borderRadius: 10,
+      },
+      HeaderText: {
         width: 266,
         height: 39,
+        color: '#FAFAFA',
         fontStyle: 'normal',
         fontSize: 30,
-        alignItems: 'center',
-        marginLeft: 118,
-        marginTop: 80,
         fontWeight: '700',
-        color: 'white'
+        marginTop: 65,
+        marginLeft: 85,
       },
      textocima: {
         marginRight: 105,

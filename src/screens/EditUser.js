@@ -49,9 +49,6 @@ export default function Room({ route, navigation }) {
         <Text style={style.HeaderText}>Editar Usuarios</Text>
       </View>
     <View style={style.container}>
-      <View>
-        
-      </View>
       <Text style={[style.TextInput, { marginTop: 20 }]}>Nome</Text>
       <TextInput
         placeholder='nome'
@@ -81,7 +78,7 @@ export default function Room({ route, navigation }) {
         style={[style.roundButton, { bottom: 20, right: 20 }]}
         onPress={saveRoom}
       >
-        <Text style={[style.buttonText]}>Salvar</Text>
+        <Text style={[style.editButtonText]}>Salvar</Text>
       </TouchableOpacity>
     </View>
     </>
@@ -112,24 +109,37 @@ const style = StyleSheet.create({
     marginLeft: 65,
   },
   inputLogin: {
-    width: 315,
-    height: 50,
-    backgroundColor: "#E9EBED",
-    borderRadius: 5,
-    alignItems: 'center'
-  },
-  roundButton: {
-    width: 60,
-    height: 40,
+    height: 55,
+    width: 300,
+    fontSize: 16,
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
     borderRadius: 10,
-    backgroundColor: "#28364D",
-    justifyContent: "center",
-    alignItems: "center",
-    top: 25,
+    marginBottom: 15,
+    // Estilos adicionais para relevo e sombra
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
   },
-  buttonText: {
-    color: 'white', // Cor padrão do texto dentro do botão
-    fontSize: 15,
+  shadowOpacity: 5,
+  shadowRadius: 5,
+  elevation: 5, // Adiciona a elevação para a sombra no Android
+},
+  roundButton: {
+    backgroundColor: '#28364D',
+    height: 50,
+    width: 300,
+    top: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginBottom: 10,
+    marginLeft: 32,
+  },
+  editButtonText: {
+    color: 'white',
+    fontSize: 14,
   },
   TextInput: {
     marginRight: 105,
