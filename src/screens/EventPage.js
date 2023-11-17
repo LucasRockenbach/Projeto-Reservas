@@ -77,11 +77,11 @@ export default props = () => {
   };
 
   const formatDate = (date) => {
-    return format(date, 'dd/MM/yyyy HH:mm');
+    return format(date, 'HH:mm');
   };
 
   const showConfirmationAlert = () => {
-    const confirmationMessage = `Deseja confirmar a reserva do dia ${format(selectedDate, 'dd/MM/yyyy')}\nHorário de ${format(startTime, 'HH:mm')} até ${format(endTime, 'HH:mm')}?`;
+    const confirmationMessage = `Deseja confirmar a reserva \nHorário de ${format(startTime, 'HH:mm')} até ${format(endTime, 'HH:mm')}?`;
     Alert.alert(
       'Confirmação',
       confirmationMessage,
@@ -157,7 +157,7 @@ export default props = () => {
           />
         )}
         <TextInput onPressIn={() => setShowStartTimePicker(true)}
-          placeholder= "horario inicio"
+          placeholder={`${formatDate(startTime)}`}
           style={styles.inputLogin}
           value={reservaParam.DataInicio}
           onChangeText={(DataInicio) => setReservaParam({ ...reservaParam, DataInicio })}
@@ -173,7 +173,7 @@ export default props = () => {
           />
         )}
         <TextInput onPressIn={() => setShowEndTimePicker(true)}
-          placeholder='Hora Fim'
+          placeholder={` ${formatDate(endTime)}`}
           style={styles.inputLogin}
           value={reservaParam.DataFim}
           onChangeText={(DataFim) => setReservaParam({ ...reservaParam, DataFim })}

@@ -1,4 +1,4 @@
-import { View, StatusBar, Text, StyleSheet, Alert,Image, FlatList, ActivityIndicator, Button, RefreshControl, TouchableOpacity, Modal, Pressable } from "react-native"
+import { View, StatusBar, Text, StyleSheet, Alert,Image, FlatList, TextInput,ActivityIndicator, Button, RefreshControl, TouchableOpacity, Modal, Pressable } from "react-native"
 import NavBar from "../components/navBar"
 import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
@@ -16,8 +16,19 @@ export default props => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
+    const [searchText, setSearchText] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
+
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario";
 
+
+
+    const filterUsers = () => {
+        const filteredUsers = data.filter(user =>
+          user.nome.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setFilteredData(filteredUsers);
+      };
 
     const getUsers = async () => {
         try{
@@ -112,6 +123,29 @@ export default props => {
         <>
             <View style={style.cont}>
                 <Text style={style.texto}>Usuarios Cadastrados</Text>
+                <FontAwesome
+                name="search"
+                size={20}
+                color="#FFF"
+                onPress={() => setModalVisible(!modalVisible)}/>
+
+{modalVisible && (
+  <View style={style.searchModal}>
+    <TextInput
+      style={style.searchInput}
+      placeholder="Digite o nome do usuário"
+      value={searchText}
+      onChangeText={(text) => setSearchText(text)}
+      onSubmitEditing={filterUsers}
+    />
+    <FontAwesome
+      name="times"
+      size={20}
+      color="#FFF"
+      onPress={() => setModalVisible(false)}
+    />
+  </View>
+)}
             </View>
             <View>
                 <FlatList
@@ -136,6 +170,7 @@ export default props => {
                     <Text>Nome: {selectedUser?.nome}</Text>
                     <Text>Email: {selectedUser?.email}</Text>
                     <Text>Telefone: {selectedUser?.telefone}</Text>
+                    <Text>Descrição reserva: {selectedUser?.reserva?.descricao}</Text>
                         <Pressable
                             style={[style.button, style.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
@@ -144,6 +179,7 @@ export default props => {
                         </Pressable>
                     </View>
                 </Modal>
+                
             </View>
 
             {/* Botão de adicionar sala */}
@@ -253,58 +289,3 @@ const style = StyleSheet.create({
 })
 
 
-/*
-return(
-
-    <View style={style.container}>
-        <View style={style.viewLogo}>
-            <Logo />
-        </View>
-
-        {isLoading ? (
-            <ActivityIndicator size={80}></ActivityIndicator>
-        ) : (
-            <FlatList style={style.list}
-                data={data}
-                keyExtractor={({id})=>id}
-                renderItem={ ({item})=>(
-                    <Text style={style.item}>
-
-                        <Text style={style.label}>
-                            nome:
-                        </Text>
-                        <Text style={style.value}>
-                            {item.nome}
-                        </Text>
-                        {'\n'}
-                        <Text style={style.label}>
-                            Email:
-                        </Text>
-                        <Text style={style.value}>
-                            {item.email}
-                        </Text>
-                        {'\n'}
-                        <Text style={style.label}>
-                            Telefone:
-                        </Text>
-                        <Text style={style.value}>
-                            {item.telefone}
-                        </Text>   
-                    </Text> 
-                                      
-                )}
-            />
-        )
-        }
-        <View>
-            <Button title="Atualizar" onPress={ () => getUsers()} />
-            <Botton textoBotao={"Cadastrar"} funcao={
-                () => {
-                    props.navigation.navigate("RegisterPage")
-
-                }
-
-            } />
-        </View>
-    </View>
-)*/

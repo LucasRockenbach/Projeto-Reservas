@@ -67,7 +67,7 @@ export default props = ({ route }) => {
   };
 
   const formatDate = (date) => {
-    return format(date, 'dd/MM/yyyy HH:mm');
+    return format(date, 'HH:mm');
   };
 
   const showConfirmationAlert = () => {
@@ -114,25 +114,14 @@ export default props = ({ route }) => {
       <View >
       </View>
       <View style={styles.container} >
-        <TextInput
-          placeholder='Reservista'
-          style={styles.inputLogin}
-          value={reservaParam.nomeUsuario}
-          onChangeText={(nomeUsuario) => setReservaParam({ ...reservaParam, nomeUsuario })}
-          />
+   
         <TextInput
           placeholder='Descrição'
           style={styles.inputLogin}
           value={reservaParam.descricao}
           onChangeText={(Descricao) => setReservaParam({ ...reservaParam, Descricao })}
           />
-        <TextInput
-          placeholder='Sala'
-          style={styles.inputLogin}
-          value={reservaParam.nomeSala}
-          onChangeText={(nomeSala) => setReservaParam({ ...reservaParam, nomeSala })}
-          
-        />
+      
 
         {showDatePicker && (
           <DateTimePicker

@@ -13,6 +13,13 @@ export default function RoomList(props) {
     const [selectedReserva, setSelectedReserva] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
 
+    const formatarData = (data) => {
+        if (!data) return "";
+    
+        const horaFormatada = new Date(data).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+        return horaFormatada;
+    };
+
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva";
 
     const getUsers = async () => {
@@ -129,12 +136,11 @@ export default function RoomList(props) {
                     }}
                 >
                     <View style={style.modalView}>
-                        <Text>ID da Reserva: {selectedReserva?.idReserva}</Text>
-                        <Text>Nome do Usuário: {selectedReserva?.nomeUsuario}</Text>
-                        <Text>Nome da Sala: {selectedReserva?.nomeSala}</Text>
-                        <Text>Descrição: {selectedReserva?.Descricao}</Text>
-                        <Text>Data de Início: {selectedReserva?.DataInicio}</Text>
-                        <Text>Data de Fim: {selectedReserva?.DataFim}</Text>
+                         <Text>Descrição: {selectedReserva?.descricao}</Text>
+                        <Text>Nome do Usuário: {selectedReserva?.usuario?.nome}</Text>
+                        <Text>Nome da Sala: {selectedReserva?.sala?.nome}</Text>                      
+                        <Text>Data de Início: {formatarData(selectedReserva?.dataInicio)}</Text>
+                        <Text>Data de Fim: {formatarData(selectedReserva?.dataFim)}</Text>
                         <Pressable
                             style={[style.button, style.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
