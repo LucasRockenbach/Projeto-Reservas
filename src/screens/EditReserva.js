@@ -105,38 +105,34 @@ export default props = ({ route }) => {
 
   };
 
-
   return (
-
-
-    <View style={styles.container}>
-
-      <View >
+    <>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Editar Reservas</Text>
       </View>
-      <View style={styles.container} >
-
+      <View style={style.container}>
+      <Text style={[style.label]}>Reservista</Text>
         <TextInput
-          placeholder='Reservista'
-          style={styles.inputLogin}
+          placeholder='Insira o reservista'
+          style={style.inputLogin}
           value={reservaParam.nomeUsuario}
           onChangeText={(nomeUsuario) => setReservaParam({ ...reservaParam, nomeUsuario })}
         />
-
+        <Text style={[style.label]}>Descrição</Text>
         <TextInput
-          placeholder='Descrição'
-          style={styles.inputLogin}
+          placeholder='Insira a Descrição'
+          style={style.inputLogin}
           value={reservaParam.Descricao}
           onChangeText={(Descricao) => setReservaParam({ ...reservaParam, Descricao })}
         />
-
+        <Text style={[style.label]}>Sala</Text>
         <TextInput
-          placeholder='Sala'
-          style={styles.inputLogin}
+          placeholder='Insira a Sala'
+          style={style.inputLogin}
           value={reservaParam.nomeSala}
           onChangeText={(nomeSala) => setReservaParam({ ...reservaParam, nomeSala })}
 
         />
-
 
         {showDatePicker && (
           <DateTimePicker
@@ -150,9 +146,10 @@ export default props = ({ route }) => {
 
           />
         )}
+        <Text style={[style.label]}>Horario de Inicio</Text>
         <TextInput onPressIn={() => setShowStartTimePicker(true)}
           placeholder="horario inicio"
-          style={styles.inputLogin}
+          style={style.inputLogin}
           value={reservaParam.DataInicio}
           onChangeText={(DataInicio) => setReservaParam({ ...reservaParam, DataInicio })}
         />
@@ -166,9 +163,10 @@ export default props = ({ route }) => {
             onChange={handleStartTimeChange}
           />
         )}
+        <Text style={[style.label]}>Horario Final</Text>
         <TextInput onPressIn={() => setShowEndTimePicker(true)}
           placeholder='Hora Fim'
-          style={styles.inputLogin}
+          style={style.inputLogin}
           value={reservaParam.DataFim}
           onChangeText={(DataFim) => setReservaParam({ ...reservaParam, DataFim })}
         />
@@ -188,35 +186,62 @@ export default props = ({ route }) => {
             showConfirmationAlert(), saveRoom()
           }} />
       </View>
-
-
-    </View>
+    </>
   );
 };
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
+    top: 20,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+
   infoText: {
     marginVertical: 10,
     fontSize: 16,
   },
   inputLogin: {
-    height: 60,
-    width: 250,
-    fontSize: 20,
-    margin: 20,
-    textAlign: 'center',
-    borderWidth: 0.5,
-    borderRadius: 20
+    height: 53,
+    width: 300,
+    fontSize: 16,
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    // Estilos adicionais para relevo e sombra
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+  },
+  shadowOpacity: 5,
+  shadowRadius: 5,
+  elevation: 5, // Adiciona a elevação para a sombra no Android
+},
+  HeaderContainer: {
+    width: 395,
+    height: 143,
+    backgroundColor: "#28364D",
+    borderRadius: 10,
+  },
+  HeaderText: {
+    width: 266,
+    height: 39,
+    color: '#FAFAFA',
+    fontStyle: 'normal',
+    fontSize: 30,
+    fontWeight: '700',
+    marginTop: 65,
+    marginRight: 50,
+    marginLeft: 75,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    alignSelf: 'flex-start',
+    marginLeft: 25,
   },
 });
-

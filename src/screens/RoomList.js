@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl, Modal, Pressable } from "react-native";
 import { ListItem } from "@rneui/base";
@@ -105,9 +104,9 @@ export default function RoomList(props) {
 
     return (
         <>
-            <View style={style.cont}>
-                <Text style={style.texto}>Salas Criadas</Text>
-            </View>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Salas</Text>
+      </View>
             <View>
                 <FlatList
                     data={data}
@@ -185,23 +184,23 @@ const style = StyleSheet.create({
       value: {
         fontSize: 16,
       },
-      cont: {
+      HeaderContainer: {
         width: 395,
         height: 143,
         backgroundColor: "#28364D",
-        borderRadius: 30,
-    },
-    texto: {
-      width: 266,
-      height: 39,
-      color: '#FAFAFA',
-      fontStyle: 'normal',
-      fontSize: 30,
-      alignItems: 'center',
-      marginLeft: 99,
-      marginTop: 80,
-      fontWeight: '700',
-    },
+        borderRadius: 10,
+      },
+      HeaderText: {
+        width: 266,
+        height: 45,
+        color: '#FAFAFA',
+        fontStyle: 'normal',
+        fontSize: 35,
+        fontWeight: '700',
+        marginTop: 55,
+        marginRight: 50,
+        marginLeft: 135,
+      },
     roundButton: {
         width: 60,
         height: 60,
@@ -244,5 +243,3 @@ const style = StyleSheet.create({
         textAlign: "center"
     },
 })
-
-

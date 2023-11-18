@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Button, Text, StyleSheet, Alert, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
-import NavBar from '../components/navBar';
 import Botton from '../components/botton';
 import { useNavigation } from '@react-navigation/native';
 
@@ -117,28 +116,29 @@ export default props = () => {
 
 
   return (
-
-
-    <View style={styles.container}>
-
-      <View >
+    <>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Cadastrar Reservas</Text>
       </View>
-      <View style={styles.container} >
+      <View style={style.container} >
+      <Text style={style.label}>Reservista</Text>
         <TextInput
-          placeholder='Reservista'
-          style={styles.inputLogin}
+          placeholder='Insira o reservista'
+          style={style.inputLogin}
           value={reservaParam.nomeUsuario}
           onChangeText={(nomeUsuario) => setReservaParam({ ...reservaParam, nomeUsuario })}
           />
+        <Text style={style.label}>Descrição</Text>
         <TextInput
-          placeholder='Descrição'
-          style={styles.inputLogin}
+          placeholder='Insira a descrição'
+          style={style.inputLogin}
           value={reservaParam.Descricao}
           onChangeText={(Descricao) => setReservaParam({ ...reservaParam, Descricao })}
           />
+        <Text style={style.label}>Sala</Text>
         <TextInput
-          placeholder='Sala'
-          style={styles.inputLogin}
+          placeholder='Insira a Sala'
+          style={style.inputLogin}
           value={reservaParam.nomeSala}
           onChangeText={(nomeSala) => setReservaParam({ ...reservaParam, nomeSala })}
           
@@ -156,9 +156,10 @@ export default props = () => {
             
           />
         )}
+        <Text style={style.label}>Data de Inicio</Text>
         <TextInput onPressIn={() => setShowStartTimePicker(true)}
           placeholder={`${formatDate(startTime)}`}
-          style={styles.inputLogin}
+          style={style.inputLogin}
           value={reservaParam.DataInicio}
           onChangeText={(DataInicio) => setReservaParam({ ...reservaParam, DataInicio })}
         />
@@ -172,9 +173,10 @@ export default props = () => {
             onChange={handleStartTimeChange}
           />
         )}
+        <Text style={style.label}>Data Final</Text>
         <TextInput onPressIn={() => setShowEndTimePicker(true)}
           placeholder={` ${formatDate(endTime)}`}
-          style={styles.inputLogin}
+          style={style.inputLogin}
           value={reservaParam.DataFim}
           onChangeText={(DataFim) => setReservaParam({ ...reservaParam, DataFim })}
         />
@@ -194,14 +196,13 @@ export default props = () => {
           showConfirmationAlert(), doPost()
         }} />
       </View>
-
-
-    </View>
+    </>
   );
 };
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
+    top: 20,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -216,13 +217,45 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   inputLogin: {
-    height: 60,
-    width: 250,
-    fontSize: 20,
-    margin: 20,
-    textAlign: 'center',
-    borderWidth: 0.5,
-    borderRadius: 20
+    height: 50,
+    width: 300,
+    fontSize: 16,
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    marginBottom: 15,
+    // Estilos adicionais para relevo e sombra
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+  },
+  shadowOpacity: 5,
+  shadowRadius: 5,
+  elevation: 5, // Adiciona a elevação para a sombra no Android
+},
+  HeaderContainer: {
+    width: 395,
+    height: 130,
+    backgroundColor: "#28364D",
+    borderRadius: 10,
+  },
+    HeaderText: {
+      width: 266,
+      height: 39,
+      color: '#FAFAFA',
+      fontStyle: 'normal',
+      fontSize: 25,
+      fontWeight: '700',
+      marginTop: 60,
+      marginRight: 50,
+      marginLeft: 55,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    alignSelf: 'flex-start',
+    marginLeft: 25,
   },
 });
-

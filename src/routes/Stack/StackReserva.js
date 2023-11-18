@@ -35,6 +35,7 @@ export default props =>(
             )
         }
     </Stack.Screen>
+
     
 </Stack.Navigator>
     

@@ -124,7 +124,6 @@ export default({ route, navigation })=> {
           </View>
         </View>
       </Modal>
-
       <Botton textoBotao={'Cadastrar'} funcao={doPost} />
     </View>
     </>
@@ -142,17 +141,18 @@ export default({ route, navigation })=> {
       width: 395,
       height: 143,
       backgroundColor: "#28364D",
-      borderRadius: 15,
+      borderRadius: 10,
     },
     HeaderText: {
       width: 266,
       height: 39,
       color: '#FAFAFA',
       fontStyle: 'normal',
-      fontSize: 25,
+      fontSize: 27,
       fontWeight: '700',
       marginTop: 65,
-      marginLeft: 65,
+      marginRight: 50,
+      marginLeft: 45,
     },
     inputContainer: {
       alignItems: 'center',
