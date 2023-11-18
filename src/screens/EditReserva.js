@@ -15,36 +15,36 @@ export default props = ({ route }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-  const [reservaParam, setReservaParam] = useState(route.params.user);
+  const [reservaParam, setReservaParam] = useState(route.params.reserva);
 
 
   const saveRoom = async () => {
     const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/${reservaParam.idReseva}`;
 
     try {
-        const response = await fetch(putURL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(reservaParam),
-        });
+      const response = await fetch(putURL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reservaParam),
+      });
 
-        if (!response.ok) {
-            throw new Error('Erro na solicitação HTTP');
-        }
+      if (!response.ok) {
+        throw new Error('Erro na solicitação HTTP');
+      }
 
-        const responseData = await response.json();
-        console.log("Resposta da requisição PUT: ", responseData);
+      const responseData = await response.json();
+      console.log("Resposta da requisição PUT: ", responseData);
 
-        // Adicione aqui qualquer lógica adicional após o sucesso da atualização
+      // Adicione aqui qualquer lógica adicional após o sucesso da atualização
 
-        // Navegue de volta para a tela UserList após a atualização
-        navigation.navigate('UserList');
+      // Navegue de volta para a tela UserList após a atualização
+      navigation.navigate('UserList');
     } catch (error) {
-        console.error('Erro: ', error);
+      console.error('Erro: ', error);
     }
-};
+  };
 
   const navigation = useNavigation();
 
@@ -67,7 +67,7 @@ export default props = ({ route }) => {
   };
 
   const formatDate = (date) => {
-    return format(date, 'dd/MM/yyyy HH:mm');
+    return format(date, 'HH:mm');
   };
 
   const showConfirmationAlert = () => {
@@ -102,36 +102,36 @@ export default props = ({ route }) => {
 
     // Navegar para a tela "Home" após o cadastro
     navigation.navigate('Home');
-  
+
   };
 
-
   return (
-
-
-    <View style={styles.container}>
-
-      <View >
+    <>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Editar Reservas</Text>
       </View>
-      <View style={styles.container} >
+      <View style={style.container}>
+      <Text style={[style.label]}>Reservista</Text>
         <TextInput
-          placeholder='Reservista'
-          style={styles.inputLogin}
+          placeholder='Insira o reservista'
+          style={style.inputLogin}
           value={reservaParam.nomeUsuario}
           onChangeText={(nomeUsuario) => setReservaParam({ ...reservaParam, nomeUsuario })}
-          />
+        />
+        <Text style={[style.label]}>Descrição</Text>
         <TextInput
-          placeholder='Descrição'
-          style={styles.inputLogin}
-          value={reservaParam.descricao}
+          placeholder='Insira a Descrição'
+          style={style.inputLogin}
+          value={reservaParam.Descricao}
           onChangeText={(Descricao) => setReservaParam({ ...reservaParam, Descricao })}
-          />
+        />
+        <Text style={[style.label]}>Sala</Text>
         <TextInput
-          placeholder='Sala'
-          style={styles.inputLogin}
+          placeholder='Insira a Sala'
+          style={style.inputLogin}
           value={reservaParam.nomeSala}
           onChangeText={(nomeSala) => setReservaParam({ ...reservaParam, nomeSala })}
-          
+
         />
 
         {showDatePicker && (
@@ -143,12 +143,13 @@ export default props = ({ route }) => {
             display="default"
             minimumDate={new Date()}
             onChange={handleDateChange}
-            
+
           />
         )}
+        <Text style={[style.label]}>Horario de Inicio</Text>
         <TextInput onPressIn={() => setShowStartTimePicker(true)}
-          placeholder= "horario inicio"
-          style={styles.inputLogin}
+          placeholder="horario inicio"
+          style={style.inputLogin}
           value={reservaParam.DataInicio}
           onChangeText={(DataInicio) => setReservaParam({ ...reservaParam, DataInicio })}
         />
@@ -162,9 +163,10 @@ export default props = ({ route }) => {
             onChange={handleStartTimeChange}
           />
         )}
+        <Text style={[style.label]}>Horario Final</Text>
         <TextInput onPressIn={() => setShowEndTimePicker(true)}
           placeholder='Hora Fim'
-          style={styles.inputLogin}
+          style={style.inputLogin}
           value={reservaParam.DataFim}
           onChangeText={(DataFim) => setReservaParam({ ...reservaParam, DataFim })}
         />
@@ -179,40 +181,68 @@ export default props = ({ route }) => {
           />
         )}
         <Botton
-        textoBotao={"Cadastrar"}
-        funcao={() => {
-          showConfirmationAlert()
-        }} />
+          textoBotao={"Cadastrar"}
+          funcao={() => {
+            showConfirmationAlert(), saveRoom()
+          }} />
       </View>
-
-
-    </View>
+    </>
   );
 };
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
+    top: 20,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+
   infoText: {
     marginVertical: 10,
     fontSize: 16,
   },
   inputLogin: {
-    height: 60,
-    width: 250,
-    fontSize: 20,
-    margin: 20,
-    textAlign: 'center',
-    borderWidth: 0.5,
-    borderRadius: 20
+    height: 53,
+    width: 300,
+    fontSize: 16,
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    // Estilos adicionais para relevo e sombra
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+  },
+  shadowOpacity: 5,
+  shadowRadius: 5,
+  elevation: 5, // Adiciona a elevação para a sombra no Android
+},
+  HeaderContainer: {
+    width: 395,
+    height: 143,
+    backgroundColor: "#28364D",
+    borderRadius: 10,
+  },
+  HeaderText: {
+    width: 266,
+    height: 39,
+    color: '#FAFAFA',
+    fontStyle: 'normal',
+    fontSize: 30,
+    fontWeight: '700',
+    marginTop: 65,
+    marginRight: 50,
+    marginLeft: 75,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    alignSelf: 'flex-start',
+    marginLeft: 25,
   },
 });
 

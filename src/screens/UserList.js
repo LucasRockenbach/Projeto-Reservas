@@ -1,4 +1,4 @@
-import { View, StatusBar, Text, StyleSheet, Alert,Image, FlatList, ActivityIndicator, Button, RefreshControl, TouchableOpacity, Modal, Pressable } from "react-native"
+import { View, StatusBar, Text, StyleSheet, Alert, Image, FlatList, TextInput, ActivityIndicator, Button, RefreshControl, TouchableOpacity, Modal, Pressable } from "react-native"
 import NavBar from "../components/navBar"
 import { ListItem } from "@rneui/base"
 import { useEffect, useState, useContext } from "react"
@@ -9,35 +9,46 @@ import { FontAwesome } from "@expo/vector-icons";
 
 
 export default props => {
-    const {state, dispatch} = useContext(UserContext)
+    const { state, dispatch } = useContext(UserContext)
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
+    const [searchText, setSearchText] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
+
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario";
 
 
+
+    const filterUsers = () => {
+        const filteredUsers = data.filter(user =>
+            user.nome.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setFilteredData(filteredUsers);
+    };
+
     const getUsers = async () => {
-        try{
+        try {
             const response = await fetch(URL);
             const json = await response.json();
             console.log(json);
             setData(json);
-        } catch(error) {
+        } catch (error) {
             console.error(error);
-        }finally{
+        } finally {
             setIsLoading(false);
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getUsers();
     }, [])
 
-    const deleteUser = async (user) =>{
-        const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/' + user.idUsuario 
+    const deleteUser = async (user) => {
+        const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/' + user.idUsuario
 
         try {
             const response = await fetch(URL, { method: 'DELETE' });
@@ -60,43 +71,42 @@ export default props => {
         }
     };
 
-    function deleteConfirm(user){
+    function deleteConfirm(user) {
         Alert.alert('Excluir usuário!', 'Tem certeza que deseja excluir o usuário?',
-        [
-            {
-                text: "Sim",
-                onPress(){
-                    //console.warn("Excluido o id: " + user.id)
-                    deleteUser(user)
+            [
+                {
+                    text: "Sim",
+                    onPress() {
+                        //console.warn("Excluido o id: " + user.id)
+                        deleteUser(user)
+                    }
+                },
+                {
+                    text: "Não"
                 }
-            },
-            {
-                text: "Não"
-            }
-        ]
+            ]
         )
     }
-    function getUserItem({item: user}){
-        return(
+    function getUserItem({ item: user }) {
+        return (
             <ListItem onPress={() => {
                 setSelectedUser(user);
                 setModalVisible(true);
             }}>
                 <ListItem.Content>
                     <ListItem.Title>{user.nome}</ListItem.Title>
-                    <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
                 </ListItem.Content>
-                <ListItem.Chevron 
+                <ListItem.Chevron
                     name="edit"
                     color="orange"
                     size={25}
-                    onPress={()=>props.navigation.navigate("EditUser", {user})}
+                    onPress={() => props.navigation.navigate("EditUser", { user })}
                 />
-                <ListItem.Chevron 
+                <ListItem.Chevron
                     name="delete"
                     color="red"
                     size={25}
-                    onPress={()=> {deleteConfirm(user)}}
+                    onPress={() => { deleteConfirm(user) }}
                 />
             </ListItem>
         )
@@ -110,9 +120,9 @@ export default props => {
 
     return (
         <>
-            <View style={style.cont}>
-                <Text style={style.texto}>Usuarios Cadastrados</Text>
-            </View>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Usuarios</Text>
+      </View>
             <View>
                 <FlatList
                     data={data}
@@ -121,9 +131,9 @@ export default props => {
                     refreshControl={
                         <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
                     }
-                    
+
                 />
-                  <Modal
+                <Modal
                     animationType="slide"
                     transparent={true}
                     visible={modalVisible}
@@ -132,10 +142,11 @@ export default props => {
                     }}
                 >
                     <View style={style.modalView}>
-                    <Text>ID do Usuário: {selectedUser?.idUsuario}</Text>
-                    <Text>Nome: {selectedUser?.nome}</Text>
-                    <Text>Email: {selectedUser?.email}</Text>
-                    <Text>Telefone: {selectedUser?.telefone}</Text>
+                        <Text>ID do Usuário: {selectedUser?.idUsuario}</Text>
+                        <Text>Nome: {selectedUser?.nome}</Text>
+                        <Text>Email: {selectedUser?.email}</Text>
+                        <Text>Telefone: {selectedUser?.telefone}</Text>
+                        <Text>Descrição reserva: {selectedUser?.reserva?.descricao}</Text>
                         <Pressable
                             style={[style.button, style.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
@@ -144,6 +155,7 @@ export default props => {
                         </Pressable>
                     </View>
                 </Modal>
+
             </View>
 
             {/* Botão de adicionar sala */}
@@ -165,7 +177,7 @@ const style = StyleSheet.create({
 
     },
 
-    viewLogo:{
+    viewLogo: {
         bottom: 20,
         top: 20,
     },
@@ -178,37 +190,37 @@ const style = StyleSheet.create({
     list: {
         flexDirection: 'row',
         padding: 10,
-      },
-      labelContainer: {
+    },
+    labelContainer: {
         flexDirection: 'row',
         marginBottom: 10,
-      },
-      label: {
+    },
+    label: {
         fontWeight: 'bold',
         marginRight: 5,
         color: '#28364C',
-        
-      },
-      value: {
+
+    },
+    value: {
         fontSize: 16,
-      },
-      cont: {
+    },
+    HeaderContainer: {
         width: 395,
         height: 143,
         backgroundColor: "#28364D",
-        borderRadius: 30,
-    },
-    texto: {
-      width: 266,
-      height: 39,
-      color: '#FAFAFA',
-      fontStyle: 'normal',
-      fontSize: 30,
-      alignItems: 'center',
-      marginLeft: 135,
-      marginTop: 80,
-      fontWeight: '700',
-    },
+        borderRadius: 10,
+      },
+      HeaderText: {
+        width: 266,
+        height: 45,
+        color: '#FAFAFA',
+        fontStyle: 'normal',
+        fontSize: 34,
+        fontWeight: '700',
+        marginTop: 60,
+        marginRight: 50,
+        marginLeft: 105,
+      },
     roundButton: {
         width: 60,
         height: 60,
@@ -219,8 +231,8 @@ const style = StyleSheet.create({
         position: "absolute",
         bottom: 20,
         right: 20,
-      },
-      modalView: {
+    },
+    modalView: {
         marginTop: 260,
         margin: 20,
         backgroundColor: "white",
@@ -253,58 +265,3 @@ const style = StyleSheet.create({
 })
 
 
-/*
-return(
-
-    <View style={style.container}>
-        <View style={style.viewLogo}>
-            <Logo />
-        </View>
-
-        {isLoading ? (
-            <ActivityIndicator size={80}></ActivityIndicator>
-        ) : (
-            <FlatList style={style.list}
-                data={data}
-                keyExtractor={({id})=>id}
-                renderItem={ ({item})=>(
-                    <Text style={style.item}>
-
-                        <Text style={style.label}>
-                            nome:
-                        </Text>
-                        <Text style={style.value}>
-                            {item.nome}
-                        </Text>
-                        {'\n'}
-                        <Text style={style.label}>
-                            Email:
-                        </Text>
-                        <Text style={style.value}>
-                            {item.email}
-                        </Text>
-                        {'\n'}
-                        <Text style={style.label}>
-                            Telefone:
-                        </Text>
-                        <Text style={style.value}>
-                            {item.telefone}
-                        </Text>   
-                    </Text> 
-                                      
-                )}
-            />
-        )
-        }
-        <View>
-            <Button title="Atualizar" onPress={ () => getUsers()} />
-            <Botton textoBotao={"Cadastrar"} funcao={
-                () => {
-                    props.navigation.navigate("RegisterPage")
-
-                }
-
-            } />
-        </View>
-    </View>
-)*/

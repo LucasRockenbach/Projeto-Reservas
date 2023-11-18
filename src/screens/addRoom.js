@@ -92,7 +92,7 @@ export default ({ route, navigation }) => {
         <Text style={style.HeaderText}>Cadastrar Salas</Text>
       </View>
       <View style={style.container}>
-        <Text style={[style.TextInput, {marginTop: 20}]}>Nome da sala</Text>
+        <Text style={[style.label]}>Nome da sala</Text>
         <TextInput
           placeholder="Digite o nome para a sala..."
           style={[style.inputLogin, { paddingLeft: 10, marginTop: 10 }]}
@@ -101,7 +101,7 @@ export default ({ route, navigation }) => {
           onChangeText={(nome) => setUserParam({ ...userParam, nome })}
         />
 
-        <Text style={[style.TextInput, {marginTop: 20}]}>Descrição</Text>
+        <Text style={[style.label]}>Descrição</Text>
         <TextInput
           placeholder="Digite a descrição..."
           style={[style.inputLogin, { paddingLeft: 10 }]}
@@ -270,5 +270,12 @@ const style = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         alignItems: "center",
+      },
+      label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        alignSelf: 'flex-start',
+        marginLeft: 25,
       },
 })

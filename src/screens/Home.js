@@ -13,6 +13,13 @@ export default function RoomList(props) {
     const [selectedReserva, setSelectedReserva] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
 
+    const formatarData = (data) => {
+        if (!data) return "";
+    
+        const horaFormatada = new Date(data).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+        return horaFormatada;
+    };
+
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva";
 
     const getUsers = async () => {
@@ -106,9 +113,9 @@ export default function RoomList(props) {
 
     return (
         <>
-            <View style={style.cont}>
-                <Text style={style.texto}>Reservas</Text>
-            </View>
+      <View style={style.HeaderContainer}>
+        <Text style={style.HeaderText}>Reservas</Text>
+      </View>
             <View>
                 <FlatList
                     data={data}
@@ -129,12 +136,11 @@ export default function RoomList(props) {
                     }}
                 >
                     <View style={style.modalView}>
-                        <Text>ID da Reserva: {selectedReserva?.idReserva}</Text>
-                        <Text>Nome do Usuário: {selectedReserva?.nomeUsuario}</Text>
-                        <Text>Nome da Sala: {selectedReserva?.nomeSala}</Text>
-                        <Text>Descrição: {selectedReserva?.Descricao}</Text>
-                        <Text>Data de Início: {selectedReserva?.DataInicio}</Text>
-                        <Text>Data de Fim: {selectedReserva?.DataFim}</Text>
+                         <Text>Descrição: {selectedReserva?.descricao}</Text>
+                        <Text>Nome do Usuário: {selectedReserva?.usuario?.nome}</Text>
+                        <Text>Nome da Sala: {selectedReserva?.sala?.nome}</Text>                      
+                        <Text>Data de Início: {formatarData(selectedReserva?.dataInicio)}</Text>
+                        <Text>Data de Fim: {formatarData(selectedReserva?.dataFim)}</Text>
                         <Pressable
                             style={[style.button, style.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
@@ -185,23 +191,23 @@ const style = StyleSheet.create({
       value: {
         fontSize: 16,
       },
-      cont: {
+      HeaderContainer: {
         width: 395,
         height: 143,
         backgroundColor: "#28364D",
-        borderRadius: 30,
-    },
-    texto: {
-      width: 266,
-      height: 39,
-      color: '#FAFAFA',
-      fontStyle: 'normal',
-      fontSize: 30,
-      alignItems: 'center',
-      marginLeft: 99,
-      marginTop: 80,
-      fontWeight: '700',
-    },
+        borderRadius: 10,
+      },
+      HeaderText: {
+        width: 266,
+        height: 39,
+        color: '#FAFAFA',
+        fontStyle: 'normal',
+        fontSize: 30,
+        fontWeight: '700',
+        marginTop: 65,
+        marginRight: 50,
+        marginLeft: 115,
+      },
     roundButton: {
         width: 60,
         height: 60,
