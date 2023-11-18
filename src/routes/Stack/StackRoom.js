@@ -2,13 +2,20 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import RoomList from "../../screens/RoomList"
 import AddRoom from "../../screens/addRoom"
 import Room from "../../screens/Room"
-
+import loginPage from "../../screens/loginPage"
 
 const Stack = createNativeStackNavigator()
 
 export default props =>(
 
-    <Stack.Navigator  screenOptions={{headerShown: false}}>
+    <Stack.Navigator initialRouteName="loginPage" screenOptions={{headerShown: false}}>
+        
+        <Stack.Screen name="loginPage" component={loginPage}>
+        {
+        
+        }
+    </Stack.Screen>
+
     <Stack.Screen name="RoomList">
         {
             props => (
@@ -36,6 +43,9 @@ export default props =>(
             )
         }
     </Stack.Screen>
+
+
+    
 </Stack.Navigator>
     
 )

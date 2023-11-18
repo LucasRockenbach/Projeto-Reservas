@@ -16,9 +16,9 @@ export default props => {
     // Se a autenticação for bem-sucedida, navegue para a tela 'Home'
 
     // Condição de exemplo (substitua por sua própria lógica de autenticação)
-    if (email === 'user@example.com' && password === 'password') {
+    if (email === 'lucas@gmail.com' && password === '1234') {
       // Navegar para a tela 'Home'
-      props.navigation.navigate('Home');
+      props.navigation.navigate('RoomList');
     } else {
       // Mostrar um alerta se a autenticação falhar
       Alert.alert('Erro de autenticação', 'Credenciais inválidas. Tente novamente.');
