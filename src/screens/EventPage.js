@@ -5,8 +5,6 @@ import { format } from 'date-fns';
 import Botton from '../components/botton';
 import { useNavigation } from '@react-navigation/native';
 
-
-
 export default props = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
@@ -16,28 +14,31 @@ export default props = () => {
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
   const [reservaParam, setReservaParam] = useState({});
 
-
   const doPost = async () => {
-    //validações 
-    
+    // validações
 
-    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/'
+    const formattedStartDate = format(selectedDate, 'dd/MM/yyyy');
+    const formattedStartTime = format(startTime, 'HH:mm');
+    const formattedEndTime = format(endTime, 'HH:mm');
+
     const dadosParaEnviar = {
-        idReseva: reservaParam.idReseva,
-        nomeUsuario: reservaParam.nomeUsuario,
-        nomeSala: reservaParam.nomeSala,
-        Descricao: reservaParam.Descricao,
-        DataInicio: reservaParam.DataInicio,
-        DataFim: reservaParam.DataFim,
-    }
+      idReseva: reservaParam.idReseva,
+      nomeUsuario: reservaParam.nomeUsuario,
+      nomeSala: reservaParam.nomeSala,
+      Descricao: reservaParam.Descricao,
+      DataInicio: formattedStartDate + ' ' + formattedStartTime,
+      DataFim: formattedStartDate + ' ' + formattedEndTime,
+    };
+
+    const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/';
 
     const options = {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosParaEnviar)
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dadosParaEnviar),
     };
 
     try {
@@ -46,7 +47,7 @@ export default props = () => {
       if (response.ok) {
         const dadosRecebidos = await response.json();
         console.log('Resposta do servidor: ', dadosRecebidos);
-        // Navegue para a tela desejada após a conclusão bem-sucedida do POST 
+        // Navegue para a tela desejada após a conclusão bem-sucedida do POST
       } else {
         throw new Error('A solicitação via POST falhou!');
       }
@@ -92,14 +93,12 @@ export default props = () => {
     );
   };
 
-
   const generateReservation = () => {
     const formattedDate = format(selectedDate, 'dd/MM/yyyy');
     const formattedStartTime = format(startTime, 'HH:mm');
     const formattedEndTime = format(endTime, 'HH:mm');
 
     const data = {
-
       date: formattedDate,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
@@ -111,9 +110,7 @@ export default props = () => {
 
     // Navegar para a tela "Home" após o cadastro
     navigation.navigate('Home');
-  
   };
-
 
   return (
     <>
