@@ -38,7 +38,7 @@ export default({ route, navigation })=> {
     }
     
 
-    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario'
+    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/'
     const dadosParaEnviar = {
         idUsuario: userParam.idUsuario,
         nome: userParam.nome,

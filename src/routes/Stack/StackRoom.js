@@ -16,7 +16,7 @@ export default props =>(
         }
     </Stack.Screen>
 
-    <Stack.Screen name="RoomList">
+    <Stack.Screen name="RoomList"> 
         {
             props => (
                 

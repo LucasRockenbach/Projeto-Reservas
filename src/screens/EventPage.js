@@ -21,7 +21,7 @@ export default props = () => {
     //validações 
     
 
-    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva'
+    URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/'
     const dadosParaEnviar = {
         idReseva: reservaParam.idReseva,
         nomeUsuario: reservaParam.nomeUsuario,
