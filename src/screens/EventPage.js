@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Button, Text, StyleSheet, Alert, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import Botton from '../components/botton';
 import { useNavigation } from '@react-navigation/native';
 
-export default props = () => {
+export default props => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
@@ -58,30 +58,40 @@ export default props = () => {
 
   const navigation = useNavigation();
 
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || selectedDate;
-    setShowDatePicker(false);
-    setSelectedDate(currentDate);
+  const onChange = (event, selectedValue, type) => {
+    if (type === 'date') {
+      setShowDatePicker(false);
+      setSelectedDate(selectedValue || selectedDate);
+      setShowStartTimePicker(true);
+    } else if (type === 'startTime') {
+      setShowStartTimePicker(false);
+      setStartTime(selectedValue || startTime);
+      setShowEndTimePicker(true);
+    } else if (type === 'endTime') {
+      setShowEndTimePicker(false);
+      setEndTime(selectedValue || endTime);
+    }
+
+    updateReservaParam();
   };
 
-  const handleStartTimeChange = (event, selectedTime) => {
-    const currentDate = selectedTime || startTime;
-    setShowStartTimePicker(false);
-    setStartTime(currentDate);
-  };
+  const updateReservaParam = () => {
+    const formattedDate = format(selectedDate, 'dd/MM/yyyy');
+    const formattedStartTime = format(startTime, 'HH:mm');
+    const formattedEndTime = format(endTime, 'HH:mm');
 
-  const handleEndTimeChange = (event, selectedTime) => {
-    const currentDate = selectedTime || endTime;
-    setShowEndTimePicker(false);
-    setEndTime(currentDate);
-  };
-
-  const formatDate = (date) => {
-    return format(date, 'HH:mm');
+    setReservaParam({
+      ...reservaParam,
+      DataInicio: formattedDate + ' ' + formattedStartTime,
+      DataFim: formattedDate + ' ' + formattedEndTime,
+    });
   };
 
   const showConfirmationAlert = () => {
-    const confirmationMessage = `Deseja confirmar a reserva \nHorário de ${format(startTime, 'HH:mm')} até ${format(endTime, 'HH:mm')}?`;
+    const confirmationMessage = `Deseja confirmar a reserva \nHorário de ${format(
+      startTime,
+      'HH:mm'
+    )} até ${format(endTime, 'HH:mm')}?`;
     Alert.alert(
       'Confirmação',
       confirmationMessage,
@@ -112,35 +122,46 @@ export default props = () => {
     navigation.navigate('Home');
   };
 
+  const formatDate = date => {
+    return format(date, 'HH:mm');
+  };
+
   return (
     <>
       <View style={style.HeaderContainer}>
         <Text style={style.HeaderText}>Cadastrar Reservas</Text>
       </View>
-      <View style={style.container} >
-      <Text style={style.label}>Reservista</Text>
+      <View style={style.container}>
+        <Text style={style.label}>Reservista</Text>
         <TextInput
-          placeholder='Insira o reservista'
+          placeholder="Insira o reservista"
           style={style.inputLogin}
           value={reservaParam.nomeUsuario}
-          onChangeText={(nomeUsuario) => setReservaParam({ ...reservaParam, nomeUsuario })}
-          />
+          onChangeText={nomeUsuario => setReservaParam({ ...reservaParam, nomeUsuario })}
+        />
         <Text style={style.label}>Descrição</Text>
         <TextInput
-          placeholder='Insira a descrição'
+          placeholder="Insira a descrição"
           style={style.inputLogin}
           value={reservaParam.Descricao}
-          onChangeText={(Descricao) => setReservaParam({ ...reservaParam, Descricao })}
-          />
+          onChangeText={Descricao => setReservaParam({ ...reservaParam, Descricao })}
+        />
         <Text style={style.label}>Sala</Text>
         <TextInput
-          placeholder='Insira a Sala'
+          placeholder="Insira a Sala"
           style={style.inputLogin}
           value={reservaParam.nomeSala}
-          onChangeText={(nomeSala) => setReservaParam({ ...reservaParam, nomeSala })}
-          
+          onChangeText={nomeSala => setReservaParam({ ...reservaParam, nomeSala })}
         />
 
+        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+          <Text style={style.label}>Data de Inicio</Text>
+          <TextInput
+            placeholder={`${format(selectedDate, 'dd/MM/yyyy')} ${format(startTime,'HH:mm')}`}
+            style={style.inputLogin}
+            editable={false}
+          />
+        </TouchableOpacity>
         {showDatePicker && (
           <DateTimePicker
             testID="datePicker"
@@ -149,17 +170,9 @@ export default props = () => {
             is24Hour={true}
             display="default"
             minimumDate={new Date()}
-            onChange={handleDateChange}
-            
+            onChange={(event, selectedValue) => onChange(event, selectedValue, 'date')}
           />
         )}
-        <Text style={style.label}>Data de Inicio</Text>
-        <TextInput onPressIn={() => setShowStartTimePicker(true)}
-          placeholder={`${formatDate(startTime)}`}
-          style={style.inputLogin}
-          value={reservaParam.DataInicio}
-          onChangeText={(DataInicio) => setReservaParam({ ...reservaParam, DataInicio })}
-        />
         {showStartTimePicker && (
           <DateTimePicker
             testID="startTimePicker"
@@ -167,15 +180,16 @@ export default props = () => {
             mode="time"
             is24Hour={true}
             display="default"
-            onChange={handleStartTimeChange}
+            onChange={(event, selectedValue) => onChange(event, selectedValue, 'startTime')}
           />
         )}
         <Text style={style.label}>Data Final</Text>
-        <TextInput onPressIn={() => setShowEndTimePicker(true)}
-          placeholder={` ${formatDate(endTime)}`}
+        <TextInput
+          onPress={() => setShowEndTimePicker(true)}
+          placeholder={`${format(endTime,'HH:mm')}`}
           style={style.inputLogin}
           value={reservaParam.DataFim}
-          onChangeText={(DataFim) => setReservaParam({ ...reservaParam, DataFim })}
+          onChangeText={DataFim => setReservaParam({ ...reservaParam, DataFim })}
         />
         {showEndTimePicker && (
           <DateTimePicker
@@ -184,14 +198,16 @@ export default props = () => {
             mode="time"
             is24Hour={true}
             display="default"
-            onChange={handleEndTimeChange}
+            onChange={(event, selectedValue) => onChange(event, selectedValue, 'endTime')}
           />
         )}
         <Botton
-        textoBotao={"Cadastrar"}
-        funcao={() => {
-          showConfirmationAlert(), doPost()
-        }} />
+          textoBotao={'Cadastrar'}
+          funcao={() => {
+            showConfirmationAlert();
+            doPost();
+          }}
+        />
       </View>
     </>
   );

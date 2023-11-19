@@ -88,21 +88,20 @@ export default props = ({ route }) => {
     const formattedDate = format(selectedDate, 'dd/MM/yyyy');
     const formattedStartTime = format(startTime, 'HH:mm');
     const formattedEndTime = format(endTime, 'HH:mm');
-
+  
     const data = {
-
       date: formattedDate,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
+      // ... outras propriedades do seu objeto de dados
     };
-
+  
     const jsonData = JSON.stringify(data, null, 2);
     console.log('Dados enviados:', jsonData);
     Alert.alert('Reserva Confirmada', 'Horário reservado com sucesso!');
-
+  
     // Navegar para a tela "Home" após o cadastro
     navigation.navigate('Home');
-
   };
 
   return (
