@@ -128,6 +128,7 @@ export default props = ({ route }) => {
           style={style.inputLogin}
           value={reservaParam.nomeUsuario}
           onChangeText={nomeUsuario => setReservaParam({ ...reservaParam, nomeUsuario })}
+          editable={false}
         />
         <Text style={style.label}>Descrição</Text>
         <TextInput
@@ -142,6 +143,7 @@ export default props = ({ route }) => {
           style={style.inputLogin}
           value={reservaParam.nomeSala}
           onChangeText={nomeSala => setReservaParam({ ...reservaParam, nomeSala })}
+          editable={false}
         />
 
         <TouchableOpacity onPress={() => setShowDatePicker(true)}>

@@ -16,7 +16,7 @@ export default props => {
     // Se a autenticação for bem-sucedida, navegue para a tela 'Home'
 
     // Condição de exemplo (substitua por sua própria lógica de autenticação)
-    if (email === 'lucas@gmail.com' && password === '1234') {
+    if (email === 'ADM@gmail.com' && password === '1234') {
       // Navegar para a tela 'Home'
       props.navigation.navigate('RoomList');
     } else {
