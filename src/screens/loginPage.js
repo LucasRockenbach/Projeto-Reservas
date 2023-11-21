@@ -25,12 +25,6 @@ export default props => {
     }
   };
 
-  const handleForgotPassword = () => {
-    // Adicione a lógica para lidar com "Esqueceu sua senha?"
-    // Por exemplo, pode ser exibida uma tela para redefinir a senha
-    Alert.alert('Esqueceu sua senha?', 'Implemente a lógica aqui.');
-  };
-
   return (
     <View style={style.container}>
       <View style={style.ImageContainer}>
@@ -69,7 +63,6 @@ export default props => {
         onPress={() => props.navigation.navigate('Cadastro')}
         style={style.registerButton}
       >
-        <Text style={style.registerButtonText}>Não possui um cadastro? Cadastre-se</Text>
       </TouchableOpacity>
 
       <StatusBar style="auto" />
