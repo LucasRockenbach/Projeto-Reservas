@@ -50,9 +50,6 @@ export default props => {
           onChangeText={(text) => setPassword(text)}
         />
 
-        <TouchableOpacity onPress={handleForgotPassword}>
-          <Text style={style.forgotPasswordText}>Esqueceu sua senha?</Text>
-        </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={handleLogin} style={style.loginButton}>
