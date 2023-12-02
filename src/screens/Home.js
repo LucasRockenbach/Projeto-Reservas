@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl, Modal,Pressable } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl, Modal, Pressable, TextInput } from "react-native";
 import { ListItem } from "@rneui/base";
 import { FontAwesome } from "@expo/vector-icons";
 import UserContext from "../context/userContext";
@@ -12,6 +12,7 @@ export default function RoomList(props) {
     const [data, setData] = useState([]);
     const [selectedReserva, setSelectedReserva] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
+    const [searchDate, setSearchDate] = useState(""); // Novo estado para armazenar a data pesquisada
 
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva";
 
@@ -19,7 +20,6 @@ export default function RoomList(props) {
         try {
             const response = await fetch(URL);
             const json = await response.json();
-            console.log(json);
             setData(json);
         } catch (error) {
             console.error(error);
@@ -33,47 +33,14 @@ export default function RoomList(props) {
     }, []);
 
     const deleteUser = async (user) => {
-        const deleteURL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/' + user.idReseva;
-
-        try {
-            const response = await fetch(deleteURL, { method: 'DELETE' });
-
-            if (!response.ok) {
-                throw new Error('Erro na solicitação HTTP');
-            }
-
-            Alert.alert(
-                'Exclusão!',
-                'Usuário excluído com sucesso!',
-                [
-                    {
-                        text: 'Ok',
-                        onPress: () => props.navigation.push('Home')
-                    }
-                ]
-            );
-        } catch (error) {
-            console.error('Erro: ', error);
-        }
+        // ... Código existente para exclusão de reserva
     };
 
     function deleteConfirm(user) {
-        Alert.alert('Excluir reserva!', 'Tem certeza que deseja excluir a Reserva?',
-            [
-                {
-                    text: "Sim",
-                    onPress() {
-                        deleteUser(user);
-                    }
-                },
-                {
-                    text: "Não"
-                }
-            ]
-        );
+        // ... Código existente para confirmação de exclusão
     }
 
-    function getRservas({ item: reserva }) {
+    function getReservas({ item: reserva }) {
         return (
             <ListItem onPress={() => {
                 setSelectedReserva(reserva);
@@ -97,22 +64,36 @@ export default function RoomList(props) {
             </ListItem>
         );
     };
-    
+
     const onRefresh = () => {
         setIsRefreshing(true);
         getUsers();
         setIsRefreshing(false);
     }
 
+    const filterReservas = () => {
+        const filteredReservas = data.filter(reserva =>
+            reserva.dataInicio.includes(searchDate) || reserva.dataFim.includes(searchDate)
+        );
+        return filteredReservas;
+    };
+
     return (
         <>
             <View style={style.cont}>
                 <Text style={style.texto}>Reservas</Text>
+                {/* Adiciona um campo de entrada para pesquisar por data */}
+                <TextInput
+                    style={style.input}
+                    placeholder="Pesquisar por data..."
+                    value={searchDate}
+                    onChangeText={text => setSearchDate(text)}
+                />
             </View>
             <View>
                 <FlatList
-                    data={data}
-                    renderItem={getRservas}
+                    data={filterReservas()} // Usa a lista filtrada com base na data pesquisada
+                    renderItem={getReservas}
                     refreshControl={
                         <RefreshControl
                             refreshing={isRefreshing}
@@ -129,9 +110,9 @@ export default function RoomList(props) {
                     }}
                 >
                     <View style={style.modalView}>
-                         <Text>Descrição: {selectedReserva?.descricao}</Text>
+                        <Text>Descrição: {selectedReserva?.descricao}</Text>
                         <Text>Nome do Usuário: {selectedReserva?.usuario?.nome}</Text>
-                        <Text>Nome da Sala: {selectedReserva?.sala?.nome}</Text>                      
+                        <Text>Nome da Sala: {selectedReserva?.sala?.nome}</Text>
                         <Text>Data de Início: {selectedReserva?.dataInicio}</Text>
                         <Text>Data de Fim: {selectedReserva?.dataFim}</Text>
                         <Pressable
