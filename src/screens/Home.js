@@ -83,14 +83,17 @@ export default function RoomList(props) {
             <View style={style.cont}>
                 <Text style={style.texto}>Reservas</Text>
                 {/* Adiciona um campo de entrada para pesquisar por data */}
+            </View>
+        
+            <View>
                 <TextInput
-                    style={style.input}
+                    style={style.inputDate}
                     placeholder="Pesquisar por data..."
                     value={searchDate}
                     onChangeText={text => setSearchDate(text)}
+                    keyboardType="numeric" // Adicione este prop para exibir um teclado numérico para a entrada da data
                 />
-            </View>
-            <View>
+
                 <FlatList
                     data={filterReservas()} // Usa a lista filtrada com base na data pesquisada
                     renderItem={getReservas}
@@ -142,6 +145,17 @@ const style = StyleSheet.create({
         bottom: 20,
         top: 20,
     },
+    inputDate: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 10, // Ajuste o valor do raio para tornar as bordas mais arredondadas
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        width: '70%', // Defina a largura desejada para o campo (pode ajustar o valor conforme necessário)
+        alignSelf: 'center', // Centralize o campo na largura do elemento pai
+        backgroundColor: '#fff', // Cor de fundo
+    },
     item: {
         fontSize: 20,
         padding: 10,
@@ -168,18 +182,17 @@ const style = StyleSheet.create({
       cont: {
         width: 395,
         height: 143,
-        backgroundColor: "#28364D",
-        borderRadius: 30,
+        backgroundColor: "#28364D"
     },
     texto: {
       width: 266,
-      height: 39,
+      height: 100,
       color: '#FAFAFA',
       fontStyle: 'normal',
       fontSize: 30,
       alignItems: 'center',
-      marginLeft: 99,
-      marginTop: 80,
+      marginLeft: 115,
+      marginTop: 60,
       fontWeight: '700',
     },
     roundButton: {
