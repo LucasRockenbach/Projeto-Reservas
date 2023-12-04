@@ -90,8 +90,20 @@ export default function RoomList(props) {
                     style={style.inputDate}
                     placeholder="Pesquisar por data..."
                     value={searchDate}
-                    onChangeText={text => setSearchDate(text)}
-                    keyboardType="numeric" // Adicione este prop para exibir um teclado numérico para a entrada da data
+                    keyboardType="numeric"
+                    onChangeText={text => {
+                        // Remove caracteres não numéricos
+                        const cleanedText = text.replace(/[^0-9]/g, '');
+
+                        // Adiciona a barra automaticamente após 2 caracteres
+                        if (cleanedText.length <= 2) {
+                            setSearchDate(cleanedText);
+                        } else if (cleanedText.length <= 4) {
+                            setSearchDate(`${cleanedText.slice(0, 2)}/${cleanedText.slice(2)}`);
+                        } else {
+                            setSearchDate(`${cleanedText.slice(0, 2)}/${cleanedText.slice(2, 4)}/${cleanedText.slice(4, 8)}`);
+                        }
+                    }}
                 />
 
                 <FlatList
