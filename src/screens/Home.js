@@ -74,11 +74,18 @@ export default function RoomList(props) {
     }
 
     const filterReservas = () => {
-        const filteredReservas = data.filter(reserva =>
-            reserva.dataInicio.includes(searchDate) || reserva.dataFim.includes(searchDate)
-        );
-        return filteredReservas;
+        if (searchDate) {
+            const filteredReservas = data.filter(
+                reserva =>
+                    reserva.dataInicio.includes(searchDate) || reserva.dataFim.includes(searchDate)
+            );
+            return filteredReservas;
+        } else {
+            return data; // Retorna todas as reservas se não houver data selecionada
+        }
     };
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     // Função para manipular a seleção de data no DatePicker
     const handleDateChange = (event, selectedDate) => {
@@ -95,6 +102,13 @@ export default function RoomList(props) {
         return `${day}/${month}/${year}`;
     };
 
+    const handleReload = () => {
+        setIsRefreshing(true);
+        setSearchDate(""); // Limpa a data para mostrar todas as reservas novamente
+        getUsers();
+        setIsRefreshing(false);
+    };
+
     return (
         <>
             <View style={style.cont}>
@@ -103,20 +117,26 @@ export default function RoomList(props) {
             </View>
         
             <View>
-            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                    <TextInput
-                        style={style.inputDate}
-                        placeholder="Pesquisar por data..."
-                        value={searchDate}
-                        editable={false} // Torna o campo não editável para evitar entrada direta de texto
-                    />
-                </TouchableOpacity>
+                <View style={style.inputContainer}>
+                <TouchableOpacity onPress={() => setShowDatePicker(true)} style={style.inputTouchable}>
+        <TextInput
+            style={style.inputDate}
+            placeholder="Pesquisar por data..."
+            value={searchDate}
+            editable={false}
+        />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={handleReload} style={style.reloadButton}>
+        <FontAwesome name="refresh" size={20} color="green" />
+    </TouchableOpacity>
+                </View>
+
                 {showDatePicker && (
                     <DateTimePicker
-                        value={new Date()}
-                        mode="date"
-                        display="default"
-                        onChange={handleDateChange}
+                    value={selectedDate}
+                    mode="date"
+                    display="default"
+                    onChange={handleDateChange}
                     />
                     
                 )}
@@ -232,6 +252,29 @@ const style = StyleSheet.create({
         bottom: 20,
         right: 20,
       },
+      reloadButton: {
+        padding: 10,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        width: '70%',
+        alignSelf: 'center',
+    },
+    inputDate: {
+        height: 40,
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: 'gray',
+    },
+    inputTouchable: {
+        flex: 1,
+    },
       modalView: {
         marginTop: 260,
         margin: 20,
