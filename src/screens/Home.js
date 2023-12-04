@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl, Modal, Pressable, TextInput } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, RefreshControl, Modal, Pressable, TextInput, Platform } from "react-native";
 import { ListItem } from "@rneui/base";
 import { FontAwesome } from "@expo/vector-icons";
 import UserContext from "../context/userContext";
+import DateTimePicker from '@react-native-community/datetimepicker'; // Importa o componente de calendário
 
 export default function RoomList(props) {
     const { state, dispatch } = useContext(UserContext);
@@ -13,6 +14,7 @@ export default function RoomList(props) {
     const [selectedReserva, setSelectedReserva] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
     const [searchDate, setSearchDate] = useState(""); // Novo estado para armazenar a data pesquisada
+    const [showDatePicker, setShowDatePicker] = useState(false); // Estado para controlar a visibilidade do DatePicker
 
     const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva";
 
@@ -78,6 +80,21 @@ export default function RoomList(props) {
         return filteredReservas;
     };
 
+    // Função para manipular a seleção de data no DatePicker
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || new Date();
+        setShowDatePicker(Platform.OS === 'ios'); // Fecha o DatePicker no iOS
+        setSearchDate(formatDate(currentDate));
+    };
+
+    // Função para formatar a data como "DD/MM/YYYY"
+    const formatDate = (date) => {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mês começa do zero
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
     return (
         <>
             <View style={style.cont}>
@@ -86,26 +103,23 @@ export default function RoomList(props) {
             </View>
         
             <View>
-                <TextInput
-                    style={style.inputDate}
-                    placeholder="Pesquisar por data..."
-                    value={searchDate}
-                    keyboardType="numeric"
-                    onChangeText={text => {
-                        // Remove caracteres não numéricos
-                        const cleanedText = text.replace(/[^0-9]/g, '');
-
-                        // Adiciona a barra automaticamente após 2 caracteres
-                        if (cleanedText.length <= 2) {
-                            setSearchDate(cleanedText);
-                        } else if (cleanedText.length <= 4) {
-                            setSearchDate(`${cleanedText.slice(0, 2)}/${cleanedText.slice(2)}`);
-                        } else {
-                            setSearchDate(`${cleanedText.slice(0, 2)}/${cleanedText.slice(2, 4)}/${cleanedText.slice(4, 8)}`);
-                        }
-                    }}
-                />
-
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                    <TextInput
+                        style={style.inputDate}
+                        placeholder="Pesquisar por data..."
+                        value={searchDate}
+                        editable={false} // Torna o campo não editável para evitar entrada direta de texto
+                    />
+                </TouchableOpacity>
+                {showDatePicker && (
+                    <DateTimePicker
+                        value={new Date()}
+                        mode="date"
+                        display="default"
+                        onChange={handleDateChange}
+                    />
+                    
+                )}
                 <FlatList
                     data={filterReservas()} // Usa a lista filtrada com base na data pesquisada
                     renderItem={getReservas}
