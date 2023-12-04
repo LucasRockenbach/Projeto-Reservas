@@ -35,11 +35,44 @@ export default function RoomList(props) {
     }, []);
 
     const deleteUser = async (user) => {
-        // ... Código existente para exclusão de reserva
+        const deleteURL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/' + user.idReseva;
+
+        try {
+            const response = await fetch(deleteURL, { method: 'DELETE' });
+
+            if (!response.ok) {
+                throw new Error('Erro na solicitação HTTP');
+            }
+
+            Alert.alert(
+                'Exclusão!',
+                'Usuário excluído com sucesso!',
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => props.navigation.push('Home')
+                    }
+                ]
+            );
+        } catch (error) {
+            console.error('Erro: ', error);
+        }
     };
 
     function deleteConfirm(user) {
-        // ... Código existente para confirmação de exclusão
+        Alert.alert('Excluir reserva!', 'Tem certeza que deseja excluir a Reserva?',
+            [
+                {
+                    text: "Sim",
+                    onPress() {
+                        deleteUser(user);
+                    }
+                },
+                {
+                    text: "Não"
+                }
+            ]
+        );
     }
 
     function getReservas({ item: reserva }) {
@@ -50,6 +83,8 @@ export default function RoomList(props) {
             }}>
                 <ListItem.Content>
                     <ListItem.Title>{reserva.descricao}</ListItem.Title>
+                    <ListItem.Title>data de inicio:{reserva.dataInicio}</ListItem.Title>
+                    <ListItem.Title>data de fim:{reserva.dataInicio}</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron
                     name="edit"
@@ -115,30 +150,30 @@ export default function RoomList(props) {
                 <Text style={style.texto}>Reservas</Text>
                 {/* Adiciona um campo de entrada para pesquisar por data */}
             </View>
-        
+
             <View>
                 <View style={style.inputContainer}>
-                <TouchableOpacity onPress={() => setShowDatePicker(true)} style={style.inputTouchable}>
-        <TextInput
-            style={style.inputDate}
-            placeholder="Pesquisar por data..."
-            value={searchDate}
-            editable={false}
-        />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={handleReload} style={style.reloadButton}>
-        <FontAwesome name="refresh" size={20} color="green" />
-    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setShowDatePicker(true)} style={style.inputTouchable}>
+                        <TextInput
+                            style={style.inputDate}
+                            placeholder="Pesquisar por data..."
+                            value={searchDate}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleReload} style={style.reloadButton}>
+                        <FontAwesome name="refresh" size={20} color="green" />
+                    </TouchableOpacity>
                 </View>
 
                 {showDatePicker && (
                     <DateTimePicker
-                    value={selectedDate}
-                    mode="date"
-                    display="default"
-                    onChange={handleDateChange}
+                        value={selectedDate}
+                        mode="date"
+                        display="default"
+                        onChange={handleDateChange}
                     />
-                    
+
                 )}
                 <FlatList
                     data={filterReservas()} // Usa a lista filtrada com base na data pesquisada
@@ -187,7 +222,7 @@ const style = StyleSheet.create({
         justifyContent: 'center',
 
     },
-    viewLogo:{
+    viewLogo: {
         bottom: 20,
         top: 20,
     },
@@ -211,35 +246,35 @@ const style = StyleSheet.create({
     list: {
         flexDirection: 'row',
         padding: 10,
-      },
-      labelContainer: {
+    },
+    labelContainer: {
         flexDirection: 'row',
         marginBottom: 10,
-      },
-      label: {
+    },
+    label: {
         fontWeight: 'bold',
         marginRight: 5,
         color: '#28364C',
-        
-      },
-      value: {
+
+    },
+    value: {
         fontSize: 16,
-      },
-      cont: {
+    },
+    cont: {
         width: 395,
         height: 143,
         backgroundColor: "#28364D"
     },
     texto: {
-      width: 266,
-      height: 100,
-      color: '#FAFAFA',
-      fontStyle: 'normal',
-      fontSize: 30,
-      alignItems: 'center',
-      marginLeft: 115,
-      marginTop: 60,
-      fontWeight: '700',
+        width: 266,
+        height: 100,
+        color: '#FAFAFA',
+        fontStyle: 'normal',
+        fontSize: 30,
+        alignItems: 'center',
+        marginLeft: 115,
+        marginTop: 60,
+        fontWeight: '700',
     },
     roundButton: {
         width: 60,
@@ -251,8 +286,8 @@ const style = StyleSheet.create({
         position: "absolute",
         bottom: 20,
         right: 20,
-      },
-      reloadButton: {
+    },
+    reloadButton: {
         padding: 10,
     },
     inputContainer: {
@@ -275,7 +310,7 @@ const style = StyleSheet.create({
     inputTouchable: {
         flex: 1,
     },
-      modalView: {
+    modalView: {
         marginTop: 260,
         margin: 20,
         backgroundColor: "white",
