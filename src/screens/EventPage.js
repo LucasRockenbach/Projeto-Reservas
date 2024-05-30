@@ -30,7 +30,7 @@ export default props => {
       DataFim: formattedStartDate + ' ' + formattedEndTime,
     };
 
-    const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/';
+    const URL = 'https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/reserva/';
 
     const options = {
       method: 'POST',

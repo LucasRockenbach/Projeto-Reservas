@@ -19,7 +19,7 @@ export default props => {
     const [searchText, setSearchText] = useState("");
     const [filteredData, setFilteredData] = useState([]);
 
-    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario";
+    const URL = "https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/usuario";
 
 
 

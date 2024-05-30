@@ -34,7 +34,7 @@ export default ({ route, navigation }) => {
       return;
     }
 
-    const URL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/';
+    const URL = 'https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/sala/';
     const dadosParaEnviar = {
       idSala: userParam.id,
       nome: userParam.nome,

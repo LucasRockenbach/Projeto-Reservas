@@ -12,7 +12,7 @@ export default function RoomList(props) {
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala";
+    const URL = "https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/sala";
 
     const getUsers = async () => {
         try {
@@ -32,7 +32,7 @@ export default function RoomList(props) {
     }, []);
 
     const deleteUser = async (user) => {
-        const deleteURL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/sala/' + user.idSala;
+        const deleteURL = 'https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/sala/' + user.idSala;
 
         try {
             const response = await fetch(deleteURL, { method: 'DELETE' });

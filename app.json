@@ -1,10 +1,16 @@
 {
   "expo": {
     "name": "projeto",
-    "slug": "projeto",
+    "slug": "reservas-embrapa",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c4612ec4-575f-4aa9-b2bf-d474f5fc7665"
+      }
+    },
+    "owner": "lucasrockenbach"
   }
 }

@@ -19,7 +19,7 @@ export default props = ({ route }) => {
 
 
   const saveRoom = async () => {
-    const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/${reservaParam.idReseva}`;
+    const putURL = `https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/reserva/${reservaParam.idReseva}`;
 
     try {
       const response = await fetch(putURL, {

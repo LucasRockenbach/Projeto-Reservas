@@ -8,7 +8,7 @@ export default function Room({ route, navigation }) {
   const [userParam, setUserParam] = useState(route.params.user);
 
   const saveRoom = async () => {
-    const putURL = `https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/usuario/${userParam.idUsuario}`;
+    const putURL = `https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/usuario/${userParam.idUsuario}`;
 
     try {
       const response = await fetch(putURL, {

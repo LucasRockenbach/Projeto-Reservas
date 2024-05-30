@@ -16,7 +16,7 @@ export default function RoomList(props) {
     const [searchDate, setSearchDate] = useState(""); // Novo estado para armazenar a data pesquisada
     const [showDatePicker, setShowDatePicker] = useState(false); // Estado para controlar a visibilidade do DatePicker
 
-    const URL = "https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva";
+    const URL = "https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/reserva";
 
     const getUsers = async () => {
         try {
@@ -35,7 +35,7 @@ export default function RoomList(props) {
     }, []);
 
     const deleteUser = async (user) => {
-        const deleteURL = 'https://reservasembrapa-dev-bggt.3.us-1.fl0.io/api/reserva/' + user.idReseva;
+        const deleteURL = 'https://reservasembrapa-dev-bggt.2.us-1.fl0.io/api/reserva/' + user.idReseva;
 
         try {
             const response = await fetch(deleteURL, { method: 'DELETE' });
